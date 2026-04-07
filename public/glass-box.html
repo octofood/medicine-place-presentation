@@ -6,26 +6,26 @@
 <title>Glass Box — Full Platform</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; color: #1a1a2e; font-size: 13px; line-height: 1.5; }
+  body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; color: #1a1a2e; font-size: 15px; line-height: 1.6; }
 
   /* NAV */
   .nav { background: #fff; border-bottom: 1px solid #e2e5e9; padding: 10px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   .nav-left { display: flex; align-items: center; gap: 12px; }
   .nav-left img { height: 24px; }
   .nav-sep { width: 1px; height: 18px; background: #e2e5e9; }
-  .nav-title { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .nav-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
   .nav-right { display: flex; align-items: center; gap: 8px; }
-  .badge { font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
   .badge-green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
   .badge-grey { background: #f3f4f6; color: #9ca3af; border: 1px solid #e5e7eb; }
-  .nav-ts { font-size: 10px; color: #9ca3af; }
+  .nav-ts { font-size: 12px; color: #9ca3af; }
 
   /* TABS */
   .tab-bar { background: #fff; border-bottom: 1px solid #e2e5e9; padding: 0 28px; display: flex; gap: 0; position: sticky; top: 48px; z-index: 190; }
-  .tab { padding: 10px 20px; font-size: 12px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; user-select: none; }
+  .tab { padding: 12px 22px; font-size: 14px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; user-select: none; }
   .tab:hover { color: #6b7280; background: #fafbfc; }
   .tab.active { color: #1a1a2e; border-bottom-color: #3b82f6; }
-  .tab-count { font-size: 9px; background: #e5e7eb; color: #6b7280; padding: 1px 5px; border-radius: 6px; margin-left: 4px; font-weight: 700; }
+  .tab-count { font-size: 11px; background: #e5e7eb; color: #6b7280; padding: 2px 6px; border-radius: 6px; margin-left: 4px; font-weight: 700; }
   .tab.active .tab-count { background: #dbeafe; color: #3b82f6; }
 
   /* TAB CONTENT */
@@ -34,11 +34,11 @@
 
   /* SHARED COMPONENTS */
   .section { margin-bottom: 16px; }
-  .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .section-title .st-line { flex: 1; height: 1px; background: #e8eaed; }
   .card { background: #fff; border: 1px solid #e8eaed; border-radius: 10px; overflow: hidden; }
-  .card-head { padding: 10px 16px; background: #fafbfc; border-bottom: 1px solid #f0f1f3; font-size: 11px; font-weight: 700; color: #4b5563; display: flex; justify-content: space-between; align-items: center; }
-  .card-body { padding: 12px 16px; }
+  .card-head { padding: 12px 18px; background: #fafbfc; border-bottom: 1px solid #f0f1f3; font-size: 13px; font-weight: 700; color: #4b5563; display: flex; justify-content: space-between; align-items: center; }
+  .card-body { padding: 14px 18px; }
   .row { display: flex; gap: 12px; margin-bottom: 12px; }
   .row > * { flex: 1; }
 
@@ -47,28 +47,28 @@
   .stat::before { content:''; position: absolute; top:0; left:0; right:0; height: 3px; }
   .st-r::before { background: #ef4444; } .st-a::before { background: #f59e0b; }
   .st-g::before { background: #10b981; } .st-b::before { background: #3b82f6; }
-  .stat .st-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; font-weight: 600; margin-bottom: 3px; }
-  .stat .st-val { font-size: 24px; font-weight: 800; line-height: 1; }
+  .stat .st-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; font-weight: 600; margin-bottom: 4px; }
+  .stat .st-val { font-size: 28px; font-weight: 800; line-height: 1; }
   .st-r .st-val { color: #ef4444; } .st-a .st-val { color: #f59e0b; }
   .st-g .st-val { color: #059669; } .st-b .st-val { color: #3b82f6; }
-  .stat .st-sub { font-size: 10px; color: #b0b5bd; margin-top: 2px; }
+  .stat .st-sub { font-size: 12px; color: #b0b5bd; margin-top: 3px; }
 
   /* PILLS */
-  .pill { display: inline-block; font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 7px; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 7px; }
   .p-g { background: #ecfdf5; color: #059669; } .p-a { background: #fffbeb; color: #d97706; }
   .p-r { background: #fef2f2; color: #dc2626; } .p-b { background: #eff6ff; color: #2563eb; }
   .p-grey { background: #f3f4f6; color: #6b7280; }
 
   /* FORMAT PILLS */
-  .fmt { display: inline-block; font-size: 8px; font-weight: 600; padding: 1px 5px; border-radius: 4px; }
+  .fmt { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
   .f-cap { background: #ede9fe; color: #7c3aed; } .f-tab { background: #dbeafe; color: #2563eb; }
   .f-sus { background: #fef3c7; color: #d97706; } .f-eff { background: #d1fae5; color: #059669; }
   .f-sol { background: #fce7f3; color: #db2777; }
 
   /* TABLES */
   table { width: 100%; border-collapse: collapse; }
-  th { font-size: 8px; text-transform: uppercase; letter-spacing: 0.4px; color: #b0b5bd; font-weight: 700; text-align: left; padding: 6px 10px; border-bottom: 1px solid #f0f1f3; }
-  td { font-size: 11px; padding: 6px 10px; border-bottom: 1px solid #f7f8f9; color: #4b5563; }
+  th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: #b0b5bd; font-weight: 700; text-align: left; padding: 8px 12px; border-bottom: 1px solid #f0f1f3; }
+  td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid #f7f8f9; color: #4b5563; }
   td:first-child { font-weight: 600; color: #1a1a2e; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #fafbfc; }
@@ -145,22 +145,31 @@
 
   /* MOBILE RESPONSIVE */
   @media (max-width: 768px) {
-    .nav { padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
-    .nav-title { font-size: 12px; }
-    .nav-right { gap: 4px; }
-    .nav-right a { font-size: 10px; padding: 3px 8px; }
-    .tab-bar { padding: 0 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .tab { padding: 8px 12px; font-size: 11px; white-space: nowrap; }
+    body { font-size: 14px; }
+    .nav { padding: 10px 14px; flex-wrap: wrap; gap: 6px; }
+    .nav-left { flex-wrap: wrap; }
+    .nav-title { font-size: 14px; }
+    .nav-right { gap: 6px; flex-wrap: wrap; }
+    .nav-right a { font-size: 11px; padding: 4px 10px; }
+    .tab-bar { padding: 0 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab { padding: 10px 14px; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
     .tab-content { padding: 12px; }
-    .row { flex-direction: column; }
+    .row { flex-direction: column; gap: 10px; }
     .row > * { flex: none; width: 100%; }
-    .stat .st-val { font-size: 20px; }
-    .card-head { padding: 8px 12px; }
-    .card-body { padding: 8px 12px; }
-    table { font-size: 10px; }
-    th, td { padding: 4px 6px; }
+    .stat { padding: 14px 16px; }
+    .stat .st-val { font-size: 24px; }
+    .stat .st-label { font-size: 10px; }
+    .stat .st-sub { font-size: 11px; }
+    .card-head { padding: 10px 14px; font-size: 12px; }
+    .card-body { padding: 10px 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 500px; }
+    th { font-size: 9px; padding: 6px 10px; }
+    td { font-size: 12px; padding: 6px 10px; }
     .geo { width: 50px; }
-    .section-title { font-size: 9px; }
+    .section-title { font-size: 11px; }
+    .pill { font-size: 10px; }
+    .fmt { font-size: 9px; }
     .cmp { min-width: auto; }
   }
 </style>
