@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Glass Box — Full Platform</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; color: #1a1a2e; font-size: 13px; line-height: 1.5; }
+
+  /* NAV */
+  .nav { background: #fff; border-bottom: 1px solid #e2e5e9; padding: 10px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-left img { height: 24px; }
+  .nav-sep { width: 1px; height: 18px; background: #e2e5e9; }
+  .nav-title { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .badge { font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .badge-green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .badge-grey { background: #f3f4f6; color: #9ca3af; border: 1px solid #e5e7eb; }
+  .nav-ts { font-size: 10px; color: #9ca3af; }
+
+  /* TABS */
+  .tab-bar { background: #fff; border-bottom: 1px solid #e2e5e9; padding: 0 28px; display: flex; gap: 0; position: sticky; top: 48px; z-index: 190; }
+  .tab { padding: 10px 20px; font-size: 12px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; user-select: none; }
+  .tab:hover { color: #6b7280; background: #fafbfc; }
+  .tab.active { color: #1a1a2e; border-bottom-color: #3b82f6; }
+  .tab-count { font-size: 9px; background: #e5e7eb; color: #6b7280; padding: 1px 5px; border-radius: 6px; margin-left: 4px; font-weight: 700; }
+  .tab.active .tab-count { background: #dbeafe; color: #3b82f6; }
+
+  /* TAB CONTENT */
+  .tab-content { display: none; max-width: 1200px; margin: 0 auto; padding: 20px 28px; }
+  .tab-content.active { display: block; }
+
+  /* SHARED COMPONENTS */
+  .section { margin-bottom: 16px; }
+  .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .section-title .st-line { flex: 1; height: 1px; background: #e8eaed; }
+  .card { background: #fff; border: 1px solid #e8eaed; border-radius: 10px; overflow: hidden; }
+  .card-head { padding: 10px 16px; background: #fafbfc; border-bottom: 1px solid #f0f1f3; font-size: 11px; font-weight: 700; color: #4b5563; display: flex; justify-content: space-between; align-items: center; }
+  .card-body { padding: 12px 16px; }
+  .row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .row > * { flex: 1; }
+
+  /* STAT CARDS */
+  .stat { background: #fff; border-radius: 10px; padding: 12px 14px; border: 1px solid #e8eaed; position: relative; overflow: hidden; }
+  .stat::before { content:''; position: absolute; top:0; left:0; right:0; height: 3px; }
+  .st-r::before { background: #ef4444; } .st-a::before { background: #f59e0b; }
+  .st-g::before { background: #10b981; } .st-b::before { background: #3b82f6; }
+  .stat .st-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; font-weight: 600; margin-bottom: 3px; }
+  .stat .st-val { font-size: 24px; font-weight: 800; line-height: 1; }
+  .st-r .st-val { color: #ef4444; } .st-a .st-val { color: #f59e0b; }
+  .st-g .st-val { color: #059669; } .st-b .st-val { color: #3b82f6; }
+  .stat .st-sub { font-size: 10px; color: #b0b5bd; margin-top: 2px; }
+
+  /* PILLS */
+  .pill { display: inline-block; font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 7px; }
+  .p-g { background: #ecfdf5; color: #059669; } .p-a { background: #fffbeb; color: #d97706; }
+  .p-r { background: #fef2f2; color: #dc2626; } .p-b { background: #eff6ff; color: #2563eb; }
+  .p-grey { background: #f3f4f6; color: #6b7280; }
+
+  /* FORMAT PILLS */
+  .fmt { display: inline-block; font-size: 8px; font-weight: 600; padding: 1px 5px; border-radius: 4px; }
+  .f-cap { background: #ede9fe; color: #7c3aed; } .f-tab { background: #dbeafe; color: #2563eb; }
+  .f-sus { background: #fef3c7; color: #d97706; } .f-eff { background: #d1fae5; color: #059669; }
+  .f-sol { background: #fce7f3; color: #db2777; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 8px; text-transform: uppercase; letter-spacing: 0.4px; color: #b0b5bd; font-weight: 700; text-align: left; padding: 6px 10px; border-bottom: 1px solid #f0f1f3; }
+  td { font-size: 11px; padding: 6px 10px; border-bottom: 1px solid #f7f8f9; color: #4b5563; }
+  td:first-child { font-weight: 600; color: #1a1a2e; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  /* GEO BARS */
+  .geo { display: flex; height: 6px; border-radius: 3px; overflow: hidden; width: 70px; gap: 1px; }
+  .g-cn { background: #ef4444; border-radius: 2px; } .g-in { background: #f59e0b; border-radius: 2px; }
+  .g-eu { background: #3b82f6; border-radius: 2px; } .g-ca { background: #10b981; border-radius: 2px; }
+
+  /* TRENDS */
+  .t-up { color: #ef4444; font-weight: 600; } .t-dn { color: #10b981; font-weight: 600; } .t-fl { color: #9ca3af; }
+
+  /* PROGRESS BARS */
+  .prog { width: 100%; height: 6px; background: #f0f1f3; border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; }
+  .pg { background: #10b981; } .pa { background: #f59e0b; } .pr { background: #ef4444; }
+
+  /* ACCORDION */
+  .acc { border-bottom: 1px solid #f0f1f3; }
+  .acc:last-child { border-bottom: none; }
+  .acc-sum { display: grid; grid-template-columns: 24px 1.3fr 0.8fr 0.9fr 0.6fr 0.6fr 0.5fr 0.4fr; align-items: center; padding: 0 14px; height: 42px; cursor: pointer; transition: background 0.12s; user-select: none; }
+  .acc-sum:hover { background: #f8f9fb; }
+  .acc-chv { font-size: 9px; color: #ccc; transition: transform 0.15s; }
+  .acc.open .acc-chv { transform: rotate(90deg); color: #3b82f6; }
+  .acc-name { font-weight: 700; font-size: 12px; }
+  .acc-det { display: none; background: #fafbfc; border-top: 1px solid #f0f1f3; padding: 12px 14px 14px 38px; }
+  .acc.open .acc-det { display: block; }
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .det-box { background: #fff; border: 1px solid #eef0f2; border-radius: 8px; padding: 10px 12px; }
+  .det-box h5 { font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; font-weight: 700; margin-bottom: 5px; }
+  .dr { display: flex; justify-content: space-between; font-size: 11px; padding: 2px 0; border-bottom: 1px solid #f7f8f9; }
+  .dr:last-child { border-bottom: none; }
+  .dl { color: #6b7280; } .dv { font-weight: 600; color: #1a1a2e; }
+  .prod-title { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #3b82f6; font-weight: 700; margin-bottom: 5px; padding-bottom: 4px; border-bottom: 1px solid #e8eaed; }
+  .bar-lbl { display: flex; justify-content: space-between; font-size: 9px; color: #9ca3af; margin-top: 3px; }
+
+  /* DATA SOURCE CARDS */
+  .ds-card { background: #fff; border: 1px solid #e8eaed; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .ds-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; cursor: pointer; user-select: none; }
+  .ds-head h4 { font-size: 13px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 6px; }
+  .ds-head .ds-chv { font-size: 10px; color: #ccc; transition: transform 0.15s; }
+  .ds-card.open .ds-chv { transform: rotate(90deg); color: #3b82f6; }
+  .ds-meta { display: flex; gap: 16px; font-size: 10px; color: #9ca3af; margin-bottom: 8px; }
+  .ds-meta span { display: flex; align-items: center; gap: 3px; }
+  .ds-meta strong { color: #4b5563; }
+  .ds-detail { display: none; border-top: 1px solid #f0f1f3; padding-top: 10px; margin-top: 6px; }
+  .ds-card.open .ds-detail { display: block; }
+  .ds-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .ds-field { font-size: 10px; padding: 4px 8px; background: #f8f9fb; border-radius: 4px; color: #6b7280; border: 1px solid #f0f1f3; }
+  .ds-field code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 9px; color: #7c3aed; }
+  .ds-flow { margin-top: 10px; padding: 10px 14px; background: #f8f9fb; border-radius: 8px; border: 1px solid #f0f1f3; }
+  .ds-flow-label { font-size: 8px; text-transform: uppercase; letter-spacing: 0.6px; color: #9ca3af; font-weight: 700; margin-bottom: 6px; }
+  .ds-flow pre { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; color: #4b5563; line-height: 1.6; white-space: pre-wrap; }
+
+  /* PIPELINE DIAGRAM */
+  .pipeline { display: flex; align-items: center; gap: 0; margin: 10px 0; flex-wrap: wrap; }
+  .pipe-node { background: #fff; border: 1px solid #e8eaed; border-radius: 8px; padding: 8px 12px; text-align: center; min-width: 100px; }
+  .pipe-node .pn-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; font-weight: 700; }
+  .pipe-node .pn-val { font-size: 11px; font-weight: 700; color: #1a1a2e; margin-top: 2px; }
+  .pipe-arrow { color: #d1d5db; font-size: 14px; padding: 0 4px; }
+
+  .footer { text-align: center; padding: 14px 24px; color: #b0b5bd; font-size: 11px; border-top: 1px solid #e8eaed; margin-top: 10px; }
+  .footer strong { color: #6b7280; }
+
+  /* COMPARE */
+  .compare { display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid #e8eaed; }
+  .cmp { flex: 1; padding: 12px 16px; }
+  .cmp-bad { background: #fef2f2; } .cmp-good { background: #ecfdf5; border-left: 3px solid #10b981; }
+  .cmp h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+  .cmp-bad h4 { color: #dc2626; } .cmp-good h4 { color: #059669; }
+  .cmp ul { list-style: none; } .cmp li { font-size: 11px; color: #6b7280; line-height: 1.7; padding-left: 10px; position: relative; }
+  .cmp li::before { content:''; position: absolute; left: 0; top: 7px; width: 4px; height: 4px; border-radius: 50%; }
+  .cmp-bad li::before { background: #fca5a5; } .cmp-good li::before { background: #6ee7b7; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-left">
+    <img src="../../AptaPharma/Medicine Place Logo.png" alt="Medicine Place">
+    <div class="nav-sep"></div>
+    <img src="../../MEDPAC/MARKETING BRANDING/MEDPAC Logo (FINAL) 2025-09-16/MedPac-Logo-Sep-2025.png" alt="MedPac" style="height:18px">
+    <div class="nav-sep"></div>
+    <div class="nav-title">Glass Box</div>
+  </div>
+  <div class="nav-right">
+    <a href="index.html" style="font-size: 11px; font-weight: 600; color: #3b82f6; text-decoration: none; padding: 4px 12px; border: 1px solid #dbeafe; border-radius: 6px; margin-right: 8px;">&#8592; Back to Presentation</a>
+    <div class="badge badge-grey">Prototype</div>
+    <div class="badge badge-green">Live</div>
+    <div class="nav-ts">2026-04-05 09:14 MST</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
+  <div class="tab" onclick="showTab('sources')">Data Sources <span class="tab-count">12</span></div>
+  <div class="tab" onclick="showTab('pipeline')">Ingestion Pipeline</div>
+  <div class="tab" onclick="showTab('molecules')">Molecule Deep Dive <span class="tab-count">10</span></div>
+  <div class="tab" onclick="showTab('alerts')">Alerts &amp; Signals <span class="tab-count">3</span></div>
+</div>
+
+<!-- ===================== TAB 1: DASHBOARD ===================== -->
+<div class="tab-content active" id="tab-dashboard">
+
+  <div class="row">
+    <div class="stat st-r"><div class="st-label">HC Active Shortages (CVDL)</div><div class="st-val">23</div><div class="st-sub">of 160 CVDL molecules</div></div>
+    <div class="stat st-a"><div class="st-label">FDA Regulatory Actions (90d)</div><div class="st-val">7</div><div class="st-sub">Warning letters / import alerts</div></div>
+    <div class="stat st-a"><div class="st-label">Discontinuation Notices</div><div class="st-val">4</div><div class="st-sub">12-mo supplier exit warnings</div></div>
+    <div class="stat st-b"><div class="st-label">Single-Source API Risk</div><div class="st-val">38%</div><div class="st-sub">CVDL molecules with 1 supplier</div></div>
+    <div class="stat st-g"><div class="st-label">MP Portfolio Health</div><div class="st-val">8/10</div><div class="st-sub">2 molecules in watch status</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span>Phase 1 Molecules — Supply Chain Status</span>
+      <span style="font-size:9px; color:#9ca3af">Click row to expand product details</span>
+    </div>
+    <table>
+      <tr><th style="width:24px"></th><th>Molecule</th><th>API Suppliers</th><th>Geography</th><th>Lead Time</th><th>HC Status</th><th>API Price 90d</th><th>Risk</th></tr>
+    </table>
+    <!-- AMOXICILLIN -->
+    <div class="acc open" id="a-amox">
+      <div class="acc-sum" onclick="tog('a-amox')">
+        <div class="acc-chv">&#9656;</div><div class="acc-name">Amoxicillin</div><div style="font-size:11px;color:#6b7280">3 (2 affected)</div><div><div class="geo"><div class="g-in" style="flex:6"></div><div class="g-cn" style="flex:3"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+18d</div><div><span class="pill p-a">Anticipated</span></div><div class="t-up">+34%</div><div><span class="pill p-r">High</span></div>
+      </div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Zhejiang Pharma (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Aurobindo (India)</span><span class="dv t-up">Halted — contamination</span></div><div class="dr"><span class="dl">United Labs (India)</span><span class="dv t-up">Capacity constrained</span></div><div class="dr"><span class="dl">FDA actions (24m)</span><span class="dv t-up">1 warning letter (Aurobindo)</span></div><div class="dr"><span class="dl">CoA on file</span><span class="dv">2 of 3 current</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$42/kg (+34%)</span></div><div class="dr"><span class="dl">Contract price</span><span class="dv">$31/kg (locked Q2)</span></div><div class="dr"><span class="dl">Ocean freight India</span><span class="dv t-up">42d (+18d)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#d97706">Anticipated</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv" style="color:#d97706">Active</span></div><div class="dr"><span class="dl">Last HC update</span><span class="dv">2026-04-02</span></div></div>
+          <div class="det-box"><h5>Medicine Place Response</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">340 kg (56 days)</span></div><div class="dr"><span class="dl">API on order</span><span class="dv">500 kg (Zhejiang)</span></div><div class="dr"><span class="dl">Alt supplier</span><span class="dv" style="color:#059669">Activated (Zhejiang)</span></div><div class="dr"><span class="dl">Production</span><span class="dv" style="color:#d97706">Ramping — 3 batches in QA</span></div><div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:#059669">Armed</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:#d97706">62%</span></div><div class="prog"><div class="prog-fill pa" style="width:62%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 4 SKUs from Amoxicillin API</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol (CA)</th><th>FG Inventory</th><th>Days</th><th>Batch Status</th><th>Status</th></tr>
+          <tr><td>Amoxicillin Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>250 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~480,000</td><td>54,200 units</td><td style="color:#d97706;font-weight:700">42d</td><td style="color:#6b7280">1 batch compressing</td><td><span class="pill p-a">Ramping</span></td></tr>
+          <tr><td>Amoxicillin Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>500 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~620,000</td><td>63,800 units</td><td style="color:#d97706;font-weight:700">38d</td><td style="color:#6b7280">1 batch in QA hold</td><td><span class="pill p-a">Ramping</span></td></tr>
+          <tr><td>Amoxicillin Oral Susp.</td><td><span class="fmt f-sus">Suspension</span></td><td>125 mg/5mL</td><td>100 mL</td><td style="color:#9ca3af">02XXXXXX</td><td>~210,000</td><td>15,900 units</td><td style="color:#ef4444;font-weight:700">28d</td><td style="color:#ef4444;font-weight:600">Priority — 1 batch mixing</td><td><span class="pill p-r">Priority</span></td></tr>
+          <tr><td>Amoxicillin Oral Susp.</td><td><span class="fmt f-sus">Suspension</span></td><td>250 mg/5mL</td><td>100 mL</td><td style="color:#9ca3af">02XXXXXX</td><td>~185,000</td><td>17,400 units</td><td style="color:#d97706;font-weight:700">35d</td><td style="color:#6b7280">Scheduled next</td><td><span class="pill p-a">Ramping</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- RIFAMPIN -->
+    <div class="acc" id="a-rif">
+      <div class="acc-sum" onclick="tog('a-rif')"><div class="acc-chv">&#9656;</div><div class="acc-name">Rifampin</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:9"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+9d</div><div><span class="pill p-r">Actual</span></div><div class="t-up">+21%</div><div><span class="pill p-r">High</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#d97706">FDA import alert</span></div><div class="dr"><span class="dl">Sanofi API (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Diversity</span><span class="dv t-up">90% India — single region</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$185/kg (+21%)</span></div><div class="dr"><span class="dl">HC shortage</span><span class="dv t-up">Active shortage</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv t-up">Active</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">28 kg (68 days)</span></div><div class="dr"><span class="dl">Alt sourcing</span><span class="dv" style="color:#d97706">EU supplier eval</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#d97706">Triggered</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#d97706">76%</span></div><div class="prog"><div class="prog-fill pa" style="width:76%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Rifampin Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>150 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~18,000</td><td>3,400</td><td style="color:#d97706;font-weight:700">72d</td><td style="color:#6b7280">1 batch blending</td><td><span class="pill p-a">Sourcing</span></td></tr>
+          <tr><td>Rifampin Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>300 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~31,000</td><td>5,500</td><td style="color:#d97706;font-weight:700">65d</td><td style="color:#6b7280">Scheduled</td><td><span class="pill p-a">Sourcing</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- REMAINING MOLECULES (collapsed) -->
+    <div class="acc" id="a-cipro"><div class="acc-sum" onclick="tog('a-cipro')"><div class="acc-chv">&#9656;</div><div class="acc-name">Ciprofloxacin</div><div style="font-size:11px;color:#6b7280">4 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:2"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+2%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">3 SKUs: Tablets 250mg, 500mg, 750mg — all steady state, 91-102 days supply</div></div></div>
+    <div class="acc" id="a-lith"><div class="acc-sum" onclick="tog('a-lith')"><div class="acc-chv">&#9656;</div><div class="acc-name">Lithium carbonate</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-cn" style="flex:8"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-dn">-5%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">3 SKUs: Capsules 150mg, 300mg, 600mg — all steady, 98-105 days. 80% China-sourced (tariff exposure).</div></div></div>
+    <div class="acc" id="a-nac"><div class="acc-sum" onclick="tog('a-nac')"><div class="acc-chv">&#9656;</div><div class="acc-name">Acetylcysteine</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-cn" style="flex:5"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-dn">-3d</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Solution 200mg/mL 30mL, Effervescent 600mg 20ct — all steady, 98-105 days</div></div></div>
+    <div class="acc" id="a-asa"><div class="acc-sum" onclick="tog('a-asa')"><div class="acc-chv">&#9656;</div><div class="acc-name">ASA (antiplatelet)</div><div style="font-size:11px;color:#6b7280">5 global</div><div><div class="geo"><div class="g-cn" style="flex:4"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div><div class="g-ca" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">-1%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: EC Tablets 81mg 180ct, Tablets 325mg 100ct — steady, 98-110 days. Well-diversified commodity API.</div></div></div>
+    <div class="acc" id="a-cef"><div class="acc-sum" onclick="tog('a-cef')"><div class="acc-chv">&#9656;</div><div class="acc-name">Cefixime</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Capsules 400mg 50ct, Oral Suspension 100mg/5mL 75mL — steady, 90-95 days</div></div></div>
+    <div class="acc" id="a-iso"><div class="acc-sum" onclick="tog('a-iso')"><div class="acc-chv">&#9656;</div><div class="acc-name">Isoniazid</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+3%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Tablets 100mg, 300mg — steady, 95-110 days. Niche TB molecule, 2 suppliers (concentration risk).</div></div></div>
+    <div class="acc" id="a-eth"><div class="acc-sum" onclick="tog('a-eth')"><div class="acc-chv">&#9656;</div><div class="acc-name">Ethambutol</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Tablets 100mg, 400mg — steady, 95-100 days. Niche TB molecule.</div></div></div>
+    <div class="acc" id="a-pyr"><div class="acc-sum" onclick="tog('a-pyr')"><div class="acc-chv">&#9656;</div><div class="acc-name">Pyrazinamide</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">1 SKU: Tablets 500mg 100ct — steady, 90 days. Niche TB molecule.</div></div></div>
+  </div>
+
+  <div class="section" style="margin-top:14px">
+    <div class="compare">
+      <div class="cmp cmp-bad"><h4>Without Glass Box</h4><ul><li>HC notified weeks after disruption</li><li>No upstream visibility or leading indicators</li><li>No product-level tracking by format/strength</li><li>Emergency tenders: 90-180 days, 300-400% premium</li></ul></div>
+      <div class="cmp cmp-good"><h4>With Glass Box</h4><ul><li>Industry-wide risk signals aggregated daily</li><li>API supplier, regulatory, price, and shipping tracking</li><li>Product-level inventory by format, strength, pack size</li><li>Instant provincial call-ups, ceiling pricing, 48hr delivery</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 2: DATA SOURCES ===================== -->
+<div class="tab-content" id="tab-sources">
+
+  <div class="section-title"><span>Government &amp; Regulatory Feeds</span><div class="st-line"></div></div>
+
+  <div class="ds-card open" id="ds-hc">
+    <div class="ds-head" onclick="togDs('ds-hc')"><h4><span class="ds-chv">&#9656;</span> Health Canada Drug Shortage Database</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>REST API</strong></span><span>Refresh: <strong>Every 6 hours</strong></span><span>Last pull: <strong>2026-04-05 06:00 MST</strong></span><span>Records: <strong>2,588 active</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px; color:#4b5563; margin-bottom:8px">Source: <code>healthproductshortages.ca</code> — Mandatory shortage reports filed by all market authorization holders in Canada. Covers both drugs and medical devices. Glass Box filters to CVDL molecules only.</div>
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9ca3af;margin-bottom:4px">Fields Ingested</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>drug_name</code> — molecule name</div>
+        <div class="ds-field"><code>din</code> — Drug Identification Number</div>
+        <div class="ds-field"><code>company_name</code> — MAH</div>
+        <div class="ds-field"><code>shortage_status</code> — active/anticipated/resolved</div>
+        <div class="ds-field"><code>shortage_reason</code> — manufacturing/demand/other</div>
+        <div class="ds-field"><code>estimated_end_date</code></div>
+        <div class="ds-field"><code>actual_end_date</code></div>
+        <div class="ds-field"><code>report_date</code></div>
+        <div class="ds-field"><code>updated_date</code></div>
+      </div>
+      <div class="ds-flow">
+        <div class="ds-flow-label">Data Flow</div>
+        <pre>healthproductshortages.ca API
+  → Glass Box Ingestion Service (6hr cron)
+  → Filter: CVDL molecules only (160 active ingredients)
+  → Enrich: cross-reference with internal molecule registry
+  → Store: shortage_events table
+  → Feed: Dashboard "HC Active Shortages" card
+  → Feed: Per-molecule "HC Status" pill
+  → Alert: New shortage → Slack + email to ops team</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-fda">
+    <div class="ds-head" onclick="togDs('ds-fda')"><h4><span class="ds-chv">&#9656;</span> FDA Drug Shortage Database</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>REST API</strong></span><span>Refresh: <strong>Every 6 hours</strong></span><span>Last pull: <strong>2026-04-05 06:00</strong></span><span>Records: <strong>277 active</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Source: <code>api.fda.gov/drug/shortages</code> — US shortages often precede Canadian shortages by 2-6 weeks. Glass Box uses FDA data as a leading indicator for CVDL molecules.</div>
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9ca3af;margin-bottom:4px">Fields Ingested</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>generic_name</code></div><div class="ds-field"><code>status</code> — current/resolved</div><div class="ds-field"><code>shortage_reason</code></div><div class="ds-field"><code>estimated_resupply</code></div><div class="ds-field"><code>therapeutic_category</code></div><div class="ds-field"><code>update_date</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>api.fda.gov → Ingestion (6hr) → Cross-reference CVDL
+  → If CVDL match AND status=current → flag as leading indicator
+  → Feed: Dashboard + per-molecule "FDA Status" field
+  → Alert: New FDA shortage on CVDL molecule → early warning</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-fda-actions">
+    <div class="ds-head" onclick="togDs('ds-fda-actions')"><h4><span class="ds-chv">&#9656;</span> FDA Warning Letters &amp; Import Alerts</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Web scrape + RSS</strong></span><span>Refresh: <strong>Daily</strong></span><span>Last pull: <strong>2026-04-05 02:00</strong></span><span>Tracked facilities: <strong>84</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Sources: <code>fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters</code> and <code>fda.gov/industry/actions-enforcement/import-alerts</code>. The #1 leading indicator of future drug shortages. When an API facility gets a warning letter, downstream shortages follow within 3-9 months.</div>
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9ca3af;margin-bottom:4px">Fields Ingested</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>facility_name</code></div><div class="ds-field"><code>facility_country</code></div><div class="ds-field"><code>action_type</code> — warning letter / 483 / import alert</div><div class="ds-field"><code>action_date</code></div><div class="ds-field"><code>products_affected</code></div><div class="ds-field"><code>resolution_status</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>FDA enforcement pages → Daily scraper
+  → Match against known API supplier registry (84 facilities)
+  → If match → flag supplier, cascade to affected molecules
+  → Feed: "FDA Regulatory Actions" stat card
+  → Feed: Per-molecule supplier detail "FDA actions" row
+  → Alert: New action on a tracked facility → CRITICAL alert</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-cvdl">
+    <div class="ds-head" onclick="togDs('ds-cvdl')"><h4><span class="ds-chv">&#9656;</span> Health Canada CVDL</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Manual + periodic check</strong></span><span>Refresh: <strong>Monthly</strong></span><span>Last update: <strong>2026-03-15</strong></span><span>Molecules: <strong>160</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Source: <code>canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/critical-vulnerable-list.html</code>. The official prioritization anchor. All Glass Box monitoring is filtered through CVDL membership.</div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>HC CVDL page → Monthly manual review + automated diff check
+  → Update internal molecule registry
+  → Add/remove molecules from monitoring scope
+  → Cascade: new CVDL addition triggers supplier mapping workflow</pre></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px"><span>Market &amp; Supply Chain Intelligence</span><div class="st-line"></div></div>
+
+  <div class="ds-card" id="ds-iqvia">
+    <div class="ds-head" onclick="togDs('ds-iqvia')"><h4><span class="ds-chv">&#9656;</span> IQVIA Market Data (Canada)</h4><span class="pill p-b">Licensed</span></div>
+    <div class="ds-meta"><span>Type: <strong>Quarterly data file</strong></span><span>Refresh: <strong>Quarterly</strong></span><span>Last load: <strong>2026-Q1</strong></span><span>Coverage: <strong>Drug + Hospital channels</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Licensed Canadian pharmaceutical market data covering retail pharmacy (Drug channel) and hospital purchasing (Hospital channel). Provides volume, revenue, and market share at molecule, brand, and DIN level.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>molecule</code></div><div class="ds-field"><code>brand_generic</code></div><div class="ds-field"><code>din</code></div><div class="ds-field"><code>extended_units</code></div><div class="ds-field"><code>revenue_cad</code></div><div class="ds-field"><code>channel</code> — drug/hospital</div><div class="ds-field"><code>province</code></div><div class="ds-field"><code>quarter</code></div><div class="ds-field"><code>manufacturer</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>IQVIA quarterly data file → ETL pipeline
+  → Filter: CVDL molecules + Phase 1 portfolio
+  → Calculate: annual volumes, market share, trend
+  → Feed: "Annual Vol (CA)" column in product tables
+  → Feed: Demand forecasting model (safety stock calc)
+  → Feed: Provincial distribution estimates</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-api-price">
+    <div class="ds-head" onclick="togDs('ds-api-price')"><h4><span class="ds-chv">&#9656;</span> API Commodity Pricing</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Market feeds + broker quotes</strong></span><span>Refresh: <strong>Weekly</strong></span><span>Last update: <strong>2026-04-03</strong></span><span>Molecules tracked: <strong>10</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Sources: PharmaSources.com spot pricing, direct broker quotes, and contract price tracking from our own purchase orders. Price spikes in API commodities precede downstream shortages by 4-12 weeks.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>molecule</code></div><div class="ds-field"><code>spot_price_usd_kg</code></div><div class="ds-field"><code>contract_price_usd_kg</code></div><div class="ds-field"><code>price_change_90d_pct</code></div><div class="ds-field"><code>source</code> — broker/exchange/PO</div><div class="ds-field"><code>quote_date</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>Broker feeds + PO history → Weekly aggregation
+  → Calculate 30/60/90 day price trends
+  → Threshold: >15% increase in 90d → early warning signal
+  → Feed: "API Price 90d" column + Early Warning cards
+  → Alert: Price spike >20% → supply risk escalation</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-ship">
+    <div class="ds-head" onclick="togDs('ds-ship')"><h4><span class="ds-chv">&#9656;</span> Shipping &amp; Logistics Indices</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>API feeds</strong></span><span>Refresh: <strong>Weekly</strong></span><span>Last update: <strong>2026-04-04</strong></span><span>Routes tracked: <strong>4</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Sources: Freightos Baltic Index (FBX) for container rates, Flexport transit time data, and our own shipment tracking. Monitors India→Canada, China→Canada, EU→Canada, US→Canada routes.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>route</code></div><div class="ds-field"><code>avg_transit_days</code></div><div class="ds-field"><code>transit_change_30d</code></div><div class="ds-field"><code>container_rate_usd</code></div><div class="ds-field"><code>port_congestion_index</code></div><div class="ds-field"><code>customs_delay_flag</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>Freightos API + Flexport + shipment tracker → Weekly
+  → Calculate route-specific lead times and trends
+  → Feed: "Shipping Lead Times" early warning card
+  → Feed: Per-molecule "Lead Time" column (based on supplier origin)
+  → Alert: Transit time increase >5 days → logistics warning</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-pkg">
+    <div class="ds-head" onclick="togDs('ds-pkg')"><h4><span class="ds-chv">&#9656;</span> Packaging &amp; Component Suppliers</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Supplier portal + PO tracking</strong></span><span>Refresh: <strong>Weekly</strong></span><span>Last update: <strong>2026-04-03</strong></span><span>Components: <strong>12</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Tracks availability of packaging components: HDPE bottles (various sizes), child-resistant caps, blister foil (PVC/Aluminum), carton board, labels, measuring cups/syringes for oral suspensions. A missing cap can stop a production line as surely as a missing API.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>component</code></div><div class="ds-field"><code>supplier</code></div><div class="ds-field"><code>on_hand_units</code></div><div class="ds-field"><code>on_order_units</code></div><div class="ds-field"><code>lead_time_days</code></div><div class="ds-field"><code>lead_time_trend</code></div><div class="ds-field"><code>alt_supplier_available</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>Supplier portals + PO system → Weekly sync
+  → Calculate days-of-supply per component
+  → Map component to finished product SKUs
+  → Feed: "Packaging & Components" early warning card
+  → Alert: Component lead time increase >7d → production risk</pre></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px"><span>Internal Operations</span><div class="st-line"></div></div>
+
+  <div class="ds-card" id="ds-erp">
+    <div class="ds-head" onclick="togDs('ds-erp')"><h4><span class="ds-chv">&#9656;</span> Medicine Place ERP / Inventory System</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Direct DB connection</strong></span><span>Refresh: <strong>Real-time</strong></span><span>Last sync: <strong>2026-04-05 09:14</strong></span><span>SKUs: <strong>24</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Core operational data source. Tracks all raw materials (API + excipients), work-in-progress batches, finished goods inventory, purchase orders, and production schedules. This is the heart of Layer 2.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>api_inventory_kg</code> — raw material on hand</div>
+        <div class="ds-field"><code>api_on_order_kg</code> — purchase orders</div>
+        <div class="ds-field"><code>api_supplier_id</code></div>
+        <div class="ds-field"><code>api_coa_status</code> — certificate of analysis</div>
+        <div class="ds-field"><code>batch_id</code></div>
+        <div class="ds-field"><code>batch_stage</code> — blend/compress/coat/pkg/qa/released</div>
+        <div class="ds-field"><code>batch_size_units</code></div>
+        <div class="ds-field"><code>batch_start_ts</code></div>
+        <div class="ds-field"><code>batch_eta_release</code></div>
+        <div class="ds-field"><code>fg_inventory_units</code> — finished goods</div>
+        <div class="ds-field"><code>fg_lot_number</code></div>
+        <div class="ds-field"><code>fg_expiry_date</code></div>
+        <div class="ds-field"><code>sku</code> — molecule + format + strength + pack</div>
+        <div class="ds-field"><code>din</code></div>
+        <div class="ds-field"><code>safety_stock_target_days</code></div>
+        <div class="ds-field"><code>days_of_supply</code> — calculated</div>
+        <div class="ds-field"><code>allocation</code> — canada_pct / export_pct</div>
+        <div class="ds-field"><code>cso_status</code> — standby/armed/triggered</div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>Production ERP database → Real-time CDC (change data capture)
+  → Transform: calculate days-of-supply, safety stock %
+  → Aggregate: molecule-level rollup from SKU-level data
+  → Feed: ALL Layer 2 dashboard cards and molecule details
+  → Feed: Product tables (FG inventory, batch status, days)
+  → HC Telemetry API: daily push to Health Canada DSD
+  → Alert: Safety stock <80% → ops escalation
+  → Alert: Safety stock <50% → CSO pre-activation</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-supplier">
+    <div class="ds-head" onclick="togDs('ds-supplier')"><h4><span class="ds-chv">&#9656;</span> API Supplier Registry &amp; Qualification</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>Internal database</strong></span><span>Refresh: <strong>On change</strong></span><span>Facilities tracked: <strong>84</strong></span><span>Qualified: <strong>24</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Master registry of API suppliers worldwide that manufacture ingredients for CVDL molecules. Tracks facility location, GMP certification status, FDA/HC inspection history, qualification status, and supply agreements.</div>
+      <div class="ds-fields">
+        <div class="ds-field"><code>facility_name</code></div><div class="ds-field"><code>facility_country</code></div><div class="ds-field"><code>facility_city</code></div><div class="ds-field"><code>gmp_certification</code></div><div class="ds-field"><code>last_fda_inspection</code></div><div class="ds-field"><code>last_hc_inspection</code></div><div class="ds-field"><code>qualification_status</code></div><div class="ds-field"><code>molecules_supplied</code></div><div class="ds-field"><code>supply_agreement_status</code></div><div class="ds-field"><code>capacity_mt_year</code></div><div class="ds-field"><code>coa_on_file</code></div><div class="ds-field"><code>audit_date</code></div>
+      </div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>Internal supplier database → On change
+  → Cross-reference: FDA warning letters (daily)
+  → Cross-reference: HC inspection reports
+  → Feed: Per-molecule "API Suppliers" detail cards
+  → Feed: "Single-Source Risk" stat card
+  → Feed: Geographic dependency bars
+  → Alert: Regulatory action on qualified supplier → CRITICAL</pre></div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="ds-discont">
+    <div class="ds-head" onclick="togDs('ds-discont')"><h4><span class="ds-chv">&#9656;</span> HC Discontinuation Notices</h4><span class="pill p-g">Connected</span></div>
+    <div class="ds-meta"><span>Type: <strong>HC database scrape</strong></span><span>Refresh: <strong>Daily</strong></span><span>Active notices: <strong>4 (CVDL-relevant)</strong></span></div>
+    <div class="ds-detail">
+      <div style="font-size:11px;color:#4b5563;margin-bottom:8px">Under new regulations, suppliers must give 12-month notice before discontinuing a drug. These are the longest-lead early warning signals in the system. When a manufacturer exits, remaining suppliers face demand surges.</div>
+      <div class="ds-flow"><div class="ds-flow-label">Data Flow</div><pre>HC discontinuation database → Daily scrape
+  → Filter: CVDL molecules
+  → Calculate: market share of exiting supplier
+  → Model: demand redistribution to remaining suppliers
+  → Feed: "Discontinuation Notices" stat card
+  → Alert: CVDL molecule discontinuation → 12-month planning trigger</pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 3: INGESTION PIPELINE ===================== -->
+<div class="tab-content" id="tab-pipeline">
+
+  <div class="section-title"><span>How Data Flows Through Glass Box</span><div class="st-line"></div></div>
+
+  <div class="card">
+    <div class="card-head">End-to-End Data Pipeline Architecture</div>
+    <div class="card-body">
+      <pre style="font-family:'SF Mono','Fira Code',monospace; font-size:11px; line-height:1.8; color:#4b5563; overflow-x:auto">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        EXTERNAL DATA SOURCES                                │
+│                                                                             │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐       │
+│  │ HC Shortages │ │ FDA Shortages│ │ FDA Warning  │ │ HC CVDL      │       │
+│  │ Database     │ │ Database     │ │ Letters &    │ │ List         │       │
+│  │ (6hr)        │ │ (6hr)        │ │ Import Alerts│ │ (monthly)    │       │
+│  │              │ │              │ │ (daily)      │ │              │       │
+│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘ └──────┬───────┘       │
+│         │                │                │                │               │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐                        │
+│  │ IQVIA Market │ │ API Pricing  │ │ Shipping     │                        │
+│  │ Data         │ │ Feeds        │ │ Indices      │                        │
+│  │ (quarterly)  │ │ (weekly)     │ │ (weekly)     │                        │
+│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘                        │
+└─────────┼────────────────┼────────────────┼────────────────────────────────┘
+          │                │                │
+          ▼                ▼                ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     GLASS BOX INGESTION LAYER                               │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────┐        │
+│  │  ETL Pipeline                                                   │        │
+│  │  • Normalize data formats (JSON, CSV, XML, HTML scrape)         │        │
+│  │  • Validate and deduplicate                                     │        │
+│  │  • Cross-reference against CVDL molecule registry               │        │
+│  │  • Cross-reference against API supplier registry (84 facilities)│        │
+│  │  • Enrich: calculate derived metrics (trends, risk scores)      │        │
+│  └─────────────────────────────┬───────────────────────────────────┘        │
+│                                │                                            │
+│  ┌─────────────────────────────▼───────────────────────────────────┐        │
+│  │  Data Store                                                     │        │
+│  │  • shortage_events (HC + FDA)                                   │        │
+│  │  • regulatory_actions (warning letters, import alerts)          │        │
+│  │  • api_pricing (spot + contract, per molecule)                  │        │
+│  │  • shipping_routes (lead times, rates)                          │        │
+│  │  • market_data (IQVIA volumes, revenue, share)                  │        │
+│  │  • supplier_registry (84 facilities, qualification status)      │        │
+│  │  • molecule_registry (CVDL list, MP portfolio mapping)          │        │
+│  └─────────────────────────────┬───────────────────────────────────┘        │
+└─────────────────────────────────┼──────────────────────────────────────────┘
+                                  │
+┌─────────────────────────────────┼──────────────────────────────────────────┐
+│                     INTERNAL OPERATIONS                                     │
+│                                                                             │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐                        │
+│  │ Production   │ │ Supplier     │ │ Packaging    │                        │
+│  │ ERP          │ │ Qualification│ │ Component    │                        │
+│  │ (real-time)  │ │ Registry     │ │ Tracker      │                        │
+│  │              │ │ (on change)  │ │ (weekly)     │                        │
+│  │ API inv.     │ │              │ │              │                        │
+│  │ WIP batches  │ │ 84 facilities│ │ 12 components│                        │
+│  │ FG inventory │ │ 24 qualified │ │              │                        │
+│  │ 24 SKUs      │ │              │ │              │                        │
+│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘                        │
+└─────────┼────────────────┼────────────────┼────────────────────────────────┘
+          │                │                │
+          ▼                ▼                ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       OUTPUT LAYER                                          │
+│                                                                             │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐       │
+│  │ Dashboard    │ │ HC Telemetry │ │ Alert Engine │ │ Provincial   │       │
+│  │ (this UI)    │ │ API Feed     │ │              │ │ Call-Up      │       │
+│  │              │ │ (daily push  │ │ Slack + email│ │ Portal       │       │
+│  │ Layer 1 +    │ │  to DSD)     │ │ for ops team │ │              │       │
+│  │ Layer 2      │ │              │ │              │ │ Pre-agreed   │       │
+│  │              │ │ Secure API   │ │ Threshold-   │ │ terms, one-  │       │
+│  │              │ │ + dashboard  │ │ based rules  │ │ click order  │       │
+│  └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘       │
+└─────────────────────────────────────────────────────────────────────────────┘</pre>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px"><span>Refresh Schedules</span><div class="st-line"></div></div>
+  <div class="card">
+    <div class="card-body">
+      <table>
+        <tr><th>Source</th><th>Frequency</th><th>Method</th><th>Latency</th><th>Failure Mode</th><th>Fallback</th></tr>
+        <tr><td>HC Shortage Database</td><td>Every 6 hours</td><td>REST API</td><td>&lt;5 min</td><td>API timeout</td><td>Retry 3x, then manual check</td></tr>
+        <tr><td>FDA Shortage Database</td><td>Every 6 hours</td><td>REST API</td><td>&lt;5 min</td><td>API timeout</td><td>Retry 3x, cache last good</td></tr>
+        <tr><td>FDA Warning Letters</td><td>Daily (02:00 MST)</td><td>Web scrape + RSS</td><td>&lt;24 hr</td><td>Page structure change</td><td>Alert ops, manual review</td></tr>
+        <tr><td>CVDL List</td><td>Monthly</td><td>Manual + diff check</td><td>&lt;48 hr</td><td>Page not updated</td><td>Flag for manual verification</td></tr>
+        <tr><td>IQVIA Market Data</td><td>Quarterly</td><td>Data file upload</td><td>&lt;1 week</td><td>Late delivery</td><td>Use prior quarter + flag</td></tr>
+        <tr><td>API Commodity Pricing</td><td>Weekly</td><td>Broker feeds + POs</td><td>&lt;48 hr</td><td>Feed interruption</td><td>Use last quote + flag stale</td></tr>
+        <tr><td>Shipping Indices</td><td>Weekly</td><td>API (Freightos)</td><td>&lt;24 hr</td><td>API limit</td><td>Cache last good reading</td></tr>
+        <tr><td>Packaging Components</td><td>Weekly</td><td>Supplier portal sync</td><td>&lt;48 hr</td><td>Portal downtime</td><td>Manual check with supplier</td></tr>
+        <tr><td>Production ERP</td><td>Real-time</td><td>CDC (change data capture)</td><td>&lt;1 min</td><td>DB connection loss</td><td>Queue + replay on reconnect</td></tr>
+        <tr><td>Supplier Registry</td><td>On change</td><td>Internal DB</td><td>Immediate</td><td>N/A</td><td>N/A</td></tr>
+        <tr><td>HC Discontinuation</td><td>Daily</td><td>Web scrape</td><td>&lt;24 hr</td><td>Page change</td><td>Alert ops</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 4: MOLECULE DEEP DIVE ===================== -->
+<div class="tab-content" id="tab-molecules">
+
+  <div class="section-title"><span>Amoxicillin — Full Supply Chain Trace</span><div class="st-line"></div></div>
+
+  <div class="row">
+    <div class="stat st-a"><div class="st-label">Overall Risk</div><div class="st-val">High</div><div class="st-sub">API disruption active</div></div>
+    <div class="stat st-a"><div class="st-label">API Inventory</div><div class="st-val">56d</div><div class="st-sub">340 kg on hand</div></div>
+    <div class="stat st-a"><div class="st-label">Avg FG Inventory</div><div class="st-val">36d</div><div class="st-sub">Across 4 SKUs</div></div>
+    <div class="stat st-g"><div class="st-label">CSO Status</div><div class="st-val">Armed</div><div class="st-sub">3 provinces notified</div></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-head">Supply Chain Trace: API → Finished Product → Distribution</div>
+    <div class="card-body">
+      <pre style="font-family:'SF Mono','Fira Code',monospace; font-size:10px; line-height:1.7; color:#4b5563">
+API SOURCING                    PRODUCTION                      DISTRIBUTION
+─────────────                   ──────────                      ────────────
+
+┌─────────────────┐
+│ Zhejiang Pharma │  ✓ Operational     ┌──────────────┐
+│ Ningbo, China   │──── 500kg on ────→ │ BLEND        │
+│ GMP: Valid      │     order          │ Amox trihydr │
+│ CoA: Current    │                    │ + excipients │     ┌──────────────┐
+└─────────────────┘                    └──────┬───────┘     │ QA RELEASE   │
+                                              │             │              │
+┌─────────────────┐                    ┌──────▼───────┐     │ Batch 2026-  │
+│ Aurobindo       │  ✗ HALTED         │ COMPRESS /   │     │ 04-001:      │
+│ Hyderabad, India│  Contamination    │ FILL         │────→│ PENDING      │
+│ GMP: Valid      │  event            │              │     │              │     ┌──────────────┐
+│ FDA: Warning    │                   │ 3 batches    │     │ Batch 2026-  │     │ WAREHOUSE    │
+│ letter 2025-11  │                   │ active       │     │ 03-047:      │────→│              │
+└─────────────────┘                   └──────┬───────┘     │ RELEASED     │     │ Edmonton, AB │
+                                              │             └──────────────┘     │              │
+┌─────────────────┐                    ┌──────▼───────┐                          │ 24 SKUs      │
+│ United Labs     │  ⚠ Constrained    │ COAT /       │                          │ tracked      │
+│ Mumbai, India   │  Running at 60%   │ PACKAGE      │                          └──────┬───────┘
+│ GMP: Valid      │  capacity         │              │                                 │
+│ CoA: Expired    │                   │ Labels,      │                          ┌──────▼───────┐
+│ (renewal pend.) │                   │ cartons,     │                          │ PROVINCIAL   │
+└─────────────────┘                   │ caps, bottles│                          │ DISTRIBUTION │
+                                      └──────────────┘                          │              │
+                                                                                │ AB: McKesson │
+EXCIPIENTS                      PACKAGING                                       │ BC: McKesson │
+──────────                      ─────────                                       │ ON: Kohl &   │
+                                                                                │     Frisch   │
+Microcrystalline cellulose ✓    HDPE 100mL bottles    ✓                         │ QC: McKesson │
+Magnesium stearate         ✓    Child-resistant caps   ✓                        └──────────────┘
+Sodium starch glycolate    ✓    Carton board           ✓
+Gelatin capsule shells     ✓    Labels (printed)       ✓
+Cherry flavoring (susp.)   ✓    Measuring cups (susp.) ✓
+Sucrose (susp.)            ✓    Blister foil           ⚠ Lead +12d</pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-head">Batch Genealogy — Active Production</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Batch ID</th><th>Product</th><th>API Lot</th><th>API Source</th><th>Stage</th><th>Size</th><th>Started</th><th>ETA Release</th><th>QA Status</th></tr>
+        <tr><td style="font-family:monospace">2026-04-003</td><td>Amox Cap 500mg</td><td style="font-family:monospace;color:#7c3aed">ZP-2026-0892</td><td>Zhejiang</td><td style="color:#d97706;font-weight:600">QA Hold</td><td>15,000 units</td><td>Apr 1</td><td>Apr 7</td><td><span class="pill p-a">Testing</span></td></tr>
+        <tr><td style="font-family:monospace">2026-04-004</td><td>Amox Cap 250mg</td><td style="font-family:monospace;color:#7c3aed">ZP-2026-0892</td><td>Zhejiang</td><td style="color:#2563eb;font-weight:600">Compressing</td><td>18,000 units</td><td>Apr 3</td><td>Apr 10</td><td><span class="pill p-grey">Pending</span></td></tr>
+        <tr><td style="font-family:monospace">2026-04-005</td><td>Amox Susp 125mg/5mL</td><td style="font-family:monospace;color:#7c3aed">ZP-2026-0893</td><td>Zhejiang</td><td style="color:#dc2626;font-weight:600">Mixing (PRIORITY)</td><td>8,000 units</td><td>Apr 5</td><td>Apr 11</td><td><span class="pill p-grey">Pending</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-head">Shortage History — Amoxicillin in Canada (5-Year)</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Period</th><th>Duration</th><th>Cause</th><th>HC Status</th><th>Impact</th><th>Resolution</th></tr>
+        <tr><td>Nov 2022 - Mar 2023</td><td>4 months</td><td>Demand surge (RSV/flu season)</td><td>Tier 3 (all suppliers)</td><td>National — children's formulations unavailable</td><td>Emergency imports from EU</td></tr>
+        <tr><td>Jul 2023 - Sep 2023</td><td>2 months</td><td>API supply disruption (India)</td><td>Tier 2</td><td>Regional — Western Canada</td><td>Supplier recovery</td></tr>
+        <tr><td>Jan 2025 - Apr 2025</td><td>3 months</td><td>Manufacturing quality hold</td><td>Tier 2</td><td>National — suspension formats</td><td>Quality issue resolved + alt source</td></tr>
+        <tr><td style="color:#d97706;font-weight:600">Apr 2026 - present</td><td style="color:#d97706">Ongoing</td><td>API contamination (Aurobindo)</td><td style="color:#d97706">Anticipated</td><td>Pending — 2 of 3 suppliers affected</td><td style="color:#d97706;font-weight:600">Glass Box response active</td></tr>
+      </table>
+      <div style="margin-top:8px;font-size:11px;color:#6b7280;font-style:italic">Average shortage persistence for amoxicillin: 3 months. This molecule has been in shortage 9 of the last 42 months (21% of the time).</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-head">Regulatory Status</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Item</th><th>Status</th><th>Date</th><th>Notes</th></tr>
+        <tr><td>CVDL Listing</td><td><span class="pill p-g">Listed</span></td><td>Dec 2024</td><td>Tier 1 — oral anti-infective</td></tr>
+        <tr><td>Medicine Place DEL</td><td><span class="pill p-g">Active</span></td><td>Current</td><td>Authorized for import, distribution, QA oversight</td></tr>
+        <tr><td>ANDS Submission (Capsules)</td><td><span class="pill p-b">In prep</span></td><td>Target Q3 2026</td><td>250mg + 500mg capsule formulations</td></tr>
+        <tr><td>ANDS Submission (Suspension)</td><td><span class="pill p-b">In prep</span></td><td>Target Q4 2026</td><td>125mg/5mL + 250mg/5mL oral suspension</td></tr>
+        <tr><td>Bioequivalence Study</td><td><span class="pill p-grey">Planning</span></td><td>TBD</td><td>Protocol design in progress</td></tr>
+        <tr><td>API Supplier Qualification</td><td><span class="pill p-g">2 of 3</span></td><td>Current</td><td>Zhejiang + Aurobindo qualified; United Labs pending CoA renewal</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 5: ALERTS ===================== -->
+<div class="tab-content" id="tab-alerts">
+
+  <div class="section-title"><span>Active Alerts</span><div class="st-line"></div></div>
+
+  <div class="ds-card open" id="al-1" style="border-left: 3px solid #ef4444">
+    <div class="ds-head" onclick="togDs('al-1')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-r">CRITICAL</span> &nbsp;Amoxicillin API Supply Disruption</h4><span style="font-size:10px;color:#9ca3af">Apr 2, 2026 09:32</span></div>
+    <div class="ds-detail">
+      <div style="font-size:12px;color:#4b5563;line-height:1.7">
+        <strong>Trigger:</strong> Aurobindo Pharma (Hyderabad) reported production halt due to contamination event. United Labs (Mumbai) operating at 60% capacity.<br>
+        <strong>Impact:</strong> 2 of 3 global API suppliers affected. Amoxicillin API spot price up 34% in 90 days. Shipping lead times from India up 18 days.<br>
+        <strong>HC Status:</strong> Anticipated shortage declared April 2, 2026.<br>
+        <strong>FDA Status:</strong> Active shortage (US) since March 28, 2026.<br>
+        <strong>MP Response:</strong> Alternative supplier (Zhejiang, China) activated. 500kg on order. Production ramping on 3 batches. Children's suspension 125mg/5mL flagged as PRIORITY (28 days supply). CSO armed for provincial call-ups.<br>
+        <strong>Escalation:</strong> If Zhejiang order delayed >7 days → escalate to CSO trigger recommendation.
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-card open" id="al-2" style="border-left: 3px solid #f59e0b">
+    <div class="ds-head" onclick="togDs('al-2')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-a">WARNING</span> &nbsp;Rifampin — Active HC Shortage + FDA Import Alert</h4><span style="font-size:10px;color:#9ca3af">Mar 15, 2026 14:20</span></div>
+    <div class="ds-detail">
+      <div style="font-size:12px;color:#4b5563;line-height:1.7">
+        <strong>Trigger:</strong> FDA import alert issued for Lupin (India) rifampin facility. HC active shortage declared.<br>
+        <strong>Impact:</strong> 1 of 2 global suppliers under regulatory action. 90% India-dependent. API price +21%.<br>
+        <strong>MP Response:</strong> EU supplier evaluation in progress. Current API inventory at 68 days. CSO triggered for rifampin.<br>
+        <strong>Watch:</strong> Isoniazid, ethambutol, pyrazinamide share similar supplier concentration risk (anti-TB cluster). Monitor for cascade.
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="al-3" style="border-left: 3px solid #f59e0b">
+    <div class="ds-head" onclick="togDs('al-3')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-a">WARNING</span> &nbsp;Blister Foil (PVC/Al) — Lead Time Increasing</h4><span style="font-size:10px;color:#9ca3af">Apr 1, 2026 10:45</span></div>
+    <div class="ds-detail">
+      <div style="font-size:12px;color:#4b5563;line-height:1.7">
+        <strong>Trigger:</strong> Packaging supplier reports blister foil lead time increased by 12 days.<br>
+        <strong>Impact:</strong> Affects all tablet/capsule blister-packed SKUs. Not yet critical — current inventory covers 45 days.<br>
+        <strong>MP Response:</strong> Alternative foil supplier identified. Sample order placed. Monitoring weekly.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px"><span>Alert Thresholds</span><div class="st-line"></div></div>
+  <div class="card">
+    <div class="card-body">
+      <table>
+        <tr><th>Signal</th><th>Watch</th><th>Warning</th><th>Critical</th><th>Action</th></tr>
+        <tr><td>Safety stock (days)</td><td>&lt;90 days</td><td>&lt;60 days</td><td>&lt;30 days</td><td>CSO pre-activation at Warning; CSO trigger at Critical</td></tr>
+        <tr><td>API price change (90d)</td><td>&gt;10%</td><td>&gt;20%</td><td>&gt;40%</td><td>Sourcing review at Watch; alt supplier activation at Warning</td></tr>
+        <tr><td>Shipping lead time change</td><td>&gt;5 days</td><td>&gt;10 days</td><td>&gt;20 days</td><td>Order acceleration at Watch; route change at Warning</td></tr>
+        <tr><td>FDA regulatory action</td><td>483 observation</td><td>Warning letter</td><td>Import alert</td><td>Supplier review at Watch; alt sourcing at Warning</td></tr>
+        <tr><td>Supplier count</td><td>3 suppliers</td><td>2 suppliers</td><td>1 supplier</td><td>Qualification pipeline at Watch; emergency sourcing at Critical</td></tr>
+        <tr><td>Component lead time</td><td>&gt;5d increase</td><td>&gt;10d increase</td><td>&gt;20d increase</td><td>Alt supplier eval at Watch; production reschedule at Warning</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>Medicine Place Inc.</strong> | Glass Box Supply Chain Intelligence Platform | Prototype — Simulated Data<br>
+  farooq@medicineplace.ca | alfred@medicineplace.ca | Confidential — April 2026
+</div>
+
+<script>
+function tog(id) { document.getElementById(id).classList.toggle('open'); }
+function togDs(id) { document.getElementById(id).classList.toggle('open'); }
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.closest('.tab').classList.add('active');
+}
+</script>
+</body>
+</html>
