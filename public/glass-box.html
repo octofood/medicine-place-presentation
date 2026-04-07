@@ -7,205 +7,268 @@
 <meta property="og:title" content="Glass Box — Supply Chain Intelligence">
 <meta property="og:description" content="Medicine Place's real-time supply chain telemetry platform for CVDL pharmaceutical monitoring.">
 <title>Glass Box — Full Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #eeecea; --surface: #ffffff; --surface-raised: #fafaf9;
+    --dark: #0c0c0c; --text: #1c1c1c; --text-secondary: #525252; --muted: #787878;
+    --border: #d4d4d4; --border-light: #e5e5e5;
+    --blue: #0051cc; --blue-light: #3b82f6; --blue-bg: #eef4ff;
+    --red: #cc0820; --red-bg: #fff1f2;
+    --green: #047857; --green-bg: #ecfdf5;
+    --amber: #a16207; --amber-bg: #fefce8;
+    --mp-blue: #1a8fc4; --mp-green: #2dbe70;
+    --radius: 8px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+    --font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #f5f0e8; color: #0f172a; font-size: 16px; line-height: 1.6; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
   /* NAV */
-  .nav { background: #fff; border-bottom: 2px solid #cbd5e1; padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .nav { background: var(--dark); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; height: 52px; }
   .nav-left { display: flex; align-items: center; gap: 14px; }
-  .nav-left img { height: 28px; }
-  .nav-sep { width: 1px; height: 20px; background: #cbd5e1; }
-  .nav-title { font-size: 18px; font-weight: 800; color: #0f172a; }
-  .nav-right { display: flex; align-items: center; gap: 10px; }
-  .badge { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 10px; }
-  .badge-green { background: #d1fae5; color: #047857; border: 1px solid #6ee7b7; }
-  .badge-grey { background: #e2e8f0; color: #64748b; border: 1px solid #cbd5e1; }
-  .nav-ts { font-size: 13px; color: #64748b; font-weight: 500; }
+  .nav-left img { height: 24px; }
+  .nav-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.2); }
+  .nav-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .badge-green { background: rgba(4,120,87,0.2); color: #6ee7b7; border: 1px solid rgba(4,120,87,0.3); }
+  .badge-grey { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); }
+  .nav-ts { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 500; font-family: var(--mono); }
 
   /* TABS */
-  .tab-bar { background: #fff; border-bottom: 2px solid #cbd5e1; padding: 0 28px; display: flex; gap: 0; position: sticky; top: 54px; z-index: 190; }
-  .tab { padding: 14px 24px; font-size: 15px; font-weight: 700; color: #94a3b8; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; user-select: none; }
-  .tab:hover { color: #475569; background: #f8fafc; }
-  .tab.active { color: #0f172a; border-bottom-color: #2563eb; }
-  .tab-count { font-size: 12px; background: #e2e8f0; color: #475569; padding: 2px 7px; border-radius: 6px; margin-left: 6px; font-weight: 800; }
-  .tab.active .tab-count { background: #bfdbfe; color: #1d4ed8; }
+  .tab-bar { background: var(--surface); border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; position: sticky; top: 52px; z-index: 190; }
+  .tab { padding: 13px 20px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.12s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--dark); border-bottom-color: var(--blue); }
+  .tab-count { font-size: 10px; background: var(--border-light); color: var(--muted); padding: 1px 6px; border-radius: 3px; margin-left: 5px; font-weight: 700; }
+  .tab.active .tab-count { background: var(--blue); color: #fff; }
 
   /* TAB CONTENT */
-  .tab-content { display: none; max-width: 1200px; margin: 0 auto; padding: 24px 28px; }
+  .tab-content { display: none; max-width: 1140px; margin: 0 auto; padding: 24px 32px 40px; }
   .tab-content.active { display: block; }
 
-  /* SHARED COMPONENTS */
+  /* SHARED */
   .section { margin-bottom: 20px; }
-  .section-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-  .section-title .st-line { flex: 1; height: 1px; background: #cbd5e1; }
-  .card { background: #fffdf8; border: 1px solid #d6cfc0; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .card-head { padding: 14px 20px; background: #f0ebe0; border-bottom: 1px solid #d6cfc0; font-size: 15px; font-weight: 800; color: #334155; display: flex; justify-content: space-between; align-items: center; }
-  .card-body { padding: 16px 20px; }
-  .row { display: flex; gap: 14px; margin-bottom: 14px; }
+  .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .section-title .st-line { flex: 1; height: 1px; background: var(--border-light); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .card-head { padding: 14px 20px; background: var(--surface-raised); border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; color: var(--dark); display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.2px; }
+  .card-body { padding: 16px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .row { display: flex; gap: 12px; margin-bottom: 16px; }
   .row > * { flex: 1; }
 
-  /* STAT CARDS */
-  .stat { background: #fffdf8; border-radius: 12px; padding: 16px 18px; border: 1px solid #d6cfc0; position: relative; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .stat::before { content:''; position: absolute; top:0; left:0; right:0; height: 4px; }
-  .st-r::before { background: #dc2626; } .st-a::before { background: #d97706; }
-  .st-g::before { background: #059669; } .st-b::before { background: #2563eb; }
-  .stat .st-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; font-weight: 700; margin-bottom: 5px; }
-  .stat .st-val { font-size: 32px; font-weight: 900; line-height: 1; }
-  .st-r .st-val { color: #dc2626; } .st-a .st-val { color: #d97706; }
-  .st-g .st-val { color: #047857; } .st-b .st-val { color: #1d4ed8; }
-  .stat .st-sub { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  /* STAT CARDS — bold, high-impact */
+  .stat { background: var(--surface); border-radius: var(--radius); padding: 16px 18px; border: 1px solid var(--border); position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .stat::before { content:''; position: absolute; top:0; left:0; right:0; height: 3px; }
+  .st-r::before { background: var(--red); } .st-a::before { background: var(--amber); }
+  .st-g::before { background: var(--green); } .st-b::before { background: var(--blue); }
+  .stat .st-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .stat .st-val { font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -1px; }
+  .st-r .st-val { color: var(--red); } .st-a .st-val { color: var(--amber); }
+  .st-g .st-val { color: var(--green); } .st-b .st-val { color: var(--blue); }
+  .stat .st-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-  /* PILLS */
-  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 8px; }
-  .p-g { background: #d1fae5; color: #047857; } .p-a { background: #fef3c7; color: #b45309; }
-  .p-r { background: #fee2e2; color: #b91c1c; } .p-b { background: #dbeafe; color: #1d4ed8; }
-  .p-grey { background: #e2e8f0; color: #475569; }
+  /* PILLS — sharper */
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+  .p-g { background: var(--green-bg); color: var(--green); } .p-a { background: var(--amber-bg); color: var(--amber); }
+  .p-r { background: var(--red-bg); color: var(--red); } .p-b { background: var(--blue-bg); color: var(--blue); }
+  .p-grey { background: var(--border-light); color: var(--muted); }
 
   /* FORMAT PILLS */
-  .fmt { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px; }
-  .f-cap { background: #ede9fe; color: #6d28d9; } .f-tab { background: #dbeafe; color: #1d4ed8; }
-  .f-sus { background: #fef3c7; color: #b45309; } .f-eff { background: #d1fae5; color: #047857; }
-  .f-sol { background: #fce7f3; color: #be185d; }
+  .fmt { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .f-cap { background: #f3f0ff; color: #6d28d9; } .f-tab { background: var(--blue-bg); color: var(--blue); }
+  .f-sus { background: var(--amber-bg); color: var(--amber); } .f-eff { background: var(--green-bg); color: var(--green); }
+  .f-sol { background: #fdf2f8; color: #be185d; }
 
-  /* TABLES */
-  table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 800; text-align: left; padding: 10px 14px; border-bottom: 2px solid #e2e8f0; }
-  td { font-size: 14px; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; color: #334155; }
-  td:first-child { font-weight: 700; color: #0f172a; }
+  /* TABLES — clean, dense, readable, always scrollable */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
+  table { width: 100%; border-collapse: collapse; min-width: 820px; }
+  th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 700; text-align: left; padding: 9px 14px; border-bottom: 2px solid var(--border); background: var(--surface-raised); white-space: nowrap; }
+  td { font-size: 14px; padding: 10px 14px; border-bottom: 1px solid var(--border-light); color: var(--text); white-space: nowrap; }
+  td:first-child { font-weight: 600; color: var(--dark); white-space: normal; min-width: 160px; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
+  tr:hover td { background: var(--surface-raised); }
 
   /* GEO BARS */
-  .geo { display: flex; height: 8px; border-radius: 4px; overflow: hidden; width: 80px; gap: 1px; }
-  .g-cn { background: #dc2626; border-radius: 2px; } .g-in { background: #d97706; border-radius: 2px; }
-  .g-eu { background: #2563eb; border-radius: 2px; } .g-ca { background: #059669; border-radius: 2px; }
+  .geo { display: flex; height: 6px; border-radius: 3px; overflow: hidden; width: 72px; gap: 1px; }
+  .g-cn { background: var(--red); border-radius: 2px; } .g-in { background: var(--amber); border-radius: 2px; }
+  .g-eu { background: var(--blue); border-radius: 2px; } .g-ca { background: var(--green); border-radius: 2px; }
 
   /* TRENDS */
-  .t-up { color: #dc2626; font-weight: 700; } .t-dn { color: #059669; font-weight: 700; } .t-fl { color: #64748b; }
+  .t-up { color: var(--red); font-weight: 700; font-family: var(--mono); font-size: 12px; }
+  .t-dn { color: var(--green); font-weight: 700; font-family: var(--mono); font-size: 12px; }
+  .t-fl { color: var(--muted); font-family: var(--mono); font-size: 12px; }
 
   /* PROGRESS BARS */
-  .prog { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 4px; }
-  .pg { background: #059669; } .pa { background: #d97706; } .pr { background: #dc2626; }
+  .prog { width: 100%; height: 5px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; }
+  .pg { background: var(--green); } .pa { background: var(--amber); } .pr { background: var(--red); }
 
-  /* ACCORDION */
-  .acc { border-bottom: 1px solid #e2e8f0; }
+  /* ACCORDION — tight, dense */
+  .acc { border-bottom: 1px solid var(--border-light); }
   .acc:last-child { border-bottom: none; }
-  .acc-sum { display: grid; grid-template-columns: 28px 1.3fr 0.8fr 0.9fr 0.6fr 0.6fr 0.5fr 0.4fr; align-items: center; padding: 0 16px; height: 48px; cursor: pointer; transition: background 0.12s; user-select: none; font-size: 13px; }
-  .acc-sum:hover { background: #f8fafc; }
-  .acc-chv { font-size: 11px; color: #94a3b8; transition: transform 0.15s; }
-  .acc.open .acc-chv { transform: rotate(90deg); color: #2563eb; }
-  .acc-name { font-weight: 800; font-size: 14px; color: #0f172a; }
-  .acc-toggle { font-size: 11px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 3px 10px; border-radius: 5px; cursor: pointer; white-space: nowrap; }
-  .acc.open .acc-toggle { background: #fee2e2; color: #b91c1c; }
-  .acc-det { display: none; background: #faf6ee; border-top: 2px solid #e8dfd0; padding: 14px 16px 16px 42px; }
+  .acc-sum { display: grid; grid-template-columns: 32px 1.4fr 0.8fr 0.8fr 0.5fr 0.5fr 0.4fr 0.4fr; align-items: center; padding: 0 16px; height: 50px; cursor: pointer; transition: background 0.1s; user-select: none; font-size: 14px; }
+  .acc-lead { display: flex; align-items: center; justify-content: center; }
+  .acc-sum:hover { background: var(--surface-raised); }
+  .acc-chv { font-size: 18px; color: var(--muted); transition: transform 0.2s ease; line-height: 1; display: flex; align-items: center; }
+  .acc.open .acc-chv { transform: rotate(90deg); color: var(--blue); }
+  .acc-name { font-weight: 700; font-size: 15px; color: var(--dark); letter-spacing: -0.3px; }
+  .acc-toggle { display: none; }
+  .acc-det { display: none; background: var(--surface-raised); border-top: 1px solid var(--border-light); padding: 16px 16px 16px 36px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .acc.open .acc-det { display: block; }
-  .det-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .det-box { background: #fffdf8; border: 1px solid #e2ddd0; border-radius: 8px; padding: 12px 14px; }
-  .det-box h5 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; font-weight: 800; margin-bottom: 6px; }
-  .dr { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; border-bottom: 1px solid #f1f5f9; }
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .det-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .det-box h5 { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+  .dr { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--border-light); }
   .dr:last-child { border-bottom: none; }
-  .dl { color: #475569; } .dv { font-weight: 700; color: #0f172a; }
-  .prod-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid #e2e8f0; }
-  .bar-lbl { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 4px; }
+  .dl { color: var(--muted); } .dv { font-weight: 600; color: var(--dark); }
+  .prod-title { font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--blue); font-weight: 700; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 2px solid var(--blue-bg); }
+  .bar-lbl { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 6px; }
+
+  /* INLINE SUPPLIER LIST */
+  .sup-list { margin: 0; }
+  .sup-primary { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 4px 0; }
+  .sup-primary .sup-name { font-weight: 600; color: var(--dark); }
+  .sup-primary .sup-status { font-weight: 600; }
+  .sup-more { font-size: 11px; font-weight: 600; color: var(--blue); cursor: pointer; padding: 3px 0; user-select: none; }
+  .sup-more:hover { text-decoration: underline; }
+  .sup-extra { display: none; border-top: 1px solid var(--border-light); margin-top: 2px; padding-top: 2px; }
+  .sup-extra.show { display: block; }
+  .sup-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; border-bottom: 1px solid var(--border-light); }
+  .sup-row:last-child { border-bottom: none; }
+  .sup-row .dl { color: var(--muted); font-size: 12px; }
+  .sup-row .dv { font-weight: 600; color: var(--dark); font-size: 12px; }
 
   /* DATA SOURCE CARDS */
-  .ds-card { background: #fffdf8; border: 1px solid #d6cfc0; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .ds-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer; user-select: none; }
-  .ds-head h4 { font-size: 15px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px; flex: 1; }
-  .ds-head .ds-chv { font-size: 12px; color: #94a3b8; transition: transform 0.15s; }
-  .ds-card.open .ds-chv { transform: rotate(90deg); color: #2563eb; }
-  .ds-toggle { font-size: 11px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 4px 12px; border-radius: 5px; cursor: pointer; white-space: nowrap; margin-left: 8px; }
-  .ds-card.open .ds-toggle { background: #fee2e2; color: #b91c1c; }
-  .ds-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: #2563eb; text-decoration: none; padding: 4px 10px; border: 1px solid #bfdbfe; border-radius: 6px; margin-top: 10px; transition: background 0.15s; }
-  .ds-link:hover { background: #dbeafe; }
-  .ds-meta { display: flex; gap: 18px; font-size: 12px; color: #64748b; margin-bottom: 10px; }
-  .ds-meta span { display: flex; align-items: center; gap: 4px; }
-  .ds-meta strong { color: #334155; }
-  .ds-detail { display: none; border-top: 2px solid #e8dfd0; padding-top: 12px; margin-top: 8px; background: #faf6ee; border-radius: 0 0 10px 10px; padding: 14px; margin: 8px -18px -16px; }
+  .ds-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .ds-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; cursor: pointer; user-select: none; }
+  .ds-head h4 { font-size: 14px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 8px; flex: 1; }
+  .ds-head .ds-chv { font-size: 10px; color: var(--muted); transition: transform 0.15s; }
+  .ds-card.open .ds-chv { transform: rotate(90deg); color: var(--blue); }
+  .ds-toggle { font-size: 9px; font-weight: 700; color: var(--blue); background: var(--blue-bg); padding: 2px 8px; border-radius: 3px; cursor: pointer; white-space: nowrap; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .ds-card.open .ds-toggle { background: var(--red-bg); color: var(--red); }
+  .ds-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--blue); text-decoration: none; padding: 3px 8px; border: 1px solid #bfdbfe; border-radius: 4px; margin-top: 8px; transition: background 0.1s; }
+  .ds-link:hover { background: var(--blue-bg); }
+  .ds-meta { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .ds-meta span { display: flex; align-items: center; gap: 3px; }
+  .ds-meta strong { color: var(--text); }
+  .ds-detail { display: none; border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 8px; }
   .ds-card.open .ds-detail { display: block; }
-  .ds-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  .ds-field { font-size: 12px; padding: 6px 10px; background: #fffdf8; border-radius: 6px; color: #475569; border: 1px solid #e2ddd0; }
-  .ds-field code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: #6d28d9; }
-  .ds-flow { margin-top: 12px; padding: 12px 16px; background: #f5f0e8; border-radius: 8px; border: 1px solid #e2ddd0; }
-  .ds-flow-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; color: #64748b; font-weight: 800; margin-bottom: 8px; }
-  .ds-flow pre { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #334155; line-height: 1.7; white-space: pre-wrap; }
+  .ds-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+  .ds-field { font-size: 12px; padding: 5px 9px; background: var(--surface-raised); border-radius: 3px; color: var(--text); border: 1px solid var(--border-light); }
+  .ds-field code { font-family: var(--mono); font-size: 10px; color: #6d28d9; }
+  .ds-flow { margin-top: 12px; padding: 12px 14px; background: var(--dark); border-radius: 6px; }
+  .ds-flow-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 6px; }
+  .ds-flow pre { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.7; white-space: pre-wrap; }
 
   /* PIPELINE DIAGRAM */
   .pipeline { display: flex; align-items: center; gap: 0; margin: 12px 0; flex-wrap: wrap; }
-  .pipe-node { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; text-align: center; min-width: 110px; }
-  .pipe-node .pn-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; font-weight: 800; }
-  .pipe-node .pn-val { font-size: 14px; font-weight: 800; color: #0f172a; margin-top: 3px; }
-  .pipe-arrow { color: #94a3b8; font-size: 16px; padding: 0 6px; }
+  .pipe-node { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; text-align: center; min-width: 100px; }
+  .pipe-node .pn-label { font-size: 8px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 700; }
+  .pipe-node .pn-val { font-size: 12px; font-weight: 700; color: var(--dark); margin-top: 2px; }
+  .pipe-arrow { color: var(--border); font-size: 14px; padding: 0 4px; }
 
-  .footer { text-align: center; padding: 16px 24px; color: #64748b; font-size: 13px; border-top: 2px solid #cbd5e1; margin-top: 12px; }
-  .footer strong { color: #334155; }
+  .footer { text-align: center; padding: 20px 32px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 20px; background: var(--surface); }
+  .footer strong { color: var(--dark); }
 
   /* COMPARE */
-  .compare { display: flex; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; }
+  .compare { display: flex; gap: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
   .cmp { flex: 1; padding: 14px 18px; }
-  .cmp-bad { background: #fef2f2; } .cmp-good { background: #ecfdf5; border-left: 3px solid #059669; }
-  .cmp h4 { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .cmp-bad h4 { color: #b91c1c; } .cmp-good h4 { color: #047857; }
-  .cmp ul { list-style: none; } .cmp li { font-size: 13px; color: #475569; line-height: 1.8; padding-left: 12px; position: relative; }
-  .cmp li::before { content:''; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; }
-  .cmp-bad li::before { background: #f87171; } .cmp-good li::before { background: #34d399; }
+  .cmp-bad { background: var(--red-bg); }
+  .cmp-good { background: var(--green-bg); }
+  .cmp h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .cmp-bad h4 { color: var(--red); } .cmp-good h4 { color: var(--green); }
+  .cmp ul { list-style: none; } .cmp li { font-size: 12px; color: var(--text); line-height: 1.8; padding-left: 12px; position: relative; }
+  .cmp li::before { content:''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; }
+  .cmp-bad li::before { background: var(--red); } .cmp-good li::before { background: var(--green); }
 
-  /* SCROLL HINT for horizontal overflow */
+  /* SCROLL HINT */
   .scroll-hint { position: relative; }
   .scroll-hint::after {
-    content: 'Scroll →';
-    position: absolute; right: 8px; top: 8px;
-    font-size: 10px; font-weight: 700; color: #94a3b8;
-    background: rgba(255,255,255,0.9); padding: 3px 8px;
-    border-radius: 4px; border: 1px solid #e2e8f0;
-    pointer-events: none; opacity: 1;
-    animation: fadeHint 3s ease-in-out forwards;
+    content: 'Swipe to see more \2192';
+    position: absolute; right: 6px; top: 6px;
+    font-size: 9px; font-weight: 600; color: var(--muted);
+    background: var(--surface); padding: 3px 8px;
+    border-radius: 3px; border: 1px solid var(--border-light);
+    pointer-events: none; animation: fadeHint 3s ease-in-out forwards;
   }
-  @keyframes fadeHint { 0%,60% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes fadeHint { 0%,40% { opacity: 1; } 100% { opacity: 0; } }
 
-  /* MOBILE RESPONSIVE */
+  /* PRINT */
+  @media print {
+    body { background: #fff; }
+    .nav, .tab-bar { position: static; }
+    .nav { background: #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tab-content { display: block !important; page-break-before: always; }
+    .acc-det, .ds-detail { display: block !important; }
+    .scroll-hint::after { display: none; }
+  }
+
+  /* TABLET */
+  @media (max-width: 1024px) {
+    .tab-content { padding: 20px 16px; }
+    .det-grid { grid-template-columns: 1fr 1fr; }
+    .acc-sum { grid-template-columns: 32px 1.2fr 0.6fr 0.7fr 0.5fr 0.5fr; }
+    .acc-sum > *:nth-child(n+8) { display: none; }
+  }
+
+  /* MOBILE */
   @media (max-width: 768px) {
-    body { font-size: 15px; }
-    .nav { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
-    .nav-left { flex-wrap: wrap; }
-    .nav-title { font-size: 16px; }
-    .nav-right { gap: 8px; flex-wrap: wrap; }
-    .nav-right a { font-size: 12px; padding: 5px 12px; }
-    .tab-bar { padding: 0 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    body { font-size: 14px; }
+    .nav { padding: 0 16px; height: 48px; }
+    .nav-left { gap: 8px; }
+    .nav-left img { height: 20px; }
+    .nav-title { font-size: 14px; }
+    .nav-right { gap: 4px; }
+    .nav-right a { font-size: 10px; padding: 4px 8px; }
+    .nav-ts { display: none; }
+    .tab-bar { padding: 0 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; top: 48px; }
     .tab-bar::-webkit-scrollbar { display: none; }
-    .tab { padding: 12px 16px; font-size: 14px; white-space: nowrap; flex-shrink: 0; }
-    .tab-content { padding: 14px; }
-    .row { flex-direction: column; gap: 12px; }
+    .tab { padding: 11px 14px; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+    .tab-content { padding: 14px 12px; }
+    .row { flex-direction: column; gap: 8px; }
     .row > * { flex: none; width: 100%; }
-    .stat { padding: 16px 18px; }
+    .stat { padding: 14px 16px; }
     .stat .st-val { font-size: 28px; }
-    .stat .st-label { font-size: 11px; }
-    .stat .st-sub { font-size: 12px; }
-    .card-head { padding: 12px 16px; font-size: 14px; }
-    .card-body { padding: 12px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
-    .card-body.scroll-hint::after { display: block; }
-    table { min-width: 600px; }
-    th { font-size: 10px; padding: 8px 12px; }
-    td { font-size: 13px; padding: 8px 12px; }
-    .geo { width: 60px; }
-    .section-title { font-size: 12px; }
-    .pill { font-size: 11px; }
-    .fmt { font-size: 10px; }
-    .cmp { min-width: auto; }
+    .stat .st-label { font-size: 10px; }
+    .stat .st-sub { font-size: 11px; }
+    .card-head { padding: 12px 14px; font-size: 13px; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .card-body { padding: 12px 14px; }
+    table { min-width: 700px; }
+    th { font-size: 9px; padding: 7px 10px; }
+    td { font-size: 13px; padding: 8px 10px; }
+    .geo { width: 48px; }
+    .section-title { font-size: 9px; }
     .compare { flex-direction: column; }
-    .cmp-good { border-left: none; border-top: 3px solid #059669; }
-    .acc-sum { grid-template-columns: 24px 1fr; height: auto; padding: 12px 14px; gap: 6px; }
-    .acc-sum > *:not(.acc-chv):not(.acc-name) { display: none; }
+    .cmp-good { border-top: 2px solid var(--green); }
+    .acc-sum { grid-template-columns: 32px 1fr auto; height: auto; padding: 12px 12px; gap: 6px; min-height: 48px; }
+    .acc-sum > *:not(.acc-lead):not(.acc-name):not(:last-child) { display: none; }
     .acc-name { font-size: 15px; }
-    .acc-det { padding: 14px; }
-    .det-grid { grid-template-columns: 1fr; }
+    .acc-det { padding: 14px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .det-grid { grid-template-columns: 1fr; gap: 8px; min-width: 0; }
     .ds-fields { grid-template-columns: 1fr 1fr; }
-    .ds-head h4 { font-size: 14px; }
-    .ds-meta { flex-wrap: wrap; gap: 8px; font-size: 11px; }
-    .pipeline { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: 8px; }
-    .pipe-node { min-width: 100px; flex-shrink: 0; }
+    .ds-head h4 { font-size: 13px; }
+    .ds-meta { flex-wrap: wrap; gap: 4px 12px; font-size: 11px; }
+    .pipeline { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: 6px; }
+    .pipe-node { min-width: 80px; flex-shrink: 0; }
+    .ds-detail { margin: 8px 0 0; padding: 10px; }
+    .footer { padding: 16px 12px; font-size: 11px; }
+  }
+
+  /* SMALL MOBILE */
+  @media (max-width: 420px) {
+    .nav-left img:nth-child(3) { display: none; }
+    .nav-sep:nth-child(4) { display: none; }
+    .ds-fields { grid-template-columns: 1fr; }
+    .acc-sum > *:not(.acc-lead):not(.acc-name) { display: none; }
   }
 </style>
 </head>
@@ -221,7 +284,7 @@
     <div class="nav-title">Glass Box</div>
   </div>
   <div class="nav-right">
-    <a href="index.html" style="font-size: 13px; font-weight: 700; color: #1d4ed8; text-decoration: none; padding: 6px 14px; background: #dbeafe; border: 1px solid #93c5fd; border-radius: 6px; margin-right: 8px;">&#8592; Back to Presentation</a>
+    <a href="index.html" style="font-size: 11px; font-weight: 600; color: #fff; text-decoration: none; padding: 4px 10px; background: rgba(255,255,255,0.1); border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">&#8592; Presentation</a>
     <div class="badge badge-grey">Prototype</div>
     <div class="badge badge-green">Live</div>
     <div class="nav-ts">2026-04-05 09:14 MST</div>
@@ -229,16 +292,16 @@
 </div>
 
 <!-- TABS -->
-<div class="tab-bar">
-  <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
-  <div class="tab" onclick="showTab('sources')">Data Sources <span class="tab-count">12</span></div>
-  <div class="tab" onclick="showTab('pipeline')">Ingestion Pipeline</div>
-  <div class="tab" onclick="showTab('molecules')">Molecule Deep Dive <span class="tab-count">10</span></div>
-  <div class="tab" onclick="showTab('alerts')">Alerts &amp; Signals <span class="tab-count">3</span></div>
+<div class="tab-bar" role="tablist">
+  <div class="tab active" role="tab" tabindex="0" aria-selected="true" data-tab="dashboard" onclick="showTab('dashboard',this)">Dashboard</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" data-tab="sources" onclick="showTab('sources',this)">Data Sources <span class="tab-count">12</span></div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" data-tab="pipeline" onclick="showTab('pipeline',this)">Ingestion Pipeline</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" data-tab="molecules" onclick="showTab('molecules',this)">Molecule Deep Dive <span class="tab-count">12</span></div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" data-tab="alerts" onclick="showTab('alerts',this)">Alerts &amp; Signals <span class="tab-count">5</span></div>
 </div>
 
 <!-- ===================== TAB 1: DASHBOARD ===================== -->
-<div class="tab-content active" id="tab-dashboard">
+<div class="tab-content active" id="tab-dashboard" role="tabpanel">
 
   <div class="row">
     <div class="stat st-r"><div class="st-label">HC Active Shortages (CVDL)</div><div class="st-val">23</div><div class="st-sub">of 163 CVDL molecules</div></div>
@@ -251,21 +314,44 @@
   <div class="card">
     <div class="card-head">
       <span>Phase 1 Molecules — Supply Chain Status</span>
-      <span style="font-size:12px; color:#64748b; font-weight:600">Click any molecule row to expand details</span>
+      <span style="font-size:12px; color:var(--muted); font-weight:600">Click any molecule row to expand details</span>
     </div>
     <table>
-      <tr><th style="width:24px"></th><th>Molecule</th><th>API Suppliers</th><th>Geography</th><th>Lead Time</th><th>HC Status</th><th>API Price 90d</th><th>Risk</th></tr>
+      <tr><th style="width:32px"></th><th>Molecule</th><th>API Suppliers</th><th>Geography</th><th>Lead Time</th><th>HC Status</th><th>API Price 90d</th><th>Risk</th></tr>
     </table>
     <!-- AMOXICILLIN -->
     <div class="acc open" id="a-amox">
       <div class="acc-sum" onclick="tog('a-amox')">
-        <div class="acc-chv">&#9656;</div><div class="acc-name">Amoxicillin</div><div class="acc-toggle">▾ Collapse</div><div style="font-size:11px;color:#6b7280">3 (2 affected)</div><div><div class="geo"><div class="g-in" style="flex:6"></div><div class="g-cn" style="flex:3"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+18d</div><div><span class="pill p-a">Anticipated</span></div><div class="t-up">+34%</div><div><span class="pill p-r">High</span></div>
+        <div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▾ Collapse</div></div><div class="acc-name">Amoxicillin</div><div style="font-size:11px;color:#6b7280">3 (2 affected)</div><div><div class="geo"><div class="g-in" style="flex:6"></div><div class="g-cn" style="flex:3"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+18d</div><div><span class="pill p-a">Anticipated</span></div><div class="t-up">+34%</div><div><span class="pill p-r">High</span></div>
       </div>
       <div class="acc-det">
         <div class="det-grid">
-          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Zhejiang Pharma (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Aurobindo (India)</span><span class="dv t-up">Halted — contamination</span></div><div class="dr"><span class="dl">United Labs (India)</span><span class="dv t-up">Capacity constrained</span></div><div class="dr"><span class="dl">FDA actions (24m)</span><span class="dv t-up">1 warning letter (Aurobindo)</span></div><div class="dr"><span class="dl">CoA on file</span><span class="dv">2 of 3 current</span></div></div>
-          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$42/kg (+34%)</span></div><div class="dr"><span class="dl">Contract price</span><span class="dv">$31/kg (locked Q2)</span></div><div class="dr"><span class="dl">Ocean freight India</span><span class="dv t-up">42d (+18d)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#d97706">Anticipated</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv" style="color:#d97706">Active</span></div><div class="dr"><span class="dl">Last HC update</span><span class="dv">2026-04-02</span></div></div>
-          <div class="det-box"><h5>Medicine Place Response</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">340 kg (56 days)</span></div><div class="dr"><span class="dl">API on order</span><span class="dv">500 kg (Zhejiang)</span></div><div class="dr"><span class="dl">Alt supplier</span><span class="dv" style="color:#059669">Activated (Zhejiang)</span></div><div class="dr"><span class="dl">Production</span><span class="dv" style="color:#d97706">Ramping — 3 batches in QA</span></div><div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:#059669">Armed</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:#d97706">62%</span></div><div class="prog"><div class="prog-fill pa" style="width:62%"></div></div></div></div>
+          <div class="det-box"><h5>API Suppliers — 3 qualified</h5>
+            <div class="sup-list">
+              <div class="sup-primary"><span class="sup-name">Zhejiang Pharma <span style="font-size:11px;color:var(--muted);font-weight:400">Ningbo, China</span></span><span class="sup-status" style="color:var(--green)">Operational</span></div>
+              <div class="sup-more" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('+')?'Hide details':'+ 2 more suppliers'">+ 2 more suppliers</div>
+              <div class="sup-extra">
+                <div class="sup-row"><span class="dl">Aurobindo <span style="font-size:10px">Hyderabad, India</span></span><span class="dv" style="color:var(--red)">Halted — contamination</span></div>
+                <div class="sup-row"><span class="dl">United Labs <span style="font-size:10px">Mumbai, India</span></span><span class="dv" style="color:var(--amber)">60% capacity</span></div>
+                <div class="sup-row" style="margin-top:4px;padding-top:4px;border-top:1px solid var(--border)"><span class="dl">FDA actions (24m)</span><span class="dv" style="color:var(--red)">1 warning letter (Aurobindo)</span></div>
+                <div class="sup-row"><span class="dl">CoA on file</span><span class="dv">2 of 3 current</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$42/kg (+34%)</span></div><div class="dr"><span class="dl">Contract price</span><span class="dv">$31/kg (locked Q2)</span></div><div class="dr"><span class="dl">Ocean freight India</span><span class="dv t-up">42d (+18d)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:var(--amber)">Anticipated</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv" style="color:var(--amber)">Active</span></div><div class="dr"><span class="dl">Last HC update</span><span class="dv">2026-04-02</span></div></div>
+          <div class="det-box"><h5>Medicine Place Position</h5>
+            <div class="dr"><span class="dl">API on hand</span><span class="dv">340 kg (56 days)</span></div>
+            <div class="dr"><span class="dl">API on order</span><span class="dv">500 kg via Zhejiang</span></div>
+            <div class="dr"><span class="dl">Sourcing status</span><span class="dv" style="color:var(--green)">Primary: Zhejiang (active)</span></div>
+            <div class="sup-more" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('+')?'Hide backup suppliers':'+ 2 backup suppliers'" style="padding:2px 0;font-size:10px">+ 2 backup suppliers</div>
+            <div class="sup-extra">
+              <div class="sup-row"><span class="dl">Backup 1: Aurobindo</span><span class="dv" style="color:var(--red)">Suspended — pending remediation</span></div>
+              <div class="sup-row"><span class="dl">Backup 2: United Labs</span><span class="dv" style="color:var(--amber)">Constrained — CoA renewal pending</span></div>
+            </div>
+            <div class="dr" style="margin-top:4px;border-top:1px solid var(--border);padding-top:4px"><span class="dl">Production</span><span class="dv" style="color:var(--amber)">Ramping — 3 batches in QA</span></div>
+            <div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:var(--green)">Armed — 3 provinces notified</span></div>
+            <div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:var(--amber)">62%</span></div><div class="prog"><div class="prog-fill pa" style="width:62%"></div></div></div>
+          </div>
         </div>
         <div class="prod-title">Finished Products — 4 SKUs from Amoxicillin API</div>
         <table>
@@ -279,12 +365,31 @@
     </div>
     <!-- RIFAMPIN -->
     <div class="acc" id="a-rif">
-      <div class="acc-sum" onclick="tog('a-rif')"><div class="acc-chv">&#9656;</div><div class="acc-name">Rifampin</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:9"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+9d</div><div><span class="pill p-r">Actual</span></div><div class="t-up">+21%</div><div><span class="pill p-r">High</span></div></div>
+      <div class="acc-sum" onclick="tog('a-rif')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Rifampin</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:9"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-up">+9d</div><div><span class="pill p-r">Actual</span></div><div class="t-up">+21%</div><div><span class="pill p-r">High</span></div></div>
       <div class="acc-det">
         <div class="det-grid">
-          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#d97706">FDA import alert</span></div><div class="dr"><span class="dl">Sanofi API (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Diversity</span><span class="dv t-up">90% India — single region</span></div></div>
-          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$185/kg (+21%)</span></div><div class="dr"><span class="dl">HC shortage</span><span class="dv t-up">Active shortage</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv t-up">Active</span></div></div>
-          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">28 kg (68 days)</span></div><div class="dr"><span class="dl">Alt sourcing</span><span class="dv" style="color:#d97706">EU supplier eval</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#d97706">Triggered</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#d97706">76%</span></div><div class="prog"><div class="prog-fill pa" style="width:76%"></div></div></div></div>
+          <div class="det-box"><h5>API Suppliers — 2 qualified</h5>
+            <div class="sup-list">
+              <div class="sup-primary"><span class="sup-name">Sanofi API <span style="font-size:11px;color:var(--muted);font-weight:400">Mumbai, India</span></span><span class="sup-status" style="color:var(--green)">Operational</span></div>
+              <div class="sup-more" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('+')?'Hide details':'+ 1 more supplier'">+ 1 more supplier</div>
+              <div class="sup-extra">
+                <div class="sup-row"><span class="dl">Lupin <span style="font-size:10px">Tarapur, India</span></span><span class="dv" style="color:var(--red)">FDA import alert</span></div>
+                <div class="sup-row" style="margin-top:4px;padding-top:4px;border-top:1px solid var(--border)"><span class="dl">Concentration risk</span><span class="dv" style="color:var(--red)">90% India — single region</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-up">$185/kg (+21%)</span></div><div class="dr"><span class="dl">HC shortage</span><span class="dv" style="color:var(--red)">Active shortage</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv" style="color:var(--red)">Active</span></div></div>
+          <div class="det-box"><h5>Medicine Place Position</h5>
+            <div class="dr"><span class="dl">API on hand</span><span class="dv">28 kg (68 days)</span></div>
+            <div class="dr"><span class="dl">Sourcing status</span><span class="dv" style="color:var(--green)">Primary: Sanofi API (active)</span></div>
+            <div class="sup-more" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('+')?'Hide sourcing':'+ diversification pipeline'" style="padding:2px 0;font-size:10px">+ diversification pipeline</div>
+            <div class="sup-extra">
+              <div class="sup-row"><span class="dl">EU eval: Siegfried AG</span><span class="dv" style="color:var(--amber)">Qualification in progress</span></div>
+              <div class="sup-row"><span class="dl">EU eval: Farmhispania</span><span class="dv" style="color:var(--muted)">Initial contact</span></div>
+            </div>
+            <div class="dr" style="margin-top:4px;border-top:1px solid var(--border);padding-top:4px"><span class="dl">CSO status</span><span class="dv" style="color:var(--amber)">Triggered — active shortage</span></div>
+            <div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:var(--amber)">76%</span></div><div class="prog"><div class="prog-fill pa" style="width:76%"></div></div></div>
+          </div>
         </div>
         <div class="prod-title">Finished Products — 2 SKUs</div>
         <table>
@@ -295,14 +400,175 @@
       </div>
     </div>
     <!-- REMAINING MOLECULES (collapsed) -->
-    <div class="acc" id="a-cipro"><div class="acc-sum" onclick="tog('a-cipro')"><div class="acc-chv">&#9656;</div><div class="acc-name">Ciprofloxacin</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">4 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:2"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+2%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">3 SKUs: Tablets 250mg, 500mg, 750mg — all steady state, 91-102 days supply</div></div></div>
-    <div class="acc" id="a-lith"><div class="acc-sum" onclick="tog('a-lith')"><div class="acc-chv">&#9656;</div><div class="acc-name">Lithium carbonate</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-cn" style="flex:8"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-dn">-5%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">3 SKUs: Capsules 150mg, 300mg, 600mg — all steady, 98-105 days. 80% China-sourced (tariff exposure).</div></div></div>
-    <div class="acc" id="a-nac"><div class="acc-sum" onclick="tog('a-nac')"><div class="acc-chv">&#9656;</div><div class="acc-name">Acetylcysteine</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-cn" style="flex:5"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-dn">-3d</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Solution 200mg/mL 30mL, Effervescent 600mg 20ct — all steady, 98-105 days</div></div></div>
-    <div class="acc" id="a-asa"><div class="acc-sum" onclick="tog('a-asa')"><div class="acc-chv">&#9656;</div><div class="acc-name">ASA (antiplatelet)</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">5 global</div><div><div class="geo"><div class="g-cn" style="flex:4"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div><div class="g-ca" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">-1%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: EC Tablets 81mg 180ct, Tablets 325mg 100ct — steady, 98-110 days. Well-diversified commodity API.</div></div></div>
-    <div class="acc" id="a-cef"><div class="acc-sum" onclick="tog('a-cef')"><div class="acc-chv">&#9656;</div><div class="acc-name">Cefixime</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-g">Low</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Capsules 400mg 50ct, Oral Suspension 100mg/5mL 75mL — steady, 90-95 days</div></div></div>
-    <div class="acc" id="a-iso"><div class="acc-sum" onclick="tog('a-iso')"><div class="acc-chv">&#9656;</div><div class="acc-name">Isoniazid</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+3%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Tablets 100mg, 300mg — steady, 95-110 days. Niche TB molecule, 2 suppliers (concentration risk).</div></div></div>
-    <div class="acc" id="a-eth"><div class="acc-sum" onclick="tog('a-eth')"><div class="acc-chv">&#9656;</div><div class="acc-name">Ethambutol</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">2 SKUs: Tablets 100mg, 400mg — steady, 95-100 days. Niche TB molecule.</div></div></div>
-    <div class="acc" id="a-pyr"><div class="acc-sum" onclick="tog('a-pyr')"><div class="acc-chv">&#9656;</div><div class="acc-name">Pyrazinamide</div><div class="acc-toggle">▸ Expand</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-a">Med</span></div></div><div class="acc-det"><div style="color:#9ca3af;font-size:11px;padding:4px 0">1 SKU: Tablets 500mg 100ct — steady, 90 days. Niche TB molecule.</div></div></div>
+    <!-- CIPROFLOXACIN -->
+    <div class="acc" id="a-cipro">
+      <div class="acc-sum" onclick="tog('a-cipro')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Ciprofloxacin</div><div style="font-size:11px;color:#6b7280">4 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:2"></div><div class="g-eu" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+2%</div><div><span class="pill p-g">Low</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Cipla (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Dr. Reddy's (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Bayer API (Germany)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Zhejiang Jingxin (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">FDA actions (24m)</span><span class="dv">0</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$28/kg (+2%)</span></div><div class="dr"><span class="dl">Contract price</span><span class="dv">$24/kg (locked Q2)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">FDA shortage</span><span class="dv" style="color:#059669">None</span></div><div class="dr"><span class="dl">Defence relevance</span><span class="dv" style="color:#1e40af">Anthrax prophylaxis</span></div></div>
+          <div class="det-box"><h5>Medicine Place Response</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">180 kg (95 days)</span></div><div class="dr"><span class="dl">Production</span><span class="dv" style="color:#059669">Steady state</span></div><div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:#059669">102%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 3 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch Status</th><th>Status</th></tr>
+          <tr><td>Ciprofloxacin Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>250 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~72,000</td><td>19,800</td><td style="color:#059669;font-weight:700">102d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Ciprofloxacin Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>500 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~118,000</td><td>29,500</td><td style="color:#059669;font-weight:700">91d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Ciprofloxacin Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>750 mg</td><td>50 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~24,000</td><td>6,800</td><td style="color:#059669;font-weight:700">103d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- LITHIUM -->
+    <div class="acc" id="a-lith">
+      <div class="acc-sum" onclick="tog('a-lith')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Lithium carbonate</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-cn" style="flex:8"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-dn">-5%</div><div><span class="pill p-a">Med</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Ganfeng Lithium (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Albemarle (US/Chile)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Diversity risk</span><span class="dv" style="color:#d97706">80% China — tariff exposure</span></div><div class="dr"><span class="dl">CoA on file</span><span class="dv">2 of 2 current</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv t-dn">$12/kg (-5%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Tariff risk</span><span class="dv" style="color:#d97706">China 80% — US tariff exposure</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#c41e1e">Narrow therapeutic index</span></div></div>
+          <div class="det-box"><h5>Medicine Place Response</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">95 kg (102 days)</span></div><div class="dr"><span class="dl">Alt sourcing</span><span class="dv" style="color:#d97706">Albemarle eval for diversification</span></div><div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:#059669">108%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 3 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch Status</th><th>Status</th></tr>
+          <tr><td>Lithium Carbonate Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>150 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~42,000</td><td>12,600</td><td style="color:#059669;font-weight:700">105d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Lithium Carbonate Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>300 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~98,000</td><td>28,100</td><td style="color:#059669;font-weight:700">98d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Lithium Carbonate Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>600 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~30,000</td><td>9,200</td><td style="color:#059669;font-weight:700">105d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- ACETYLCYSTEINE -->
+    <div class="acc" id="a-nac">
+      <div class="acc-sum" onclick="tog('a-nac')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Acetylcysteine</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-cn" style="flex:5"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div></div></div><div class="t-dn">-3d</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-g">Low</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Zambon (Italy)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Wuhan Grand (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Orchid Pharma (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">CoA on file</span><span class="dv">3 of 3 current</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$18/kg (+1%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#c41e1e">Critical antidote — acetaminophen OD</span></div><div class="dr"><span class="dl">Defence relevance</span><span class="dv" style="color:#1e40af">Emergency antidote</span></div></div>
+          <div class="det-box"><h5>Medicine Place Response</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">42 kg (100 days)</span></div><div class="dr"><span class="dl">Production</span><span class="dv" style="color:#059669">Steady state</span></div><div class="dr"><span class="dl">CSO status</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock target</span><span style="font-weight:600;color:#059669">105%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch Status</th><th>Status</th></tr>
+          <tr><td>Acetylcysteine Solution</td><td><span class="fmt f-sol">Solution</span></td><td>200 mg/mL</td><td>30 mL</td><td style="color:#9ca3af">02XXXXXX</td><td>~11,000</td><td>3,100</td><td style="color:#059669;font-weight:700">98d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Acetylcysteine Effervescent</td><td><span class="fmt f-eff">Effervescent</span></td><td>600 mg</td><td>20 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~6,000</td><td>1,800</td><td style="color:#059669;font-weight:700">105d</td><td style="color:#6b7280">Steady state</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- ASA -->
+    <div class="acc" id="a-asa">
+      <div class="acc-sum" onclick="tog('a-asa')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">ASA (antiplatelet)</div><div style="font-size:11px;color:#6b7280">5 global</div><div><div class="geo"><div class="g-cn" style="flex:4"></div><div class="g-in" style="flex:3"></div><div class="g-eu" style="flex:2"></div><div class="g-ca" style="flex:1"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">-1%</div><div><span class="pill p-g">Low</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Shandong Xinhua (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Novacyl (France)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Rhodia (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Diversity</span><span class="dv" style="color:#059669">Well-diversified commodity</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$4/kg (-1%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#1e40af">CV prevention — millions on therapy</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">220 kg (110 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#059669">115%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>ASA EC Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>81 mg</td><td>180 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~5,200,000</td><td>1,580,000</td><td style="color:#059669;font-weight:700">110d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>ASA Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>325 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~2,800,000</td><td>820,000</td><td style="color:#059669;font-weight:700">98d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- CEFIXIME -->
+    <div class="acc" id="a-cef">
+      <div class="acc-sum" onclick="tog('a-cef')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Cefixime</div><div style="font-size:11px;color:#6b7280">3 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-g">Low</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Orchid Pharma (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">CSPC Pharma (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#059669">Operational</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$65/kg (0%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#1e40af">Key for resistant gonorrhea</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">18 kg (92 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#059669">96%</span></div><div class="prog"><div class="prog-fill pg" style="width:96%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Cefixime Capsules</td><td><span class="fmt f-cap">Capsule</span></td><td>400 mg</td><td>50 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~4,800</td><td>1,250</td><td style="color:#059669;font-weight:700">95d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Cefixime Oral Susp.</td><td><span class="fmt f-sus">Suspension</span></td><td>100 mg/5mL</td><td>75 mL</td><td style="color:#9ca3af">02XXXXXX</td><td>~2,000</td><td>520</td><td style="color:#059669;font-weight:700">90d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- TB CLUSTER: Isoniazid, Ethambutol, Pyrazinamide -->
+    <div style="padding:8px 16px;background:var(--light-bg);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--amber)">Anti-TB Cluster — 3 molecules, shared supplier risk</div>
+    <div class="acc" id="a-iso">
+      <div class="acc-sum" onclick="tog('a-iso')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Isoniazid</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+3%</div><div><span class="pill p-a">Med</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#d97706">FDA import alert (rifampin line — shared facility)</span></div><div class="dr"><span class="dl">Shandong Xinqi (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Concentration</span><span class="dv" style="color:#d97706">2 suppliers — niche molecule</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$22/kg (+3%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Cascade risk</span><span class="dv" style="color:#d97706">Lupin shared with rifampin</span></div><div class="dr"><span class="dl">Indigenous health</span><span class="dv" style="color:#1e40af">LTBI prophylaxis — critical</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">15 kg (110 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby — cascade watch</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#059669">110%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Isoniazid Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>100 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~1,800</td><td>540</td><td style="color:#059669;font-weight:700">110d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Isoniazid Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>300 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~3,800</td><td>1,080</td><td style="color:#059669;font-weight:700">95d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="acc" id="a-eth">
+      <div class="acc-sum" onclick="tog('a-eth')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Ethambutol</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:8"></div><div class="g-cn" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-a">Med</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#059669">Operational (separate line)</span></div><div class="dr"><span class="dl">Macleods (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Concentration</span><span class="dv" style="color:#d97706">2 suppliers, 100% India</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$35/kg (0%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">TB regimen role</span><span class="dv" style="color:#1e40af">Prevents resistance emergence</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">12 kg (100 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#059669">100%</span></div><div class="prog"><div class="prog-fill pg" style="width:100%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Ethambutol Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>100 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~1,200</td><td>330</td><td style="color:#059669;font-weight:700">100d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Ethambutol Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>400 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~3,800</td><td>1,050</td><td style="color:#059669;font-weight:700">95d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="acc" id="a-pyr">
+      <div class="acc-sum" onclick="tog('a-pyr')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Pyrazinamide</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-in" style="flex:7"></div><div class="g-cn" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+1%</div><div><span class="pill p-a">Med</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Lupin (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Shandong Xinqi (China)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Concentration</span><span class="dv" style="color:#d97706">2 suppliers — niche molecule</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$19/kg (+1%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">TB regimen role</span><span class="dv" style="color:#1e40af">Shortens treatment 9→6 months</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">8 kg (90 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#d97706">90%</span></div><div class="prog"><div class="prog-fill pa" style="width:90%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 1 SKU</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Pyrazinamide Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>500 mg</td><td>100 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~1,600</td><td>400</td><td style="color:#059669;font-weight:700">90d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- IVABRADINE -->
+    <div class="acc" id="a-iva">
+      <div class="acc-sum" onclick="tog('a-iva')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Ivabradine</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-eu" style="flex:7"></div><div class="g-in" style="flex:3"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">+4%</div><div><span class="pill p-g">Low</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Servier API (France)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">MSN Labs (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Patent status</span><span class="dv">Expired — recent generic entry</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">API spot price</span><span class="dv">$420/kg (+4%)</span></div><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#1e40af">HFrEF — beta-blocker alternative</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">API on hand</span><span class="dv">6 kg (83 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#059669">92%</span></div><div class="prog"><div class="prog-fill pg" style="width:92%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 2 SKUs</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Ivabradine Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>5 mg</td><td>56 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~8,500</td><td>2,100</td><td style="color:#059669;font-weight:700">88d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+          <tr><td>Ivabradine Tablets</td><td><span class="fmt f-tab">Tablet</span></td><td>7.5 mg</td><td>56 ct</td><td style="color:#9ca3af">02XXXXXX</td><td>~5,500</td><td>1,400</td><td style="color:#059669;font-weight:700">83d</td><td>Steady</td><td><span class="pill p-g">Normal</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- MIFEPRISTONE / MISOPROSTOL -->
+    <div class="acc" id="a-mife">
+      <div class="acc-sum" onclick="tog('a-mife')"><div class="acc-lead"><div class="acc-chv">&#9656;</div><div class="acc-toggle">▸ Expand</div></div><div class="acc-name">Mifepristone / Misoprostol</div><div style="font-size:11px;color:#6b7280">2 global</div><div><div class="geo"><div class="g-eu" style="flex:5"></div><div class="g-cn" style="flex:3"></div><div class="g-in" style="flex:2"></div></div></div><div class="t-fl">Stable</div><div><span class="pill p-g">Clear</span></div><div class="t-fl">0%</div><div><span class="pill p-a">Med</span></div></div>
+      <div class="acc-det">
+        <div class="det-grid">
+          <div class="det-box"><h5>API Suppliers</h5><div class="dr"><span class="dl">Mifepristone: Exelgyn (France)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Misoprostol: Cipla (India)</span><span class="dv" style="color:#059669">Operational</span></div><div class="dr"><span class="dl">Supply chain note</span><span class="dv" style="color:#d97706">Politically sensitive — access risk</span></div></div>
+          <div class="det-box"><h5>Supply Signals</h5><div class="dr"><span class="dl">HC shortage status</span><span class="dv" style="color:#059669">Clear</span></div><div class="dr"><span class="dl">Access note</span><span class="dv" style="color:#d97706">Import-dependent — no domestic production</span></div><div class="dr"><span class="dl">Clinical note</span><span class="dv" style="color:#1e40af">WHO Essential Medicine — reproductive health</span></div></div>
+          <div class="det-box"><h5>Medicine Place</h5><div class="dr"><span class="dl">Combo inventory</span><span class="dv">2,400 kits (61 days)</span></div><div class="dr"><span class="dl">CSO</span><span class="dv" style="color:#586577">Standby</span></div><div style="margin-top:6px"><div class="bar-lbl"><span>Safety stock</span><span style="font-weight:600;color:#d97706">68%</span></div><div class="prog"><div class="prog-fill pa" style="width:68%"></div></div></div></div>
+        </div>
+        <div class="prod-title">Finished Products — 1 SKU (combination kit)</div>
+        <table>
+          <tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack</th><th>DIN</th><th>Annual Vol</th><th>FG Inventory</th><th>Days</th><th>Batch</th><th>Status</th></tr>
+          <tr><td>Mifegymiso (equiv.)</td><td><span class="fmt f-tab">Kit</span></td><td>200mg/0.8mg</td><td>1 kit</td><td style="color:#9ca3af">02XXXXXX</td><td>~146,000</td><td>24,400</td><td style="color:#d97706;font-weight:700">61d</td><td>Building inventory</td><td><span class="pill p-a">Ramping</span></td></tr>
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="section" style="margin-top:14px">
@@ -314,7 +580,7 @@
 </div>
 
 <!-- ===================== TAB 2: DATA SOURCES ===================== -->
-<div class="tab-content" id="tab-sources">
+<div class="tab-content" id="tab-sources" role="tabpanel">
 
   <div class="section-title"><span>Government &amp; Regulatory Feeds</span><div class="st-line"></div></div>
 
@@ -539,7 +805,7 @@
 </div>
 
 <!-- ===================== TAB 3: INGESTION PIPELINE ===================== -->
-<div class="tab-content" id="tab-pipeline">
+<div class="tab-content" id="tab-pipeline" role="tabpanel">
 
   <div class="section-title"><span>How Data Flows Through Glass Box</span><div class="st-line"></div></div>
 
@@ -643,7 +909,7 @@
 </div>
 
 <!-- ===================== TAB 4: MOLECULE DEEP DIVE ===================== -->
-<div class="tab-content" id="tab-molecules">
+<div class="tab-content" id="tab-molecules" role="tabpanel">
 
   <div class="section-title"><span>Amoxicillin — Full Supply Chain Trace</span><div class="st-line"></div></div>
 
@@ -740,11 +1006,11 @@ Sucrose (susp.)            ✓    Blister foil           ⚠ Lead +12d</pre>
 </div>
 
 <!-- ===================== TAB 5: ALERTS ===================== -->
-<div class="tab-content" id="tab-alerts">
+<div class="tab-content" id="tab-alerts" role="tabpanel">
 
   <div class="section-title"><span>Active Alerts</span><div class="st-line"></div></div>
 
-  <div class="ds-card open" id="al-1" style="border-left: 3px solid #ef4444">
+  <div class="ds-card open" id="al-1" style="border-top: 3px solid var(--red)">
     <div class="ds-head" onclick="togDs('al-1')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-r">CRITICAL</span> &nbsp;Amoxicillin API Supply Disruption</h4><span style="font-size:10px;color:#9ca3af">Apr 2, 2026 09:32</span></div>
     <div class="ds-detail">
       <div style="font-size:12px;color:#4b5563;line-height:1.7">
@@ -758,7 +1024,7 @@ Sucrose (susp.)            ✓    Blister foil           ⚠ Lead +12d</pre>
     </div>
   </div>
 
-  <div class="ds-card open" id="al-2" style="border-left: 3px solid #f59e0b">
+  <div class="ds-card open" id="al-2" style="border-top: 3px solid var(--amber)">
     <div class="ds-head" onclick="togDs('al-2')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-a">WARNING</span> &nbsp;Rifampin — Active HC Shortage + FDA Import Alert</h4><span style="font-size:10px;color:#9ca3af">Mar 15, 2026 14:20</span></div>
     <div class="ds-detail">
       <div style="font-size:12px;color:#4b5563;line-height:1.7">
@@ -770,13 +1036,52 @@ Sucrose (susp.)            ✓    Blister foil           ⚠ Lead +12d</pre>
     </div>
   </div>
 
-  <div class="ds-card" id="al-3" style="border-left: 3px solid #f59e0b">
+  <div class="ds-card" id="al-3" style="border-top: 3px solid var(--amber)">
     <div class="ds-head" onclick="togDs('al-3')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-a">WARNING</span> &nbsp;Blister Foil (PVC/Al) — Lead Time Increasing</h4><span style="font-size:10px;color:#9ca3af">Apr 1, 2026 10:45</span></div>
     <div class="ds-detail">
       <div style="font-size:12px;color:#4b5563;line-height:1.7">
         <strong>Trigger:</strong> Packaging supplier reports blister foil lead time increased by 12 days.<br>
         <strong>Impact:</strong> Affects all tablet/capsule blister-packed SKUs. Not yet critical — current inventory covers 45 days.<br>
         <strong>MP Response:</strong> Alternative foil supplier identified. Sample order placed. Monitoring weekly.
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="al-4" style="border-top: 3px solid var(--blue)">
+    <div class="ds-head" onclick="togDs('al-4')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-b">INFO</span> &nbsp;Lithium Carbonate — China Tariff Exposure Watch</h4><span style="font-size:10px;color:#9ca3af">Apr 3, 2026 16:10</span></div>
+    <div class="ds-detail">
+      <div style="font-size:12px;color:#4b5563;line-height:1.7">
+        <strong>Trigger:</strong> 80% of lithium carbonate API sourced from Ganfeng Lithium (China). US pharmaceutical tariff actions (Apr 2, 2026) raise risk of cascading trade restrictions on chemical precursors.<br>
+        <strong>Impact:</strong> Not immediate — current inventory at 102 days. But if Canada follows US tariff patterns, supply cost could increase 15-30%.<br>
+        <strong>Clinical note:</strong> Lithium is narrow therapeutic index. Patients cannot be switched between manufacturers without blood level monitoring. Supply continuity is medically critical.<br>
+        <strong>MP Response:</strong> Albemarle (US/Chile-sourced) evaluation accelerated for supplier diversification. Goal: reduce China dependency below 50% by Q4 2026.
+      </div>
+    </div>
+  </div>
+
+  <div class="ds-card" id="al-5" style="border-top: 3px solid var(--blue)">
+    <div class="ds-head" onclick="togDs('al-5')"><h4><span class="ds-chv">&#9656;</span> <span class="pill p-b">INFO</span> &nbsp;Anti-TB Cluster — Cascade Risk Assessment</h4><span style="font-size:10px;color:#9ca3af">Mar 28, 2026 11:00</span></div>
+    <div class="ds-detail">
+      <div style="font-size:12px;color:#4b5563;line-height:1.7">
+        <strong>Trigger:</strong> Rifampin active shortage (Lupin FDA import alert) shares facility with isoniazid API production. If alert expands to additional production lines, 3 of 4 RIPE regimen drugs could be affected simultaneously.<br>
+        <strong>Impact:</strong> TB treatment requires all 4 drugs concurrently. A cascade failure would affect TB treatment programs nationally, with disproportionate impact on Indigenous and newcomer communities (PHAC incidence data: 290× rate in Inuit populations).<br>
+        <strong>MP Response:</strong> Monitoring Lupin facility status daily. Isoniazid/ethambutol/pyrazinamide inventory all above 90 days. Shandong Xinqi (China) confirmed as backup for isoniazid and pyrazinamide. No cascade declared yet.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px"><span>Recent Signal Timeline</span><div class="st-line"></div></div>
+  <div class="card">
+    <div class="card-body" style="padding: 16px 20px;">
+      <div style="position:relative;padding-left:24px;border-left:2px solid var(--border);">
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.5px">Apr 5, 2026</div><div style="font-size:13px;color:var(--text)">Amoxicillin pediatric suspension 125mg/5mL dropped below 30-day threshold. <strong>PRIORITY</strong> production batch initiated.</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--amber);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.5px">Apr 3, 2026</div><div style="font-size:13px;color:var(--text)">API spot price for amoxicillin trihydrate crossed +30% threshold. Now at $42/kg (+34% from baseline).</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.5px">Apr 2, 2026</div><div style="font-size:13px;color:var(--text)">HC declared <strong>Anticipated Shortage</strong> for amoxicillin (all oral formulations). CSO armed.</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--amber);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.5px">Apr 1, 2026</div><div style="font-size:13px;color:var(--text)">Blister foil (PVC/Al) supplier reports lead time increase of 12 days. Packaging component watch triggered.</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.5px">Mar 28, 2026</div><div style="font-size:13px;color:var(--text)">FDA declared <strong>Active Shortage</strong> for amoxicillin (US). Leading indicator triggered for Canadian supply.</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--amber);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.5px">Mar 22, 2026</div><div style="font-size:13px;color:var(--text)">Aurobindo (India) reported production halt — contamination event at amoxicillin API facility. Alternative supplier Zhejiang activated.</div></div>
+        <div style="margin-bottom:16px;position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--amber);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.5px">Mar 15, 2026</div><div style="font-size:13px;color:var(--text)">FDA import alert issued for Lupin (India) rifampin facility. HC active shortage declared for rifampin.</div></div>
+        <div style="position:relative"><div style="position:absolute;left:-29px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--muted);border:2px solid var(--white)"></div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Mar 8, 2026</div><div style="font-size:13px;color:var(--text)">Ocean freight India→Canada route: transit time increased +18 days (now 42 days). Logistics warning triggered.</div></div>
       </div>
     </div>
   </div>
@@ -799,15 +1104,14 @@ Sucrose (susp.)            ✓    Blister foil           ⚠ Lead +12d</pre>
 
 <div class="footer">
   <strong>Medicine Place Inc.</strong> | Glass Box Supply Chain Intelligence Platform | Prototype — Simulated Data<br>
-  farooq@medicineplace.ca | alfred@medicineplace.ca | Confidential — April 2026
+  <a href="mailto:farooq@medicineplace.ca" style="color:var(--blue);text-decoration:none">farooq@medicineplace.ca</a> | <a href="mailto:alfred@medicineplace.ca" style="color:var(--blue);text-decoration:none">alfred@medicineplace.ca</a> | Confidential — April 2026
 </div>
 
 <script>
+// Accordion toggle
 function tog(id) {
   var el = document.getElementById(id);
   el.classList.toggle('open');
-  var btn = el.querySelector('.acc-toggle');
-  if (btn) btn.textContent = el.classList.contains('open') ? '▾ Collapse' : '▸ Expand';
 }
 function togDs(id) {
   var el = document.getElementById(id);
@@ -815,15 +1119,68 @@ function togDs(id) {
   var btn = el.querySelector('.ds-toggle');
   if (btn) btn.textContent = el.classList.contains('open') ? '▾ Collapse Details' : '▸ Expand Details';
 }
-function showTab(name) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+// Tab switching — fixed to handle clicks on child elements
+function showTab(name, tabEl) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+    t.setAttribute('tabindex', '-1');
+  });
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.closest('.tab').classList.add('active');
+  tabEl.classList.add('active');
+  tabEl.setAttribute('aria-selected', 'true');
+  tabEl.setAttribute('tabindex', '0');
+  tabEl.focus();
 }
-// Add scroll hint to card bodies with tables on mobile
+
+// Tab keyboard navigation (Left/Right arrows)
+document.querySelector('.tab-bar').addEventListener('keydown', function(e) {
+  var tabs = Array.from(document.querySelectorAll('.tab'));
+  var current = tabs.findIndex(function(t) { return t.classList.contains('active'); });
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    var next = (current + 1) % tabs.length;
+    showTab(tabs[next].dataset.tab, tabs[next]);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    var prev = (current - 1 + tabs.length) % tabs.length;
+    showTab(tabs[prev].dataset.tab, tabs[prev]);
+  }
+});
+
+// Accordion keyboard support — Enter/Space to toggle
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    var accSum = e.target.closest('.acc-sum');
+    if (accSum) {
+      e.preventDefault();
+      accSum.click();
+      return;
+    }
+    var dsHead = e.target.closest('.ds-head');
+    if (dsHead) {
+      e.preventDefault();
+      dsHead.click();
+      return;
+    }
+  }
+});
+
+// A11y: set tabindex on interactive elements
+document.querySelectorAll('.acc-sum').forEach(function(el) {
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'button');
+});
+document.querySelectorAll('.ds-head').forEach(function(el) {
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'button');
+});
+
+// Scroll hint on mobile
 if (window.innerWidth <= 768) {
-  document.querySelectorAll('.card-body').forEach(cb => {
+  document.querySelectorAll('.card-body').forEach(function(cb) {
     if (cb.querySelector('table') || cb.scrollWidth > cb.clientWidth) {
       cb.classList.add('scroll-hint');
     }
