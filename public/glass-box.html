@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Glass Box Supply Chain Intelligence Platform — Real-time pharmaceutical supply chain visibility for Health Canada and provincial buyers.">
+<meta property="og:title" content="Glass Box — Supply Chain Intelligence">
+<meta property="og:description" content="Medicine Place's real-time supply chain telemetry platform for CVDL pharmaceutical monitoring.">
 <title>Glass Box — Full Platform</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -211,14 +214,14 @@
 <!-- NAV -->
 <div class="nav">
   <div class="nav-left">
-    <img src="../../AptaPharma/Medicine Place Logo.png" alt="Medicine Place">
+    <img src="Medicine Place Logo.png" alt="Medicine Place">
     <div class="nav-sep"></div>
-    <img src="../../MEDPAC/MARKETING BRANDING/MEDPAC Logo (FINAL) 2025-09-16/MedPac-Logo-Sep-2025.png" alt="MedPac" style="height:18px">
+    <img src="MedPac-Logo-Sep-2025.png" alt="MedPac" style="height:22px">
     <div class="nav-sep"></div>
     <div class="nav-title">Glass Box</div>
   </div>
   <div class="nav-right">
-    <a href="index.html" style="font-size: 11px; font-weight: 600; color: #3b82f6; text-decoration: none; padding: 4px 12px; border: 1px solid #dbeafe; border-radius: 6px; margin-right: 8px;">&#8592; Back to Presentation</a>
+    <a href="index.html" style="font-size: 13px; font-weight: 700; color: #1d4ed8; text-decoration: none; padding: 6px 14px; background: #dbeafe; border: 1px solid #93c5fd; border-radius: 6px; margin-right: 8px;">&#8592; Back to Presentation</a>
     <div class="badge badge-grey">Prototype</div>
     <div class="badge badge-green">Live</div>
     <div class="nav-ts">2026-04-05 09:14 MST</div>
@@ -238,7 +241,7 @@
 <div class="tab-content active" id="tab-dashboard">
 
   <div class="row">
-    <div class="stat st-r"><div class="st-label">HC Active Shortages (CVDL)</div><div class="st-val">23</div><div class="st-sub">of 160 CVDL molecules</div></div>
+    <div class="stat st-r"><div class="st-label">HC Active Shortages (CVDL)</div><div class="st-val">23</div><div class="st-sub">of 163 CVDL molecules</div></div>
     <div class="stat st-a"><div class="st-label">FDA Regulatory Actions (90d)</div><div class="st-val">7</div><div class="st-sub">Warning letters / import alerts</div></div>
     <div class="stat st-a"><div class="st-label">Discontinuation Notices</div><div class="st-val">4</div><div class="st-sub">12-mo supplier exit warnings</div></div>
     <div class="stat st-b"><div class="st-label">Single-Source API Risk</div><div class="st-val">38%</div><div class="st-sub">CVDL molecules with 1 supplier</div></div>
@@ -337,7 +340,7 @@
         <div class="ds-flow-label">Data Flow</div>
         <pre>healthproductshortages.ca API
   → Glass Box Ingestion Service (6hr cron)
-  → Filter: CVDL molecules only (160 active ingredients)
+  → Filter: CVDL molecules only (163 active ingredients)
   → Enrich: cross-reference with internal molecule registry
   → Store: shortage_events table
   → Feed: Dashboard "HC Active Shortages" card
@@ -386,7 +389,7 @@
 
   <div class="ds-card" id="ds-cvdl">
     <div class="ds-head" onclick="togDs('ds-cvdl')"><h4><span class="ds-chv">&#9656;</span> Health Canada CVDL</h4><span class="ds-toggle">▸ Expand Details</span><span class="pill p-g">Connected</span></div>
-    <div class="ds-meta"><span>Type: <strong>Manual + periodic check</strong></span><span>Refresh: <strong>Monthly</strong></span><span>Last update: <strong>2026-03-15</strong></span><span>Molecules: <strong>160</strong></span></div>
+    <div class="ds-meta"><span>Type: <strong>Manual + periodic check</strong></span><span>Refresh: <strong>Monthly</strong></span><span>Last update: <strong>2026-03-15</strong></span><span>Molecules: <strong>163</strong></span></div>
     <div class="ds-detail">
       <div style="font-size:13px;color:#4b5563;margin-bottom:8px">The official prioritization anchor. All Glass Box monitoring is filtered through CVDL membership.</div>
       <a class="ds-link" href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/regulations-guidance/critical-vulnerable-list.html" target="_blank">&#8599; More Information — Health Canada CVDL</a>
