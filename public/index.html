@@ -83,13 +83,17 @@ body {
 .act-pill.active { background: var(--navy); color: #fff; border-color: var(--navy); }
 /* Slides */
 section {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 100px 60px 60px;
-  overflow: hidden;
+  position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-start;
+  padding: 100px 60px 80px;
+  overflow-y: auto; overflow-x: hidden;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
   will-change: transform, opacity;
+  scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.15) transparent;
 }
+section::-webkit-scrollbar { width: 4px; }
+section::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
+section::-webkit-scrollbar-track { background: transparent; }
 section.dark { background: var(--navy); color: #fff; }
 section.dark .section-label { color: rgba(255,255,255,0.5); }
 section.dark h2 { color: #fff; }
@@ -517,6 +521,24 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   .slide-nav button { width: 40px; height: 40px; font-size: 20px; }
   .slide-nav .nav-counter { font-size: 12px; min-width: 48px; }
   section { padding-bottom: 80px; }
+  /* Modal: force full-width centered on mobile */
+  .expand-detail, .objection-item .obj-answer {
+    width: calc(100vw - 32px) !important; max-width: none !important;
+    left: 16px !important; right: 16px !important;
+    transform: translateY(-50%) !important;
+    top: 50% !important;
+    max-height: 65vh !important;
+    padding: 24px 20px 16px !important;
+    border-radius: 12px !important;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(-48%) scale(0.96); } to { opacity: 1; transform: translateY(-50%) scale(1); } }
+  /* 3-col grids to 2-col on mobile */
+  .card-grid[style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+  .card-grid[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  /* Comparison slides: stack columns */
+  .cols { gap: 20px; }
+  h2 { font-size: 24px; }
+  .subtitle { font-size: 15px; }
 }
 </style>
 </head>
@@ -603,7 +625,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block red-q expandable">
     <p>"Manufacturing disruptions now account for 62 percent of drug shortages."</p>
-    <div class="attribution">-- Institute for Research on Public Policy (IRPP)</div>
+    <div class="attribution">— Institute for Research on Public Policy (IRPP)</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>The majority of drug shortages aren't caused by demand spikes or natural disasters. They originate from manufacturing failures — GMP compliance violations, production line contamination, raw material shortfalls, facility shutdowns — at factories overwhelmingly in India, China, and Southeast Asia that Health Canada cannot inspect, regulate, or influence. Canada has no line of sight into these facilities until shelves are already empty.</div>
       <div class="detail-context"><div class="detail-heading">Who's Investigating</div>The <a href="https://irpp.org/" target="_blank">IRPP</a> published this root-cause analysis. Health Canada's 2024–2028 strategy (Priority 5: Build Analytics) acknowledges the visibility gap. The <a href="https://www.canada.ca/en/health-canada/news/2026/03/government-of-canada-launches-pharmaceutical-and-life-sciences-sector-task-force.html" target="_blank">Sector Task Force</a> is examining how to address upstream supply chain blindness. The job: build domestic capacity for the highest-risk molecules so that the primary cause of shortages — foreign manufacturing failures — can be mitigated on Canadian soil.</div>
@@ -706,7 +728,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block red-q expandable">
     <p>"Current generic market has structural fragilities recognized by both government policy and industry analysis, becoming more dangerous under today's trade and security conditions."</p>
-    <div class="attribution">-- KPMG, Generics 2030</div>
+    <div class="attribution">— KPMG, Generics 2030</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>KPMG's analysis — commissioned by the <a href="https://canadiangenerics.ca/" target="_blank">CGPA</a> — confirms the structural nature of this failure. The generic market's own economics produce fragility, and no amount of monitoring or reporting changes that. Government intervention through procurement mechanisms, strategic stockpiling, and domestic capacity support is the only demonstrated path. Every other G7 nation has reached this conclusion and invested accordingly: Japan ($3.3B), France ($8.1B), Germany ($1.1B+), UK (29 advanced manufacturing projects).</div>
     </div>
@@ -746,7 +768,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block expandable">
     <p>"The exchange of information about product demand and inventories continues to be a challenge, with current data-sharing practices making it very difficult to know where the pressures are in the supply chain."</p>
-    <div class="attribution">-- Health Canada, Building Resilience 2024-2028</div>
+    <div class="attribution">— Health Canada, Building Resilience 2024-2028</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>This is Health Canada's own admission that the current system lacks upstream visibility. Federal regulators cannot see where supply chain pressures are building until shortages have already reached pharmacy counters. The government has diagnosed the problem clearly — the missing piece is an operational solution that provides the data and the supply.</div>
       <div class="detail-sources"><div class="detail-heading">Sources &amp; Links</div>Health Canada, <em><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/building-resilience.html" target="_blank">Building Resilience in Canada's Drug Supply 2024–2028</a></em> (PDF, Priority 6)</div>
@@ -893,7 +915,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
       <p style="font-size: 13px; margin-bottom: 8px;">Letters of support from <strong>Conservative, Liberal, and NDP MPs</strong> plus Alberta MOH.</p>
       <div class="quote-block" style="padding: 10px 14px; margin: 8px 0;">
         <p style="font-size: 12px;">"A government that cannot guarantee its people reliable access to vital medicines is unable to meet its most basic duty of protection."</p>
-        <div class="attribution">-- MP Corey Hogan</div>
+        <div class="attribution">— MP Corey Hogan</div>
       </div>
       <div class="expand-detail">
         <div class="detail-meaning"><div class="detail-heading">Political Reality</div>Drug shortage resilience has genuine cross-party support — Conservative, Liberal, and NDP MPs plus the Alberta Ministry of Health have all expressed concern about Canada's import dependency. This is rare in Canadian politics. Domestic manufacturing proposals face no partisan headwinds, giving the <a href="https://www.canada.ca/en/health-canada/news/2026/03/government-of-canada-launches-pharmaceutical-and-life-sciences-sector-task-force.html" target="_blank">Sector Task Force</a> political cover to recommend bold action without fear of opposition attack.</div>
@@ -970,7 +992,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
 
 
 
-<!-- ========== SLIDE 16: CANADA'S 12 RESPONSES ========== -->
+<!-- ========== SLIDE 11: CANADA'S 12 RESPONSES ==========  -->
 <section id="s11">
   <div class="section-label amber">G7 Compared</div>
   <h2>Canada's 12 Responses to the Drug Shortage Crisis</h2>
@@ -1040,7 +1062,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   <div class="callout" style="margin-top: 16px; font-size: 14px;">12 initiatives. 7 departments. Zero coordination into a single domestic manufacturing platform.</div>
 </section>
 
-<!-- ========== SLIDE 32: G7 COMPARED — GERMANY ========== -->
+<!-- ========== SLIDE 12: G7 COMPARED — GERMANY ==========  -->
 <section id="s12">
   <div class="section-label amber">G7 Compared</div>
   <h2>Germany: One Strategy, Multiple Objectives</h2>
@@ -1086,7 +1108,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 33: G7 COMPARED — FRANCE + JAPAN ========== -->
+<!-- ========== SLIDE 13: G7 COMPARED — FRANCE + JAPAN ==========  -->
 <section id="s13">
   <div class="section-label amber">G7 Compared</div>
   <h2>France &amp; Japan: Integrated Industrial Strategy</h2>
@@ -1147,7 +1169,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 29: G7 COMPARED — USA ========== -->
+<!-- ========== SLIDE 14: G7 COMPARED — USA ==========  -->
 <section id="s14">
   <div class="section-label amber">G7 Compared</div>
   <h2>United States: The Full-Spectrum Response</h2>
@@ -1193,7 +1215,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 30: G7 COMPARED — MEDICINE PLACE ========== -->
+<!-- ========== SLIDE 15: G7 COMPARED — MEDICINE PLACE ==========  -->
 <section id="s15">
   <div class="section-label green">G7 Compared</div>
   <h2>Medicine Place: All 12 in One Platform</h2>
@@ -1221,7 +1243,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
 </section>
 
 
-<!-- ========== SLIDE 17: POLICY-TO-PROCUREMENT GAP ========== -->
+<!-- ========== SLIDE 16: POLICY-TO-PROCUREMENT GAP ==========  -->
 <section id="s16">
   <div class="section-label red">Canada's Gap</div>
   <h2>The Policy-to-Procurement Gap</h2>
@@ -1256,7 +1278,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block expandable">
     <p>"The federal government has clearly defined the problem and started building the solution architecture. What is missing is the operational capacity to turn policy intent into procurement reality."</p>
-    <div class="attribution">-- Medicine Place analysis of federal policy landscape</div>
+    <div class="attribution">— Medicine Place analysis of federal policy landscape</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>Canada has built more pharmaceutical resilience policy architecture than most G7 peers: a Critical Drug List, a shortage plan, new regulations, a task force, a stockpile framework, and a Buy Canadian policy. The problem is not awareness or intent — it is the operational gap between publishing a CVDL and having a Canadian factory that can produce what's on it. Every element on the left column exists. Every element on the right column is missing. The <a href="https://www.canada.ca/en/health-canada/news/2026/03/government-of-canada-launches-pharmaceutical-and-life-sciences-sector-task-force.html" target="_blank">Sector Task Force</a> has 90 days to recommend how to bridge this gap.</div>
     </div>
@@ -1264,7 +1286,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
 </section>
 
 
-<!-- ========== SLIDE 19: GLASS BOX ========== -->
+<!-- ========== SLIDE 17: GLASS BOX ==========  -->
 <section id="s17">
   <div class="section-label green">Medicine Place</div>
   <h2>The Glass Box: A Different Tuesday</h2>
@@ -1311,7 +1333,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   <a href="glass-box.html" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 12px 24px; background: var(--green); color: #fff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; transition: background 0.2s;">&#9654;&nbsp; Explore the Glass Box Dashboard Demo</a>
 </section>
 
-<!-- ========== SLIDE 20: OPENING DOZEN ========== -->
+<!-- ========== SLIDE 18: OPENING DOZEN ==========  -->
 <section id="s18">
   <div class="section-label green">Medicine Place</div>
   <h2>Phase 1: The Opening Dozen</h2>
@@ -1357,7 +1379,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   <p style="font-size: 14px; color: var(--muted); margin-top: 16px;">The anti-TB cluster (rifampin, isoniazid, ethambutol, pyrazinamide) demonstrates capacity to serve persistent, clinically important gaps that private markets neglect. Sterile injectables are explicitly Phase 2.</p>
 </section>
 
-<!-- ========== SLIDE 21: CSO MECHANISM ========== -->
+<!-- ========== SLIDE 19: CSO MECHANISM ==========  -->
 <section id="s19">
   <div class="section-label green">Medicine Place</div>
   <h2>How the Contingent Standing Offer Works</h2>
@@ -1407,7 +1429,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 22: FEDERAL INSTITUTIONAL MAP ========== -->
+<!-- ========== SLIDE 20: FEDERAL INSTITUTIONAL MAP ==========  -->
 <section id="s20">
   <div class="section-label blue">Operational Planning</div>
   <h2>Who Does What in Ottawa</h2>
@@ -1468,14 +1490,14 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 23: INDUSTRY VOICES & MARKET EVIDENCE ========== -->
+<!-- ========== SLIDE 21: INDUSTRY VOICES & MARKET EVIDENCE ==========  -->
 <section id="s21">
   <div class="section-label blue">Supporting Evidence</div>
   <h2>Industry Voices &amp; Market Evidence</h2>
   <p class="subtitle">Independent organizations confirm the structural problem and point toward domestic solutions.</p>
   <div class="quote-block expandable" style="margin-bottom: 20px;">
     <p>"1 in 4 Canadians say they or someone they know has been directly affected by a drug shortage. Future US pharmaceutical tariffs could further destabilize Canada's already fragile drug supply chain."</p>
-    <div class="attribution">-- Canadian Pharmacists Association (CPhA), 2025 Federal Pre-Budget Submission</div>
+    <div class="attribution">— Canadian Pharmacists Association (CPhA), 2025 Federal Pre-Budget Submission</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>The <a href="https://www.pharmacists.ca/" target="_blank">CPhA</a> represents 45,000+ pharmacists — the frontline professionals who manage shortages daily at the dispensary counter. Their survey data: 25% of Canadians personally affected by a drug shortage. Their warning on tariffs is not lobbying; it is a clinical alert from the professionals closest to patient impact. When the CPhA says the system is fragile, it is because their members see the fragility every shift.</div>
       <div class="detail-sources"><div class="detail-heading">Source &amp; Link</div><a href="https://www.pharmacists.ca/" target="_blank">CPhA 2025 Federal Pre-Budget Submission</a></div>
@@ -1483,7 +1505,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block expandable" style="margin-bottom: 20px; border-left-color: var(--green);">
     <p>"Canada needs diversification of supply sources, earlier and better information about supply risks, buffer stocks of critical medicines, and more sustainable economics for generic manufacturers."</p>
-    <div class="attribution">-- CGPA/CAPDM, A Path Forward (2025)</div>
+    <div class="attribution">— CGPA/CAPDM, A Path Forward (2025)</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>The <a href="https://canadiangenerics.ca/" target="_blank">CGPA</a> and <a href="https://www.capdm.ca/" target="_blank">CAPDM</a> — the generic pharmaceutical and pharmacy distribution industry's own trade bodies — have published a joint call for: supply diversification, better upstream information, buffer stocks, and more sustainable manufacturer economics. When the industry itself says the market cannot self-correct, the case for policy intervention is established by the players who know the market best.</div>
       <div class="detail-sources"><div class="detail-heading">Source &amp; Link</div><a href="https://canadiangenerics.ca/" target="_blank">CGPA</a>/CAPDM, <em>A Path Forward: Strengthening Canada's Drug Supply Chain</em> (2025)</div>
@@ -1491,7 +1513,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
   <div class="quote-block red-q expandable">
     <p>"Less than 10% of active pharmaceutical ingredients (APIs) are manufactured domestically in Canada. The structural dynamics of the generic market create a downward spiral that concentrates supply and increases fragility."</p>
-    <div class="attribution">-- EY/CGPA Manufacturing Capacity Study; KPMG Generics 2030</div>
+    <div class="attribution">— EY/CGPA Manufacturing Capacity Study; KPMG Generics 2030</div>
     <div class="expand-detail">
       <div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>Two independent analyses converge: EY/CGPA quantifies the scale (&lt;10% domestic API), KPMG explains the mechanism (the downward spiral of price collapse → manufacturer exit → concentration → fragility). These are not advocacy documents — they are analytical reports commissioned to understand why the generic market structurally produces shortages. Their shared conclusion: deliberate policy intervention is the only path. Market forces alone will continue to drive consolidation, concentration, and recurring supply failure.</div>
       <div class="detail-sources"><div class="detail-heading">Sources &amp; Links</div><a href="https://canadiangenerics.ca/" target="_blank">EY/CGPA Manufacturing Capacity Study</a> · KPMG, <em>Generics 2030</em> (commissioned by <a href="https://canadiangenerics.ca/" target="_blank">CGPA</a>)</div>
@@ -1500,7 +1522,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
 </section>
 
 
-<!-- ========== SLIDE 25: ANTICIPATED OBJECTIONS ========== -->
+<!-- ========== SLIDE 22: ANTICIPATED OBJECTIONS ==========  -->
 <section id="s22">
   <div class="section-label amber">Confidence</div>
   <h2>Anticipated Objections</h2>
@@ -1565,7 +1587,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 26: QUICK ANSWERS ========== -->
+<!-- ========== SLIDE 23: QUICK ANSWERS ==========  -->
 <section id="s23">
   <div class="section-label green">Confidence</div>
   <h2>Quick Answers</h2>
@@ -1604,7 +1626,7 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 27: THE ASK ========== -->
+<!-- ========== SLIDE 24: THE ASK ==========  -->
 <section id="s24">
   <div class="section-label green">Medicine Place</div>
   <h2>The Ask — Clear and Bounded</h2>
@@ -1630,8 +1652,8 @@ p { font-size: 17px; line-height: 1.65; color: var(--text); max-width: 800px; }
   </div>
 </section>
 
-<!-- ========== SLIDE 28: CLOSE ========== -->
-<section id="s25" style="text-align: center; align-items: center;">
+<!-- ========== SLIDE 25: CLOSE ==========  -->
+<section id="s25" style="text-align: center; justify-content: center; align-items: center;">
   <div style="max-width: 800px;">
     <p class="close-quote" style="text-align: center; margin: 0 auto 40px;">"We are not asking the government to take a risk — we are asking it to follow through on its own published priorities."</p>
     <div style="display: flex; align-items: center; justify-content: center; gap: 40px; margin-bottom: 40px;">
@@ -1688,6 +1710,8 @@ function layoutSlides() {
 function goToSlide(idx) {
   if (idx < 0 || idx >= sections.length || idx === currentSlide || isAnimating) return;
   isAnimating = true;
+  // Reset scroll position on the new slide
+  sections[idx].scrollTop = 0;
   currentSlide = idx;
   layoutSlides();
   updateUI();
@@ -1731,48 +1755,104 @@ function updateUI() {
 navPrev.addEventListener('click', function() { goToSlide(currentSlide - 1); });
 navNext.addEventListener('click', function() { goToSlide(currentSlide + 1); });
 
-// Keyboard navigation
+// Scroll-aware helpers: check if current slide has room to scroll
+function slideCanScroll(slide) {
+  return slide.scrollHeight > slide.clientHeight + 2;
+}
+function slideAtBottom(slide) {
+  return slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 2;
+}
+function slideAtTop(slide) {
+  return slide.scrollTop <= 2;
+}
+
+// Keyboard navigation — scroll within slide first, then flip
 document.addEventListener('keydown', function(e) {
   if (document.querySelector('.expandable.expanded, .objection-item.expanded')) return;
-  if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+  var slide = sections[currentSlide];
+  if (e.key === 'ArrowDown' || e.key === ' ') {
+    if (slideCanScroll(slide) && !slideAtBottom(slide)) {
+      // Let it scroll naturally within the slide
+      return;
+    }
     e.preventDefault();
     goToSlide(currentSlide + 1);
-  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+  } else if (e.key === 'ArrowUp') {
+    if (slideCanScroll(slide) && !slideAtTop(slide)) {
+      return;
+    }
+    e.preventDefault();
+    goToSlide(currentSlide - 1);
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    goToSlide(currentSlide + 1);
+  } else if (e.key === 'ArrowLeft') {
     e.preventDefault();
     goToSlide(currentSlide - 1);
   }
 });
 
-// Mouse wheel / trackpad — one slide per scroll gesture
+// Mouse wheel / trackpad — scroll within slide, flip at edges
 var wheelTimeout = null;
 var wheelLocked = false;
+var edgeHits = 0;
+var lastEdgeTime = 0;
 window.addEventListener('wheel', function(e) {
-  e.preventDefault();
-  if (wheelLocked) return;
   if (document.querySelector('.expandable.expanded, .objection-item.expanded')) return;
-  if (Math.abs(e.deltaY) < 10) return;
+  if (Math.abs(e.deltaY) < 5) return;
+  var slide = sections[currentSlide];
+  var scrollable = slideCanScroll(slide);
+  var goingDown = e.deltaY > 0;
+  var goingUp = e.deltaY < 0;
+
+  // If slide has scrollable content and we're not at the edge, let it scroll
+  if (scrollable) {
+    if (goingDown && !slideAtBottom(slide)) return; // let native scroll happen
+    if (goingUp && !slideAtTop(slide)) return;
+  }
+
+  // At edge (or not scrollable) — require 2 consecutive edge hits to flip
+  // This creates the "bounce" feel before flipping
+  e.preventDefault();
+  var now = Date.now();
+  if (now - lastEdgeTime > 600) edgeHits = 0; // reset if pause
+  edgeHits++;
+  lastEdgeTime = now;
+
+  if (edgeHits < 2) return; // first hit = bounce, second = flip
+
+  if (wheelLocked) return;
   wheelLocked = true;
-  if (e.deltaY > 0) goToSlide(currentSlide + 1);
+  edgeHits = 0;
+  if (goingDown) goToSlide(currentSlide + 1);
   else goToSlide(currentSlide - 1);
   clearTimeout(wheelTimeout);
-  wheelTimeout = setTimeout(function() { wheelLocked = false; }, 800);
+  wheelTimeout = setTimeout(function() { wheelLocked = false; }, 700);
 }, { passive: false });
 
-// Touch swipe
+// Touch swipe — scroll within slide, flip at edges
 var touchStartY = 0;
 var touchStartTime = 0;
+var touchStartScroll = 0;
 document.addEventListener('touchstart', function(e) {
   if (document.querySelector('.expandable.expanded, .objection-item.expanded')) return;
   touchStartY = e.touches[0].clientY;
   touchStartTime = Date.now();
+  touchStartScroll = sections[currentSlide].scrollTop;
 }, { passive: true });
 document.addEventListener('touchend', function(e) {
   if (document.querySelector('.expandable.expanded, .objection-item.expanded')) return;
   var dy = touchStartY - e.changedTouches[0].clientY;
   var dt = Date.now() - touchStartTime;
+  var slide = sections[currentSlide];
+  var scrollable = slideCanScroll(slide);
+
+  // If the slide scrolled during this touch, don't flip
+  if (scrollable && Math.abs(slide.scrollTop - touchStartScroll) > 10) return;
+
   if (Math.abs(dy) > 50 && dt < 600) {
-    if (dy > 0) goToSlide(currentSlide + 1);
-    else goToSlide(currentSlide - 1);
+    if (dy > 0 && (!scrollable || slideAtBottom(slide))) goToSlide(currentSlide + 1);
+    else if (dy < 0 && (!scrollable || slideAtTop(slide))) goToSlide(currentSlide - 1);
   }
 }, { passive: true });
 
