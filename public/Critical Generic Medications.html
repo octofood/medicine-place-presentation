@@ -1,0 +1,4965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A federal pathway for critical generic medicines: national resilience, stockpiling readiness, and a phased domestic supply platform for selected oral CVDL products.">
+<meta property="og:title" content="Medicine Place - Federal Medication Resilience">
+<meta property="og:description" content="Print-ready and web-ready federal presentation on a phased domestic manufacturing for selected critical generic medicines.">
+<title>Medicine Place - Federal Medication Resilience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #22445b;
+  --navy-soft: #4f6777;
+  --ink: #19222b;
+  --text: #253340;
+  --muted: #4d5c68;
+  --parchment: #fbf7ef;
+  --parchment-deep: #f4ecde;
+  --card: rgba(255, 255, 255, 0.9);
+  --surface-alt: rgba(251, 246, 238, 0.98);
+  --border: rgba(25, 34, 43, 0.16);
+  --blue: #325b7a;
+  --green: #116453;
+  --amber: #9b5a19;
+  --red: #9b4a42;
+  --sky: #7f96ac;
+  --blue-soft: rgba(50, 91, 122, 0.065);
+  --green-soft: rgba(17, 100, 83, 0.065);
+  --amber-soft: rgba(155, 90, 25, 0.08);
+  --red-soft: rgba(155, 74, 66, 0.07);
+  --shadow: 0 30px 70px rgba(24, 33, 43, 0.12);
+  --shadow-soft: 0 18px 36px rgba(24, 33, 43, 0.06);
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-sans: "Manrope", "Segoe UI", Helvetica, Arial, sans-serif;
+  --header-height: 98px;
+  --print-page-width: 11in;
+  --print-page-height: 8.5in;
+  --print-margin: 0.35in;
+}
+
+* { box-sizing: border-box; }
+html {
+  height: 100dvh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbf7ef 0%, #f4ecde 100%);
+}
+body {
+  margin: 0;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background:
+    radial-gradient(circle at top right, rgba(17, 100, 83, 0.08), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(181, 107, 34, 0.12), transparent 36%),
+    linear-gradient(180deg, #fbf7ef 0%, #f4ecde 100%);
+  background-size: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+body.app-loading #progress,
+body.app-loading .deck-header,
+body.app-loading .slide-nav,
+body.app-loading .floating-coverage-rail {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--green), var(--amber));
+  transition: width 0.3s ease;
+}
+
+.deck-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  min-height: var(--header-height);
+  padding: calc(10px + env(safe-area-inset-top)) 18px 10px;
+  background: rgba(251, 247, 239, 0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.deck-header-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.deck-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.header-flag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 22px;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.deck-brand img.logo-mp-header {
+  height: 28px;
+  flex: 0 0 auto;
+}
+
+.deck-brand img.logo-medpac {
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.header-toc {
+  --toc-gap: 6px;
+  --toc-pad: 4px;
+  --toc-index: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--toc-gap);
+  padding: var(--toc-pad);
+  min-width: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(25, 34, 43, 0.08);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.header-toc-indicator {
+  position: absolute;
+  top: var(--toc-pad);
+  bottom: var(--toc-pad);
+  left: var(--toc-pad);
+  width: calc((100% - (var(--toc-pad) * 2) - (var(--toc-gap) * 4)) / 5);
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(25, 34, 43, 0.12);
+  box-shadow: 0 10px 22px rgba(24, 33, 43, 0.08);
+  transform: translateX(calc(var(--toc-index, 0) * (100% + var(--toc-gap))));
+  transition: transform 0.26s ease;
+  pointer-events: none;
+}
+
+.header-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 5px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: color 0.18s ease;
+}
+
+.header-pill:hover {
+  color: var(--ink);
+}
+
+.header-pill.is-active,
+.header-pill[aria-current="page"] {
+  color: var(--ink);
+}
+
+.header-status {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(25, 34, 43, 0.08);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.print-button {
+  border: 1px solid var(--border);
+  background: rgba(251, 246, 238, 0.92);
+  color: var(--muted);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.print-button:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: #fff;
+}
+
+main {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  visibility: visible;
+}
+
+main.ready {
+  visibility: visible;
+}
+
+main:not(.ready) > section:first-child {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+section {
+  position: absolute;
+  inset: 0;
+  min-height: 100dvh;
+  height: 100dvh;
+  padding: calc(var(--header-height) + env(safe-area-inset-top) + 22px) clamp(20px, 4.5vw, 52px) calc(86px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+  will-change: transform, opacity;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(24, 33, 47, 0.18) transparent;
+  transform: translateY(100dvh);
+  opacity: 0;
+  pointer-events: none;
+}
+
+section::-webkit-scrollbar {
+  width: 5px;
+}
+
+section::-webkit-scrollbar-thumb {
+  background: rgba(31, 32, 35, 0.18);
+  border-radius: 999px;
+}
+
+section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slide-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+section.comparison-slide {
+  --comparison-bottom-clearance: 176px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+.compare-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--header-height) - 120px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
+section.comparison-slide .compare-shell {
+  box-sizing: border-box;
+  min-height: calc(100dvh - var(--header-height) - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  padding-bottom: var(--comparison-bottom-clearance);
+}
+
+.slide-nav {
+  position: fixed;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background: rgba(251, 247, 239, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-soft);
+}
+
+.slide-nav button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.2s ease;
+}
+
+.slide-nav button:hover {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+.slide-nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+
+body.compare-active .slide-nav {
+  bottom: calc(152px + env(safe-area-inset-bottom));
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: clamp(16px, 1.55vw, 22px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.eyebrow.blue { color: var(--blue); }
+.eyebrow.green { color: var(--green); }
+.eyebrow.red { color: var(--red); }
+.eyebrow.amber { color: var(--amber); }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: var(--ink);
+}
+
+h1, h2 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(44px, 6.2vw, 68px);
+  max-width: 920px;
+}
+
+h2 {
+  font-size: clamp(36px, 4.5vw, 54px);
+  max-width: 980px;
+}
+
+h3 {
+  font-family: var(--font-serif);
+  font-size: 25px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.subtitle {
+  margin-top: 18px;
+  max-width: 1100px;
+  width: 100%;
+  font-size: 18px;
+  line-height: 1.68;
+  color: var(--muted);
+  text-wrap: wrap;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  align-items: end;
+  min-height: calc(100dvh - var(--header-height) - 140px);
+}
+
+.hero-panel,
+.card,
+.quote,
+.callout,
+.signal-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  border-radius: 24px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-panel {
+  padding: 30px 30px 26px;
+  border-radius: 28px;
+}
+
+.hero-ledger {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(25, 34, 43, 0.08);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-ledger span + span {
+  position: relative;
+}
+
+.hero-ledger span + span::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+  transform: translateY(-50%);
+}
+
+.hero-mark {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.hero-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.hero-mark img.logo-mp {
+  height: 64px;
+}
+
+.hero-mark img.logo-medpac {
+  height: 42px;
+}
+
+.hero-mark-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.hero-doc {
+  max-width: 220px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+}
+
+.hero-doc .label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-doc strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.hero-doc p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.hero-main-note {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  line-height: 1.66;
+  color: var(--muted);
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+}
+
+.badge.blue {
+  background: var(--blue-soft);
+  border-color: rgba(50, 91, 122, 0.12);
+  color: var(--blue);
+}
+
+.badge.green {
+  background: var(--green-soft);
+  border-color: rgba(17, 100, 83, 0.12);
+  color: var(--green);
+}
+
+.badge.amber {
+  background: var(--amber-soft);
+  border-color: rgba(155, 90, 25, 0.14);
+  color: var(--amber);
+}
+
+.badge.red {
+  background: var(--red-soft);
+  border-color: rgba(155, 74, 66, 0.12);
+  color: var(--red);
+}
+
+.signal-panel {
+  padding: 24px 24px 22px;
+  background: var(--surface-alt);
+}
+
+.signal-panel h3 {
+  margin-bottom: 12px;
+}
+
+.signal-panel p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--text);
+}
+
+.signal-list {
+  margin: 18px 0 0;
+  padding-left: 18px;
+  color: var(--text);
+}
+
+.signal-list li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.card-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.card-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card-grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.compact-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.compact-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.compact-grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.compact-card,
+.mini-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.compact-card {
+  border-radius: 18px;
+  padding: 18px 16px 15px;
+}
+
+.compact-card h4 {
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.compact-card p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.compare-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.compare-stack.flush {
+  margin-top: 0;
+}
+
+.compare-shell .eyebrow {
+  margin-bottom: 10px;
+}
+
+.compare-shell h2 {
+  max-width: 840px;
+}
+
+.compare-shell .subtitle {
+  max-width: 1100px;
+  margin-top: 14px;
+}
+
+.compare-shell .two-col {
+  position: relative;
+  gap: 18px;
+}
+
+@media (min-width: 861px) {
+  .compare-shell .two-col::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 11px);
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0%, var(--border) 8%, var(--border) 92%, transparent 100%);
+    pointer-events: none;
+  }
+}
+
+.compare-shell .card {
+  border-radius: 22px;
+  padding: 22px 20px 20px;
+}
+
+.compare-shell .compact-card {
+  border-radius: 18px;
+  background: var(--surface-alt);
+  box-shadow: var(--shadow-soft);
+  padding: 14px 14px 13px;
+}
+
+.compare-shell .compare-stack .compact-card h4 {
+  font-size: 16px;
+}
+
+.compare-shell .compare-stack .compact-card p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.compare-shell .quote {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  border-radius: 22px;
+  padding: 18px 20px;
+  margin-top: 18px;
+}
+
+.compare-shell .quote p {
+  font-size: 30px;
+  line-height: 1.24;
+}
+
+.compare-shell .quote .attribution {
+  margin-top: 8px;
+}
+
+.mapping-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.mapping-note strong {
+  color: var(--ink);
+}
+
+.coverage-banner {
+  z-index: 12;
+  padding: 16px 18px 18px;
+  border-radius: 18px;
+  background: rgba(251, 246, 238, 0.98);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px rgba(24, 33, 47, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.compare-shell .coverage-head {
+  align-items: flex-start;
+}
+
+.compare-shell .coverage-score {
+  display: none;
+}
+
+.compare-shell .coverage-head strong {
+  max-width: 780px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.compare-shell .coverage-grid {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.compare-shell .coverage-pill {
+  min-height: 42px;
+  font-size: 15px;
+}
+
+.coverage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coverage-head strong {
+  display: block;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.coverage-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 74px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+}
+
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.coverage-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 46px;
+  padding: 0;
+  border-radius: 12px;
+  border: 2px solid rgba(25, 34, 43, 0.18);
+  background: var(--surface-alt);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coverage-pill:hover {
+  transform: translateY(-1px);
+}
+
+.coverage-pill:focus-visible {
+  outline: 2px solid rgba(50, 91, 122, 0.45);
+  outline-offset: 2px;
+}
+
+.coverage-pill.active {
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: transparent;
+  box-shadow: inset 0 0 0 1px rgba(17, 100, 83, 0.16);
+  font-size: 0;
+  position: relative;
+}
+
+.coverage-pill.active::before {
+  content: "\2713";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--green);
+}
+
+.coverage-pill.expandable::after {
+  display: none !important;
+}
+
+section.comparison-slide .coverage-banner {
+  display: none;
+}
+
+.floating-coverage-rail {
+  position: fixed;
+  left: 50%;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(1180px, calc(100vw - 44px));
+  max-width: calc(100vw - 44px);
+  z-index: 92;
+  display: none;
+}
+
+.floating-coverage-rail.active {
+  display: block;
+}
+
+.floating-coverage-rail .coverage-banner {
+  margin: 0;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.mini-card {
+  border-radius: 20px;
+  padding: 16px 14px 15px;
+  text-align: center;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.mini-card h4 {
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.mini-card p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.52;
+  color: var(--muted);
+}
+
+.mini-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(24, 33, 43, 0.1);
+}
+
+#s10 .subtitle {
+  max-width: 1100px;
+}
+
+#s17 {
+  padding-top: calc(var(--header-height) + env(safe-area-inset-top) + 14px);
+}
+
+#s17 .subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.42;
+}
+
+#s17 h2 {
+  font-size: clamp(30px, 3.45vw, 41px);
+  line-height: 0.95;
+  max-width: 860px;
+}
+
+#s17 .compact-grid {
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#s17 .compact-card {
+  padding: 12px 14px 11px;
+}
+
+#s17 .compact-card h4 {
+  font-size: 15px;
+  line-height: 1.18;
+}
+
+#s17 .compact-card p {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+#s17 .two-col {
+  margin-top: 12px;
+  gap: 14px;
+}
+
+#s17 .two-col .card {
+  padding: 15px 16px 14px;
+  border-radius: 22px;
+}
+
+#s17 .two-col .card h4 {
+  font-size: 18px;
+  line-height: 1.16;
+}
+
+#s17 .two-col .card p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.48;
+}
+
+#s17 .project-fit-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-top: 10px;
+  gap: 6px;
+}
+
+#s17 .project-fit-grid .compact-card {
+  padding: 10px 12px 10px;
+}
+
+#s17 .project-fit-grid .compact-card h4 {
+  font-size: 13px;
+  line-height: 1.16;
+}
+
+#s17 .project-fit-grid .compact-card p {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.26;
+}
+
+#s17 .callout-row {
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#s17 .callout {
+  padding: 11px 14px;
+}
+
+#s17 .callout p {
+  font-size: 13px;
+  line-height: 1.28;
+}
+
+#s17 .coverage-banner {
+  margin-top: 8px;
+  padding: 8px 12px 10px;
+}
+
+#s17 .coverage-head strong {
+  font-size: 14px;
+  line-height: 1.22;
+}
+
+#s17 .coverage-subtext {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--muted);
+  max-width: 860px;
+}
+
+#s17 .coverage-score {
+  min-width: 62px;
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+#s17 .coverage-grid {
+  gap: 6px;
+  margin-top: 10px;
+}
+
+#s17 .coverage-pill {
+  min-height: 40px;
+  font-size: 16px;
+}
+
+#s10 .roadmap-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 18px;
+  margin-top: 18px;
+  padding: 16px 18px 15px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top left, rgba(17, 100, 83, 0.09), transparent 34%),
+    radial-gradient(circle at top right, rgba(155, 90, 25, 0.08), transparent 28%),
+    rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(25, 34, 43, 0.12);
+  box-shadow: 0 20px 42px rgba(24, 33, 43, 0.1);
+}
+
+#s10 .roadmap-banner-main strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+#s10 .roadmap-banner-main p,
+#s10 .roadmap-banner-side p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#s10 .roadmap-banner-side {
+  padding-left: 18px;
+  border-left: 1px solid rgba(25, 34, 43, 0.1);
+}
+
+#s10 .stats-row {
+  margin-top: 14px;
+  gap: 12px;
+}
+
+#s10 .stat-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 14px 14px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+#s10 .stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+}
+
+#s10 .stat-card:nth-child(1)::before { background: var(--green); }
+#s10 .stat-card:nth-child(2)::before { background: var(--blue); }
+#s10 .stat-card:nth-child(3)::before { background: var(--amber); }
+#s10 .stat-card:nth-child(4)::before { background: var(--red); }
+
+#s10 .stat-card .number {
+  font-size: clamp(30px, 3.7vw, 42px);
+}
+
+#s10 .stat-card .label {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+#s10 .mini-grid {
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#s10 .mini-card {
+  text-align: left;
+  padding: 14px 14px 12px;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+#s10 .mini-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+#s10 .mini-card.blue::before { background: var(--blue); }
+#s10 .mini-card.green::before { background: var(--green); }
+#s10 .mini-card.amber::before { background: var(--amber); }
+#s10 .mini-card.red::before { background: var(--red); }
+
+#s10 .mini-card h4 {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+#s10 .mini-card p {
+  margin-top: 5px;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+#s10 .roadmap-note {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.card {
+  padding: 24px 22px 20px;
+  position: relative;
+}
+
+.card p,
+.two-col p,
+.three-col p,
+.quote p,
+.callout p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.stat-card {
+  padding: 24px 18px 20px;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.stat-card .number {
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--blue);
+}
+
+.stat-card .number.red { color: var(--red); }
+
+.stat-card .label {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.quote {
+  margin-top: 24px;
+  padding: 22px 24px;
+}
+
+.quote p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.38;
+  color: var(--ink);
+}
+
+.quote .attribution {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.callout-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.callout {
+  padding: 16px 20px;
+  border-radius: 20px;
+}
+
+.callout p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.media-card {
+  display: grid;
+  align-items: stretch;
+}
+
+.card.media-card {
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.media-card .media-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.media-thumb-center {
+  object-position: center center;
+}
+
+.media-thumb-upper {
+  object-position: center 30%;
+}
+
+.media-card .media-copy {
+  min-width: 0;
+  padding: 20px 22px 18px;
+}
+
+.media-card .media-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.media-card .media-kicker::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.65;
+}
+
+.media-card-lg {
+  grid-template-columns: 148px minmax(0, 1fr);
+  min-height: 184px;
+}
+
+.media-card-lg h4 {
+  font-size: 23px;
+  line-height: 1.14;
+}
+
+.media-card-lg p {
+  margin-top: 8px;
+  line-height: 1.64;
+}
+
+.media-card-sm {
+  grid-template-columns: 84px minmax(0, 1fr);
+}
+
+.media-card-sm h4 {
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.media-card-sm p {
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+.timeline {
+  position: relative;
+  margin-top: 34px;
+  padding-left: 44px;
+  max-width: 1100px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(210, 52, 48, 0.96), rgba(210, 52, 48, 0.28));
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 0 0 18px;
+}
+
+.tl-item:last-child {
+  padding-bottom: 0;
+}
+
+.tl-item.expandable {
+  padding-right: 42px;
+}
+
+.tl-item.expandable::after {
+  top: 4px;
+  right: 0;
+}
+
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 4px solid rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 22px rgba(210, 52, 48, 0.18);
+}
+
+.tl-label {
+  padding-top: 2px;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.tl-text {
+  font-size: 16px;
+  line-height: 1.58;
+  color: var(--ink);
+}
+
+.tl-text strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.tl-text ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.tl-text li {
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.tl-text li:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-callout {
+  margin-top: 22px;
+}
+
+.headline-highlight {
+  display: inline;
+  padding: 0.02em 0.12em 0.08em;
+  border-radius: 0.14em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.headline-highlight.blue {
+  background: rgba(194, 220, 255, 0.9);
+}
+
+.priority-card {
+  padding: 20px 18px 18px;
+  min-height: 178px;
+}
+
+.priority-card .priority-num {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+.priority-card h4 {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+.priority-card p {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.58;
+  color: var(--muted);
+}
+
+.policy-quote {
+  margin-top: 24px;
+}
+
+.policy-quote p {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.58;
+}
+
+.policy-quote .attribution {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.two-col,
+.three-col,
+.gap-grid {
+  display: grid;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.two-col { grid-template-columns: 1fr 1fr; }
+.three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.gap-grid {
+  grid-template-columns: 1fr 110px 1fr;
+  align-items: stretch;
+}
+
+.gap-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 22px;
+  box-shadow: var(--shadow-soft);
+}
+
+.gap-panel h3 {
+  margin-bottom: 16px;
+}
+
+.gap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gap-list li {
+  margin-bottom: 10px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.gap-list.built li {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.gap-list.missing li {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.gap-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-center span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
+  border-radius: 18px;
+  background: rgba(251, 245, 244, 0.98);
+  border: 1px solid rgba(155, 74, 66, 0.18);
+  box-shadow: 0 16px 34px rgba(24, 33, 43, 0.08);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: var(--red);
+}
+
+.micro-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: clamp(16px, 1.35vw, 21px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.micro-label.blue { color: var(--blue); }
+.micro-label.green { color: var(--green); }
+.micro-label.amber { color: var(--amber); }
+.micro-label.red { color: var(--red); }
+
+.card.blue,
+.compact-card.blue,
+.mini-card.blue,
+.callout.blue,
+.quote.blue,
+.compare-shell .card.blue,
+.compare-shell .compact-card.blue {
+  background: rgba(246, 249, 252, 0.96);
+  border-color: rgba(50, 91, 122, 0.18);
+}
+
+.card.green,
+.compact-card.green,
+.mini-card.green,
+.callout.green,
+.quote.green,
+.compare-shell .card.green,
+.compare-shell .compact-card.green {
+  background: rgba(244, 250, 247, 0.96);
+  border-color: rgba(17, 100, 83, 0.18);
+}
+
+.card.amber,
+.compact-card.amber,
+.mini-card.amber,
+.callout.amber,
+.quote.amber,
+.compare-shell .card.amber,
+.compare-shell .compact-card.amber {
+  background: rgba(251, 247, 241, 0.96);
+  border-color: rgba(155, 90, 25, 0.2);
+}
+
+.card.red,
+.compact-card.red,
+.mini-card.red,
+.callout.red,
+.quote.red,
+.compare-shell .card.red,
+.compare-shell .compact-card.red {
+  background: rgba(251, 245, 244, 0.96);
+  border-color: rgba(155, 74, 66, 0.18);
+}
+
+.coverage-banner.amber {
+  background: rgba(251, 247, 241, 0.97);
+  border-color: rgba(155, 90, 25, 0.2);
+}
+
+.coverage-banner.green {
+  background: rgba(244, 250, 247, 0.97);
+  border-color: rgba(17, 100, 83, 0.2);
+}
+
+
+.card ul,
+.signal-panel ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+.card li,
+.signal-panel li {
+  margin-bottom: 0;
+  line-height: 1.62;
+  font-size: 16px;
+}
+
+.card li + li,
+.signal-panel li + li {
+  margin-top: 8px;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+  padding: 18px 16px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flow-step .flow-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.flow-step.blue .flow-num { background: var(--blue); }
+.flow-step.green .flow-num { background: var(--green); }
+.flow-step.amber .flow-num { background: var(--amber); }
+.flow-step.red .flow-num { background: var(--red); }
+
+.flow-step strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.flow-step p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+#s10 .flow {
+  gap: 18px;
+  align-items: stretch;
+}
+
+#s10 .flow-step {
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 22px;
+  padding: 24px 22px 22px;
+  min-height: 238px;
+  border-radius: 22px;
+  border-width: 1.5px;
+  box-shadow: 0 18px 40px rgba(24, 33, 43, 0.1);
+}
+
+#s10 .flow-step.red {
+  background: linear-gradient(180deg, rgba(251, 244, 242, 0.98), rgba(255, 255, 255, 0.98));
+  border-color: rgba(155, 74, 66, 0.24);
+}
+
+#s10 .flow-step.blue {
+  background: linear-gradient(180deg, rgba(244, 248, 252, 0.98), rgba(255, 255, 255, 0.98));
+  border-color: rgba(50, 91, 122, 0.24);
+}
+
+#s10 .flow-step.amber {
+  background: linear-gradient(180deg, rgba(251, 247, 240, 0.98), rgba(255, 255, 255, 0.98));
+  border-color: rgba(155, 90, 25, 0.24);
+}
+
+#s10 .flow-step.green {
+  background: linear-gradient(180deg, rgba(243, 249, 246, 0.98), rgba(255, 255, 255, 0.98));
+  border-color: rgba(17, 100, 83, 0.24);
+}
+
+#s10 .flow-step .flow-num {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 12px 24px rgba(24, 33, 43, 0.12);
+}
+
+#s10 .flow-step strong {
+  margin-top: 0;
+  font-size: 20px;
+  line-height: 1.28;
+}
+
+#s10 .flow-step p {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--text);
+}
+
+.ask-list {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+  counter-reset: ask;
+}
+
+.ask-list li {
+  counter-increment: ask;
+  position: relative;
+  padding: 20px 20px 20px 72px;
+  margin-bottom: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.ask-list li::before {
+  content: counter(ask);
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.expandable {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.expandable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(24, 33, 43, 0.1);
+}
+
+.expandable::after {
+  content: "+";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(25, 34, 43, 0.06);
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 24px;
+  text-align: center;
+  transition: all 0.18s ease;
+}
+
+.expandable.expanded::after {
+  content: "\2212";
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.compact-card.expandable::after,
+.stat-card.expandable::after,
+.flow-step.expandable::after {
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.ask-list li.expandable {
+  padding-right: 52px;
+}
+
+.ask-list li.expandable::after {
+  top: 18px;
+  right: 16px;
+}
+
+.expand-detail {
+  display: none !important;
+}
+
+.popover-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 135;
+  background: rgba(25, 34, 43, 0.22);
+}
+
+.popover-backdrop.active {
+  display: block;
+}
+
+.popover-modal {
+  display: none;
+  position: fixed;
+  z-index: 140;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(780px, calc(100vw - 48px));
+  max-height: min(80vh, 820px);
+  overflow-y: auto;
+  padding: 36px 34px 22px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.99);
+  box-shadow: 0 28px 72px rgba(24, 33, 43, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.popover-modal.active {
+  display: block;
+}
+
+.popover-modal-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+}
+
+.modal-close-btn {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px 0;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover,
+.modal-close-btn:focus-visible {
+  background: rgba(50, 91, 122, 0.08);
+  border-color: rgba(50, 91, 122, 0.16);
+  color: var(--ink);
+}
+
+.detail-meaning,
+.detail-impact,
+.detail-sources {
+  margin-bottom: 0;
+  padding: 20px 22px;
+  border-radius: 14px;
+  font-size: 18px;
+  line-height: 1.72;
+  color: var(--text);
+}
+
+.detail-meaning {
+  background: rgba(17, 100, 83, 0.05);
+  border: 1px solid rgba(17, 100, 83, 0.09);
+}
+
+.detail-impact {
+  background: rgba(155, 90, 25, 0.06);
+  border: 1px solid rgba(155, 90, 25, 0.11);
+}
+
+.detail-sources {
+  background: rgba(50, 91, 122, 0.05);
+  border: 1px solid rgba(50, 91, 122, 0.09);
+}
+
+.detail-sources-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.detail-heading {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.detail-meaning .detail-heading {
+  color: var(--green);
+}
+
+.detail-impact .detail-heading {
+  color: var(--amber);
+}
+
+.detail-sources .detail-heading {
+  color: var(--blue);
+}
+
+.detail-meaning a,
+.detail-impact a,
+.detail-sources a,
+.expand-detail a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 700;
+}
+
+.detail-sources a.source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(50, 91, 122, 0.14);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.detail-sources a.source-link:hover,
+.detail-sources a.source-link:focus-visible {
+  background: #fff;
+  border-color: rgba(50, 91, 122, 0.24);
+}
+
+.footer-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-panel {
+  width: min(900px, 100%);
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  border-radius: 16px;
+  padding: 36px 34px;
+}
+
+.footer-kicker {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.footer-summary,
+.footer-contacts {
+  padding: 18px 18px 16px;
+  border-radius: 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+}
+
+.footer-summary strong,
+.footer-contacts strong.heading {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.footer-summary p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.footer-contacts {
+  display: grid;
+  gap: 14px;
+}
+
+.footer-contacts .contact-item {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.footer-contacts .contact-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+.close-quote {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.22;
+  color: var(--ink);
+}
+
+.contact-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+
+.contact-row div {
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.contact-row strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.screen-only { display: inline-flex; }
+
+@media (max-width: 1120px) {
+  .hero,
+  .two-col,
+  .three-col,
+  .flow,
+  .gap-grid,
+  .card-grid.cols-4,
+  .compact-grid.cols-4,
+  .mini-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gap-center span {
+    writing-mode: initial;
+    transform: none;
+    padding: 12px 18px;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+  }
+
+  #s17 .project-fit-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  :root {
+    --header-height: 90px;
+  }
+
+  .deck-header {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 8px;
+  }
+
+  .deck-brand {
+    gap: 10px;
+  }
+
+  .deck-brand img.logo-mp-header {
+    height: 24px;
+  }
+
+  .deck-brand img.logo-medpac {
+    height: 20px;
+  }
+
+  .header-toc {
+    --toc-gap: 4px;
+    --toc-pad: 3px;
+  }
+
+  .header-pill {
+    min-height: 22px;
+    padding: 4px 2px;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .header-status {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-align: right;
+    line-height: 1;
+    min-width: 50px;
+    padding: 5px 8px;
+  }
+
+  .header-flag {
+    font-size: 18px;
+  }
+
+  section {
+    padding: calc(var(--header-height) + env(safe-area-inset-top) + 16px) 18px calc(92px + env(safe-area-inset-bottom));
+  }
+
+  section.comparison-slide {
+    --comparison-bottom-clearance: 140px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .hero,
+  .two-col,
+  .three-col,
+  .flow,
+  .gap-grid,
+  .stats-row,
+  .card-grid.cols-2,
+  .card-grid.cols-3,
+  .card-grid.cols-4,
+  .compact-grid.cols-3,
+  .compact-grid.cols-4,
+  .mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline {
+    padding-left: 34px;
+  }
+
+  .tl-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding-bottom: 16px;
+  }
+
+  .tl-item::before {
+    left: -30px;
+    width: 16px;
+    height: 16px;
+    border-width: 3px;
+  }
+
+  .tl-label {
+    font-size: 15px;
+  }
+
+  .tl-text {
+    font-size: 15px;
+    line-height: 1.58;
+  }
+
+  .priority-card {
+    min-height: auto;
+  }
+
+  .priority-card .priority-num {
+    font-size: 40px;
+  }
+
+  .priority-card h4 {
+    margin-top: 12px;
+    font-size: 17px;
+  }
+
+  .media-card-lg {
+    grid-template-columns: 132px minmax(0, 1fr);
+  }
+
+  .media-card-sm {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .media-card .media-copy {
+    padding: 18px 18px 16px;
+  }
+
+  #s10 .roadmap-banner {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 18px 18px 16px;
+  }
+
+  #s10 .roadmap-banner-side {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid rgba(25, 34, 43, 0.1);
+    padding-top: 12px;
+  }
+
+  .policy-quote p {
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  #s10 .flow-step {
+    min-height: auto;
+    gap: 16px;
+    padding: 20px 18px 18px;
+  }
+
+  #s10 .flow-step .flow-num {
+    width: 46px;
+    height: 46px;
+    font-size: 24px;
+  }
+
+  #s10 .flow-step strong {
+    font-size: 18px;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-panel,
+  .signal-panel {
+    border-radius: 20px;
+  }
+
+  .media-card-lg {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .media-card-lg h4 {
+    font-size: 21px;
+  }
+
+  .media-card-sm {
+    grid-template-columns: 1fr;
+  }
+
+  .media-card-sm h4 {
+    font-size: 18px;
+  }
+
+  .media-card .media-thumb {
+    min-height: 132px;
+    max-height: 148px;
+    object-position: center center;
+  }
+
+  .media-card .media-copy {
+    padding: 16px 16px 15px;
+  }
+
+  #s10 .roadmap-banner-main strong {
+    font-size: 24px;
+  }
+
+  .hero-panel {
+    padding: 24px 18px 20px;
+  }
+
+  .hero-ledger {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    gap: 8px 14px;
+  }
+
+  .hero-mark-wrap {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .hero-mark {
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .hero-mark img.logo-mp {
+    height: 48px;
+  }
+
+  .hero-mark img.logo-medpac {
+    height: 30px;
+  }
+
+  #s1 h1 {
+    font-size: clamp(34px, 10vw, 48px);
+    line-height: 1.03;
+    max-width: none;
+  }
+
+  #s1 .subtitle {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: none;
+  }
+
+  #s1 .badge-row {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  #s1 .badge {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  #s1 .hero-main-note {
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: 14px;
+    line-height: 1.58;
+  }
+
+  #s1 .signal-panel {
+    padding: 20px 18px 18px;
+  }
+
+  #s1 .signal-panel h3 {
+    font-size: 22px;
+  }
+
+#s1 .signal-panel p,
+#s1 .signal-list li {
+  font-size: 14px;
+  line-height: 1.58;
+}
+
+#s17 .coverage-grid {
+  gap: 10px;
+}
+
+#s17 .coverage-pill {
+  min-height: 56px;
+  border-radius: 14px;
+  font-size: 20px;
+}
+
+#s17 .coverage-pill.active::before {
+  font-size: 34px;
+}
+
+  section.comparison-slide .compare-shell {
+    min-height: calc(100dvh - var(--header-height) - 26px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
+  .hero-mark-wrap,
+  .footer-grid {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .hero-doc {
+    max-width: none;
+  }
+
+  .coverage-head strong {
+    font-size: 13px;
+  }
+
+  .coverage-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .coverage-pill {
+    min-height: 38px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+
+  #s17 .coverage-pill {
+    min-height: 46px;
+    font-size: 18px;
+  }
+
+  #s17 .coverage-pill.active::before {
+    font-size: 28px;
+  }
+
+  .coverage-score {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-width: 58px;
+  }
+
+  .slide-nav {
+    top: calc(var(--header-height) + env(safe-area-inset-top) + 8px);
+    right: 12px;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  body.compare-active .slide-nav {
+    top: calc(var(--header-height) + env(safe-area-inset-top) + 8px);
+    bottom: auto;
+  }
+
+  .slide-nav button {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .header-status {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-align: right;
+    line-height: 1;
+    min-width: 36px;
+    white-space: nowrap;
+  }
+
+  .print-button {
+    padding: 7px 10px;
+  }
+
+  .popover-modal {
+    width: calc(100vw - 24px);
+    left: 12px;
+    right: 12px;
+    transform: translateY(-50%);
+    max-height: 68vh;
+    padding: 24px 20px 16px;
+  }
+
+  .eyebrow {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .micro-label {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  section.comparison-slide .coverage-banner {
+    display: none;
+  }
+
+  .floating-coverage-rail {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    transform: none;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .floating-coverage-rail .coverage-banner {
+    padding: 13px 12px 14px;
+    border-radius: 16px;
+  }
+}
+
+body.print-measuring {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+body.print-measuring main {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+body.print-measuring section {
+  position: relative !important;
+  inset: auto !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  padding: 0 !important;
+}
+
+body.print-measuring .compare-shell,
+body.print-measuring section.comparison-slide .compare-shell {
+  min-height: auto !important;
+  padding-bottom: 0 !important;
+}
+
+body.print-measuring .floating-coverage-rail {
+  display: none !important;
+}
+
+body.print-measuring .coverage-banner {
+  display: block !important;
+  position: relative !important;
+  bottom: auto !important;
+  opacity: 1 !important;
+}
+
+body.print-measuring .slide-shell,
+body.print-measuring .footer-panel {
+  width: min(100%, calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471)) !important;
+  max-width: calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471) !important;
+}
+
+body.export-pdf {
+  height: auto !important;
+  overflow: visible !important;
+  background: #fff !important;
+}
+
+body.export-pdf #progress,
+body.export-pdf .deck-header,
+body.export-pdf .slide-nav,
+body.export-pdf .floating-coverage-rail,
+body.export-pdf .screen-only {
+  display: none !important;
+}
+
+body.export-pdf main {
+  visibility: visible !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+body.export-pdf section {
+  position: relative !important;
+  inset: auto !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: calc(var(--print-page-height) - (var(--print-margin) * 2)) !important;
+  min-height: calc(var(--print-page-height) - (var(--print-margin) * 2)) !important;
+  max-height: calc(var(--print-page-height) - (var(--print-margin) * 2)) !important;
+  overflow: hidden !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  padding: 0 !important;
+  break-inside: avoid-page !important;
+  page-break-inside: avoid !important;
+}
+
+body.export-pdf section + section {
+  break-before: page !important;
+  page-break-before: always !important;
+}
+
+body.export-pdf .slide-shell,
+body.export-pdf .footer-panel {
+  width: min(100%, calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471)) !important;
+  max-width: calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471) !important;
+  margin: 0 auto !important;
+  transform-origin: top center !important;
+  zoom: var(--print-scale, 1);
+}
+
+@supports not (zoom: 1) {
+  body.export-pdf .slide-shell,
+  body.export-pdf .footer-panel {
+    transform: scale(var(--print-scale, 1)) !important;
+  }
+}
+
+body.export-pdf .hero,
+body.export-pdf .compare-shell,
+body.export-pdf section.comparison-slide .compare-shell {
+  min-height: auto !important;
+  padding-bottom: 0 !important;
+}
+
+body.export-pdf section.comparison-slide {
+  --comparison-bottom-clearance: 0;
+  padding-bottom: 0 !important;
+}
+
+body.export-pdf .coverage-banner {
+  display: block !important;
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: 18px !important;
+  opacity: 1 !important;
+}
+
+body.export-pdf .hero-panel,
+body.export-pdf .signal-panel,
+body.export-pdf .card,
+body.export-pdf .quote,
+body.export-pdf .callout,
+body.export-pdf .gap-panel,
+body.export-pdf .stat-card,
+body.export-pdf .flow-step,
+body.export-pdf .footer-panel,
+body.export-pdf .footer-summary,
+body.export-pdf .footer-contacts {
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+@media print {
+  @page {
+    size: 11in 8.5in;
+    margin: 0.35in;
+  }
+
+  html {
+    height: auto;
+    overflow: visible;
+    background: #fff;
+  }
+
+  body {
+    height: auto;
+    overflow: visible;
+    background: #fff;
+  }
+
+  #progress,
+  .deck-header,
+  .slide-nav,
+  .floating-coverage-rail,
+  .screen-only {
+    display: none !important;
+  }
+
+  main {
+    visibility: visible !important;
+    height: auto;
+    overflow: visible;
+  }
+
+  section {
+    position: relative;
+    inset: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: calc(var(--print-page-height) - (var(--print-margin) * 2));
+    min-height: calc(var(--print-page-height) - (var(--print-margin) * 2));
+    max-height: calc(var(--print-page-height) - (var(--print-margin) * 2));
+    overflow: hidden;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 0;
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+
+  section + section {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .slide-shell,
+  .footer-panel {
+    width: min(100%, calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471));
+    max-width: calc((var(--print-page-height) - (var(--print-margin) * 2)) * 1.2941176471);
+    margin: 0 auto;
+    transform-origin: top center;
+    zoom: var(--print-scale, 1);
+  }
+
+  @supports not (zoom: 1) {
+    .slide-shell,
+    .footer-panel {
+      transform: scale(var(--print-scale, 1));
+    }
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-panel,
+  .signal-panel,
+  .card,
+  .quote,
+  .callout,
+  .gap-panel,
+  .stat-card,
+  .flow-step,
+  .footer-panel,
+  .footer-summary,
+  .footer-contacts {
+    box-shadow: none;
+    background: #fff;
+  }
+
+  .compare-shell,
+  section.comparison-slide .compare-shell {
+    min-height: auto !important;
+    padding-bottom: 0 !important;
+  }
+
+  section.comparison-slide {
+    --comparison-bottom-clearance: 0;
+    padding-bottom: 0 !important;
+  }
+
+  .coverage-banner {
+    position: relative;
+    bottom: auto !important;
+    margin-top: 18px;
+  }
+
+  .stats-row,
+  .card-grid,
+  .compact-grid,
+  .mini-grid,
+  .two-col,
+  .three-col,
+  .flow,
+  .gap-grid {
+    break-inside: avoid;
+  }
+
+  .expand-detail,
+  .popover-modal,
+  .popover-backdrop,
+  .modal-close-x,
+  .modal-close-btn {
+    display: none !important;
+  }
+
+  .expandable::after {
+    display: none !important;
+  }
+}
+</style>
+</head>
+<body class="app-loading">
+<div id="progress"></div>
+
+<header class="deck-header">
+  <div class="deck-header-top">
+    <div class="deck-brand">
+      <img class="logo-mp-header" src="images/medicine-place-logo.png" alt="Medicine Place" onerror="this.style.display='none'">
+      <img class="logo-medpac" src="images/MedPac-Logo-Sep-2025.png" alt="MedPac" onerror="this.insertAdjacentHTML('afterend','<span style=&quot;font-weight:700;font-size:12px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;&quot;>MedPac</span>');this.remove()">
+    </div>
+    <div class="header-flag" aria-hidden="true">🇨🇦</div>
+    <div class="header-status" id="header-status">1 / 16</div>
+  </div>
+  <nav class="header-toc" id="header-toc" aria-label="Presentation sections">
+    <span class="header-toc-indicator" aria-hidden="true"></span>
+    <a class="header-pill is-active" data-theme="overview" href="#s1" aria-current="page">Overview</a>
+    <a class="header-pill" data-theme="problem" href="#s3">Problem</a>
+    <a class="header-pill" data-theme="path" href="#s6">Path</a>
+    <a class="header-pill" data-theme="peers" href="#s14">G7</a>
+    <a class="header-pill" data-theme="project" href="#s17">Project</a>
+  </nav>
+</header>
+
+<div class="slide-nav screen-only" id="slide-nav">
+  <button id="nav-prev" aria-label="Previous slide" disabled>&#8592;</button>
+  <button id="nav-next" aria-label="Next slide">&#8594;</button>
+</div>
+
+<div class="floating-coverage-rail screen-only" id="floating-coverage-rail" aria-hidden="true"></div>
+
+<main>
+  <section id="s1">
+    <div class="slide-shell hero">
+      <div class="hero-panel">
+        <div class="hero-ledger">
+          <span>April 2026</span>
+          <span>Medicine Place Inc.</span>
+        </div>
+      <div class="hero-mark-wrap">
+        <div class="hero-mark">
+          <img class="logo-mp" src="images/medicine-place-logo.png" alt="Medicine Place" onerror="this.style.display='none'">
+          <img class="logo-medpac" src="images/MedPac-Logo-Sep-2025.png" alt="MedPac" onerror="this.style.display='none'">
+          <span class="hero-flag" aria-hidden="true">🇨🇦</span>
+        </div>
+      </div>
+        <h1>A Federal Pathway for Critical Generic Medicines</h1>
+        <p class="subtitle">Domestic supply for the generic medicines on Health Canada's Critical and Vulnerable Drug List.</p>
+        <div class="badge-row">
+          <span class="badge blue">CVDL-aligned</span>
+          <span class="badge green">Oral-first Phase 1</span>
+          <span class="badge amber">Sterile Injectables, Phase 2</span>
+        </div>
+        <div class="hero-main-note">Provinces keep buying. Ottawa gets a domestic backup for the CVDL medicines that keep going short.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <div class="slide-shell">
+      <h2>Ottawa has the tools. It's missing a domestic supplier.</h2>
+      <p class="subtitle">The shortage strategy, the priority list, the stockpile, and the coordination all exists. A domestic manufacturer for the shortage-prone generic medication does not.</p>
+      <div class="compact-grid cols-3">
+        <article class="compact-card blue">
+          <div class="micro-label blue">Strategy</div>
+          <h4>Health Canada shortage plan</h4>
+          <p>Ottawa treats shortages as an ongoing problem.</p>
+        </article>
+        <article class="compact-card blue">
+          <div class="micro-label blue">Prioritization</div>
+          <h4>Final CVDL</h4>
+          <p>Ottawa has already named the medicines that matter most in a shortage.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="SPMP and safety stock">
+          <div class="micro-label amber">Readiness</div>
+          <h4>Proposed SPMP and safety-stock framework</h4>
+          <p>Readiness rules are tightening, though the final regulations aren't set.</p>
+        </article>
+        <article class="compact-card green">
+          <div class="micro-label green">Stockpile</div>
+          <h4>NESS</h4>
+          <p>A federal stockpile exists and already holds medicines.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="Task force and resilience agenda">
+          <div class="micro-label amber">Coordination</div>
+          <h4>March 18, 2026 task force</h4>
+          <p>The task force is meeting now and is built to review proposals like this one.</p>
+        </article>
+        <article class="compact-card red" data-expand-key="Resilience context">
+          <div class="micro-label red">Context</div>
+          <h4>Buy Canadian and domestic capacity</h4>
+          <p>Buy Canadian, emergency readiness, and domestic-capacity policy have all moved in the last year.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <div class="slide-shell">
+      <div class="eyebrow red">National Resilience Problem</div>
+      <h2>Generic shortages keep happening.</h2>
+      <p class="subtitle">Generics are three-quarters of Canadian prescriptions. Shortages recur every year. Almost nothing is made here.</p>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="number">74.4%</div>
+          <div class="label">of prescriptions dispensed in Canada were generic (2022)</div>
+        </div>
+        <div class="stat-card">
+          <div class="number red">12%</div>
+          <div class="label">of generic volume sold in Canada was manufactured domestically</div>
+        </div>
+        <div class="stat-card">
+          <div class="number red">2,588</div>
+          <div class="label">new drug shortage reports in FY 2024-25</div>
+        </div>
+        <div class="stat-card">
+          <div class="number red">1,772</div>
+          <div class="label">shortage reports still active at year-end</div>
+        </div>
+      </div>
+      <div class="quote">
+        <p>&ldquo;Manufacturing disruptions now account for 62 percent of drug shortages.&rdquo;</p>
+        <div class="attribution">Institute for Research on Public Policy</div>
+      </div>
+      <div class="callout-row">
+        <div class="callout"><p>This is a structural problem, not a one-time event.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <div class="slide-shell">
+      <div class="eyebrow red">The Problem</div>
+      <h2>What a shortage looks like today</h2>
+      <p class="subtitle">When an oral antibiotic supply chain breaks, here's how it plays out.</p>
+      <div class="timeline">
+        <div class="tl-item" data-expand-key="Nobody in Ottawa knows">
+          <div class="tl-label">Week 1</div>
+          <div class="tl-text">
+            <strong>Ottawa doesn't see it</strong>
+            <ul>
+              <li>API disruption stays offshore</li>
+              <li>Inventory can mask the problem</li>
+              <li>No real-time upstream view</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item" data-expand-key="Pharmacists notice">
+          <div class="tl-label">Weeks 2-4</div>
+          <div class="tl-text">
+            <strong>Pharmacies feel it</strong>
+            <ul>
+              <li>Wholesaler backorders appear</li>
+              <li>Pediatric supply gets reserved</li>
+              <li>Substitutions and callbacks begin</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item" data-expand-key="Systems start triage">
+          <div class="tl-label">Weeks 4-8</div>
+          <div class="tl-text">
+            <strong>Hospitals start rationing</strong>
+            <ul>
+              <li>Allocation and conservation rules</li>
+              <li>Emergency imports are pursued</li>
+              <li>Clinical workaround load rises</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item" data-expand-key="The shortage resolves unevenly">
+          <div class="tl-label">Months 3-12</div>
+          <div class="tl-text">
+            <strong>Supply returns, unevenly</strong>
+            <ul>
+              <li>Foreign-authorized supply arrives</li>
+              <li>Labels, dosing, and counselling shift</li>
+              <li>Recovery is patchy and slow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="callout-row timeline-callout">
+        <div class="callout red"><p>Pharmacies feel it in weeks. Supply stabilizes in months. Nobody has a clear view while it's happening.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5">
+    <div class="slide-shell">
+      <div class="eyebrow blue">What Government Has Built</div>
+      <h2>Health Canada has already named the problem and the tools</h2>
+      <p class="subtitle">The 2024-2028 Building Resilience plan lays out eight priorities. None of today's suppliers are delivering the domestic production piece.</p>
+      <div class="compact-grid cols-4">
+        <article class="compact-card priority-card" data-expand-key="Final CVDL">
+          <div class="priority-num">1</div>
+          <h4>Publish the final CVDL</h4>
+          <p>Names the medicines where shortages do the most harm</p>
+        </article>
+        <article class="compact-card priority-card" data-expand-key="Require SPMPs">
+          <div class="priority-num">2</div>
+          <h4>Advance SPMP and shortage-prevention obligations</h4>
+          <p>Draft rules are raising inventory and planning requirements</p>
+        </article>
+        <article class="compact-card priority-card">
+          <div class="priority-num">3</div>
+          <h4>Strengthen Responses</h4>
+          <p>Stronger enforcement and wider reporting rules</p>
+        </article>
+        <article class="compact-card priority-card" data-expand-key="Improve Reporting">
+          <div class="priority-num">4</div>
+          <h4>Improve reporting and visibility</h4>
+          <p>Clearer national data; a new platform lands in 2026-2027</p>
+        </article>
+        <article class="compact-card priority-card" data-expand-key="Build Analytics">
+          <div class="priority-num">5</div>
+          <h4>Build early warning and anticipation</h4>
+          <p>Spot shortages earlier with better data</p>
+        </article>
+        <article class="compact-card priority-card">
+          <div class="priority-num">6</div>
+          <h4>Information Sharing</h4>
+          <p>A secure channel for demand and inventory data</p>
+        </article>
+        <article class="compact-card priority-card">
+          <div class="priority-num">7</div>
+          <h4>Transparency</h4>
+          <p>Clearer information for clinicians and patients</p>
+        </article>
+        <article class="compact-card priority-card">
+          <div class="priority-num">8</div>
+          <h4>Modernize Frameworks</h4>
+          <p>Continuing regulatory updates</p>
+        </article>
+      </div>
+      <div class="quote blue policy-quote">
+        <p>"The exchange of information about product demand and inventories continues to be a challenge, with current data-sharing practices making it very difficult to know where the pressures are in the supply chain."</p>
+        <div class="attribution">Health Canada, Building Resilience 2024-2028</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s9">
+    <div class="slide-shell">
+      <div class="eyebrow blue">Routes and Mechanism</div>
+      <h2>Ottawa already has the mechanisms</h2>
+      <p class="subtitle">Health Canada, PHAC/NESS, and PSPC cover most of what's needed. The only open question is which one activates when a shortage hits.</p>
+      <div class="card-grid cols-3">
+        <article class="card blue media-card media-card-sm">
+          <img class="media-thumb media-thumb-center" src="images/pills-card.jpg" alt="Medicine tablets and capsules representing Health Canada's medicines oversight">
+          <div class="media-copy">
+            <h4>Health Canada</h4>
+            <p>Owns the shortage plan, the CVDL, and the case for a pilot.</p>
+          </div>
+        </article>
+        <article class="card green media-card media-card-sm">
+          <img class="media-thumb" src="images/warehouse-card.jpg" alt="Warehouse inventory image representing stockpiling and replenishment">
+          <div class="media-copy">
+            <h4>PHAC / NESS</h4>
+            <p>Runs the federal stockpile and already handles medicines.</p>
+          </div>
+        </article>
+        <article class="card amber media-card media-card-sm">
+          <img class="media-thumb" src="images/contract-card.jpg" alt="Contract signing image representing procurement design">
+          <div class="media-copy">
+            <h4>PSPC</h4>
+            <p>Builds the contract vehicle if a pilot is approved.</p>
+          </div>
+        </article>
+        <article class="card blue media-card media-card-sm">
+          <img class="media-thumb media-thumb-center" src="images/meeting-card.jpg" alt="Round-table meeting representing the federal task force">
+          <div class="media-copy">
+            <h4>Task force</h4>
+            <p>The current cross-department review table.</p>
+          </div>
+        </article>
+        <article class="card amber media-card media-card-sm">
+          <img class="media-thumb media-thumb-center" src="images/ised-building-card.jpg" alt="ISED headquarters building image from Wikimedia Commons">
+          <div class="media-copy">
+            <h4>ISED / PrairiesCan</h4>
+            <p>Regional manufacturing support if the health case clears.</p>
+          </div>
+        </article>
+        <article class="card red media-card media-card-sm">
+          <img class="media-thumb media-thumb-upper" src="images/dnd-soldiers-card.jpg" alt="Canadian soldiers in field exercise photo from Canada.ca">
+          <div class="media-copy">
+            <h4>DND</h4>
+            <p>A backup route for molecules with clear defence use.</p>
+          </div>
+        </article>
+      </div>
+      <div class="callout-row">
+        <div class="callout green"><p>Provinces still buy the medicines.</p></div>
+        <div class="callout amber"><p>The federal route opens only when a shortage justifies it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s10" data-print-scale="0.95">
+    <div class="slide-shell">
+      <div class="eyebrow green">CVDL Roadmap</div>
+      <h2>The CVDL roadmap is clear</h2>
+      <p class="subtitle">The December 2025 CVDL and the IQVIA data give us 82 molecules across five tiers. Orals are the best starting point. The rest of the list covers stockpile, hospital, and lower-volume use.</p>
+      <div class="roadmap-banner">
+        <div class="roadmap-banner-main">
+          <div class="micro-label green">What This Changes</div>
+          <strong>Start with the most critical, chronically short molecules. Expand later into higher-volume molecules.</strong>
+          <p>Start with the medicines that are critical and routinely short. Expand into stockpile, hospital, and broader coverage from the same list.</p>
+        </div>
+        <div class="roadmap-banner-side">
+          <div class="micro-label amber">IQVIA Signal</div>
+          <p>We spend about $40K/year on IQVIA volume data. It doesn't track shortages, so we combine it with other sources.</p>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="number">82</div>
+          <div class="label">molecules in the IQVIA-backed CVDL working list</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">17</div>
+          <div class="label">oral-only molecules in the file</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">64</div>
+          <div class="label">molecules that include a parenteral route</div>
+        </div>
+        <div class="stat-card">
+          <div class="number red">32</div>
+          <div class="label">molecules under 1M IQVIA units in the working file</div>
+        </div>
+      </div>
+      <div class="mini-grid">
+        <article class="mini-card blue">
+          <div class="micro-label blue">Tier 1</div>
+          <h4>First oral medicines</h4>
+          <p>First-phase orals: amoxicillin, ciprofloxacin, lithium, and similar CVDL molecules.</p>
+        </article>
+        <article class="mini-card green">
+          <div class="micro-label green">Tier 2</div>
+          <h4>Hospital and stockpile replenishables</h4>
+          <p>Electrolytes and additives: sodium, calcium, magnesium, potassium, dextrose, selenium, thiamine.</p>
+        </article>
+        <article class="mini-card amber">
+          <div class="micro-label amber">Tier 3</div>
+          <h4>Emergency and critical care lane</h4>
+          <p>Urgent-care medicines: epinephrine, naloxone, atropine, norepinephrine, oxytocin.</p>
+        </article>
+        <article class="mini-card red">
+          <div class="micro-label red">Tiers 4-5</div>
+          <h4>Later advanced build-out</h4>
+          <p>Complex anti-infectives, oncology, analgesics, and specialty — later phases, not now.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s13" data-print-scale="0.96">
+    <div class="slide-shell">
+      <div class="eyebrow amber">Optional Support</div>
+      <h2>Most of the pieces already exist</h2>
+      <p class="subtitle">Ottawa doesn't need new policy. It needs to line up the tools it has.</p>
+      <div class="compact-grid cols-4">
+        <article class="compact-card blue">
+          <div class="micro-label blue">1. Strategy</div>
+          <h4>Building Resilience Plan</h4>
+          <p>A plan, not a supplier.</p>
+        </article>
+        <article class="compact-card blue">
+          <div class="micro-label blue">2. Prioritization</div>
+          <h4>Critical Drugs List</h4>
+          <p>Names the medicines that matter most in a shortage.</p>
+        </article>
+        <article class="compact-card blue">
+          <div class="micro-label blue">3. Readiness</div>
+          <h4>Safety Stock and SPMP</h4>
+          <p>Raises the bar on Canadian inventory and shortage planning.</p>
+        </article>
+        <article class="compact-card green">
+          <div class="micro-label green">4. Stockpile</div>
+          <h4>NESS</h4>
+          <p>The clearest federal stockpile we have.</p>
+        </article>
+        <article class="compact-card green">
+          <div class="micro-label green">5. Readiness</div>
+          <h4>Defence and Life Sciences</h4>
+          <p>Opens a federal route when a medicine has defence or readiness value.</p>
+        </article>
+        <article class="compact-card red">
+          <div class="micro-label red">6. Procurement</div>
+          <h4>Buy Canadian Logic</h4>
+          <p>Allows a Canadian-supply preference where procurement rules permit it.</p>
+        </article>
+        <article class="compact-card amber">
+          <div class="micro-label amber">7. Coordination</div>
+          <h4>Task Force Window</h4>
+          <p>Gives proposals a review table, not just an audience.</p>
+        </article>
+        <article class="compact-card amber">
+          <div class="micro-label amber">8. Scale</div>
+          <h4>Strategic Innovation Fund</h4>
+          <p>Ottawa has funded pharma manufacturing before.</p>
+        </article>
+        <article class="compact-card amber">
+          <div class="micro-label amber">9. Precedent</div>
+          <h4>Biomanufacturing Support</h4>
+          <p>Precedent: Ottawa backs health manufacturing when the public case is clear.</p>
+        </article>
+        <article class="compact-card blue">
+          <div class="micro-label blue">10. Regulatory</div>
+          <h4>Accelerated Approval Logic</h4>
+          <p>Faster review helps most when there's a domestic manufacturer to use it.</p>
+        </article>
+        <article class="compact-card blue">
+          <div class="micro-label blue">11. Coordination</div>
+          <h4>Canadian Drug Agency</h4>
+          <p>May improve national coordination on demand.</p>
+        </article>
+        <article class="compact-card amber">
+          <div class="micro-label amber">12. Regional</div>
+          <h4>PrairiesCan and Alberta Fit</h4>
+          <p>Can back an Edmonton-region build through regional programs.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s14" class="comparison-slide" data-print-scale="0.94">
+    <div class="slide-shell compare-shell">
+      <div class="eyebrow amber">Appendix — G7 Compared</div>
+      <h2>🇩🇪 Germany runs monitoring and stockpile in one framework</h2>
+      <div class="two-col">
+        <article class="card green">
+          <div class="micro-label green">🇩🇪 Germany's Strategy</div>
+          <h4>One framework holds the shortage rules, monitoring, procurement, and production support</h4>
+          <ul>
+            <li>Safety-stock and shortage reporting live inside one national plan.</li>
+            <li>Monitoring is built in, not bolted on.</li>
+            <li>Procurement rules can favour resilient suppliers in critical categories.</li>
+            <li>Production support is easier to access because government direction is clearer.</li>
+          </ul>
+          <div class="mapping-note"><strong>Closest Canadian matches:</strong> #1 strategy, #3 readiness, #4 stockpile logic, and #8 industrial scale.</div>
+        </article>
+        <article class="card red">
+          <div class="micro-label red">Canada's 12-Part Stack</div>
+          <h4>Canadian pieces used in this comparison</h4>
+          <div class="compare-stack">
+            <article class="compact-card blue">
+              <div class="micro-label blue">#1 Strategy</div>
+              <h4>Building Resilience Plan</h4>
+              <p>We have federal direction. It doesn't produce medicine.</p>
+            </article>
+            <article class="compact-card blue">
+              <div class="micro-label blue">#3 Readiness</div>
+              <h4>Safety Stock and SPMP</h4>
+              <p>Readiness rules are stronger. Domestic production to back them isn't there yet.</p>
+            </article>
+            <article class="compact-card green">
+              <div class="micro-label green">#4 Stockpile</div>
+              <h4>NESS</h4>
+              <p>The reserve exists. Refilling it still depends on offshore suppliers.</p>
+            </article>
+            <article class="compact-card amber">
+              <div class="micro-label amber">#8 Scale</div>
+              <h4>Industrial Funding Tools</h4>
+              <p>Funding programs exist. Oral generics aren't the named target.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+      <div class="coverage-banner amber">
+        <div class="coverage-head">
+          <div>
+            <strong>Germany covers 4 of Canada's 12 pieces</strong>
+          </div>
+          <div class="coverage-score">4 / 12</div>
+        </div>
+        <div class="coverage-grid" aria-label="Germany coverage across Canada's 12-part stack">
+          <button type="button" class="coverage-pill active" data-expand-key="Building Resilience Plan" title="#1 Strategy" aria-label="Lever 1 — Building Resilience Plan">1</button>
+          <button type="button" class="coverage-pill" data-expand-key="Critical Drugs List" title="#2 Prioritization" aria-label="Lever 2 — Critical Drugs List">2</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Safety Stock and SPMP" title="#3 Readiness" aria-label="Lever 3 — Safety Stock and SPMP">3</button>
+          <button type="button" class="coverage-pill active" data-expand-key="NESS" title="#4 Stockpile" aria-label="Lever 4 — NESS">4</button>
+          <button type="button" class="coverage-pill" data-expand-key="Defence and Life Sciences" title="#5 Readiness" aria-label="Lever 5 — Defence and Life Sciences">5</button>
+          <button type="button" class="coverage-pill" data-expand-key="Buy Canadian Logic" title="#6 Procurement" aria-label="Lever 6 — Buy Canadian Logic">6</button>
+          <button type="button" class="coverage-pill" data-expand-key="Task Force Window" title="#7 Coordination" aria-label="Lever 7 — Task Force Window">7</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Strategic Innovation Fund" title="#8 Scale" aria-label="Lever 8 — Strategic Innovation Fund">8</button>
+          <button type="button" class="coverage-pill" data-expand-key="Biomanufacturing Support" title="#9 Precedent" aria-label="Lever 9 — Biomanufacturing Support">9</button>
+          <button type="button" class="coverage-pill" data-expand-key="Accelerated Approval Logic" title="#10 Regulatory" aria-label="Lever 10 — Accelerated Approval Logic">10</button>
+          <button type="button" class="coverage-pill" data-expand-key="Canadian Drug Agency" title="#11 Coordination" aria-label="Lever 11 — Canadian Drug Agency">11</button>
+          <button type="button" class="coverage-pill" data-expand-key="PrairiesCan and Alberta Fit" title="#12 Regional" aria-label="Lever 12 — PrairiesCan and Alberta Fit">12</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s15" class="comparison-slide" data-print-scale="0.93">
+    <div class="slide-shell compare-shell">
+      <div class="eyebrow amber">Appendix — G7 Compared</div>
+      <h2>France and Japan solve it with different tools</h2>
+      <div class="two-col">
+        <div class="compare-stack flush">
+          <article class="card green">
+            <div class="micro-label green">🇫🇷 France's Strategy</div>
+            <h4>Relocation, safety stock, industrial support</h4>
+            <p>France links essential-medicine supply to relocation, shortage rules, and clear government signals that attract private investment.</p>
+            <div class="mapping-note"><strong>Closest Canadian matches:</strong> #5 readiness, #6 procurement preference, and #9 industrial support.</div>
+          </article>
+          <article class="card blue">
+            <div class="micro-label blue">🇯🇵 Japan's Strategy</div>
+            <h4>Economic-security law plus standing backup capacity</h4>
+            <p>Japan treats pharma capacity as economic security and pays to keep backup and emergency production standing.</p>
+            <div class="mapping-note"><strong>Closest Canadian matches:</strong> #5 readiness, #9 capacity support, and #10 regulatory or enabling measures.</div>
+          </article>
+        </div>
+        <article class="card red">
+          <div class="micro-label red">Canada's 12-Part Stack</div>
+          <h4>Canadian pieces used in this comparison</h4>
+          <div class="compare-stack">
+            <article class="compact-card green">
+              <div class="micro-label green">#5 Readiness</div>
+              <h4>Defence and Life Sciences</h4>
+              <p>Defence readiness and life sciences is a side route here, not the main plan.</p>
+            </article>
+            <article class="compact-card red">
+              <div class="micro-label red">#6 Procurement</div>
+              <h4>Buy Domestic Logic</h4>
+              <p>Canadian-supply preference exists but isn't clearly wired into medication buying.</p>
+            </article>
+            <article class="compact-card amber">
+              <div class="micro-label amber">#9 Precedent</div>
+              <h4>Biomanufacturing Support</h4>
+              <p>Canada has funded health manufacturing before, but never with oral generics as the goal.</p>
+            </article>
+            <article class="compact-card blue">
+              <div class="micro-label blue">#10 Regulatory</div>
+              <h4>Accelerated Approval Logic</h4>
+              <p>Faster review helps most when paired with domestic capacity.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+      <div class="callout-row">
+        <div class="callout green"><p>Countries don't do this the same way.</p></div>
+        <div class="callout amber"><p>The point: several tools used together, not one at a time.</p></div>
+      </div>
+      <div class="coverage-banner amber">
+        <div class="coverage-head">
+          <div>
+            <strong>France and Japan together still miss most of Canada's stack</strong>
+          </div>
+          <div class="coverage-score">4 / 12</div>
+        </div>
+        <div class="coverage-grid" aria-label="France and Japan coverage across Canada's 12-part stack">
+          <button type="button" class="coverage-pill" data-expand-key="Building Resilience Plan" title="#1 Strategy" aria-label="Lever 1 — Building Resilience Plan">1</button>
+          <button type="button" class="coverage-pill" data-expand-key="Critical Drugs List" title="#2 Prioritization" aria-label="Lever 2 — Critical Drugs List">2</button>
+          <button type="button" class="coverage-pill" data-expand-key="Safety Stock and SPMP" title="#3 Readiness" aria-label="Lever 3 — Safety Stock and SPMP">3</button>
+          <button type="button" class="coverage-pill" data-expand-key="NESS" title="#4 Stockpile" aria-label="Lever 4 — NESS">4</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Defence and Life Sciences" title="#5 Readiness" aria-label="Lever 5 — Defence and Life Sciences">5</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Buy Canadian Logic" title="#6 Procurement" aria-label="Lever 6 — Buy Canadian Logic">6</button>
+          <button type="button" class="coverage-pill" data-expand-key="Task Force Window" title="#7 Coordination" aria-label="Lever 7 — Task Force Window">7</button>
+          <button type="button" class="coverage-pill" data-expand-key="Strategic Innovation Fund" title="#8 Scale" aria-label="Lever 8 — Strategic Innovation Fund">8</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Biomanufacturing Support" title="#9 Precedent" aria-label="Lever 9 — Biomanufacturing Support">9</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Accelerated Approval Logic" title="#10 Regulatory" aria-label="Lever 10 — Accelerated Approval Logic">10</button>
+          <button type="button" class="coverage-pill" data-expand-key="Canadian Drug Agency" title="#11 Coordination" aria-label="Lever 11 — Canadian Drug Agency">11</button>
+          <button type="button" class="coverage-pill" data-expand-key="PrairiesCan and Alberta Fit" title="#12 Regional" aria-label="Lever 12 — PrairiesCan and Alberta Fit">12</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s16" class="comparison-slide" data-print-scale="0.94">
+    <div class="slide-shell compare-shell">
+      <div class="eyebrow amber">Appendix — G7 Compared</div>
+      <h2>🇺🇸 The US uses permanent federal capacity</h2>
+      <div class="two-col">
+        <article class="card green">
+          <div class="micro-label green">🇺🇸 United States</div>
+          <h4>Priority lists, contracts, emergency powers, standing coordination</h4>
+          <ul>
+            <li>Essential-medicines lists frame the federal problem.</li>
+            <li>Contracts and industrial support fund domestic manufacturing and APIs.</li>
+            <li>Emergency powers reinforce the national-security case.</li>
+            <li>Coordination is permanent, not a recurring consultation.</li>
+          </ul>
+          <div class="mapping-note"><strong>Closest Canadian matches:</strong> #2 prioritization, #3 readiness, #5 security framing, and #7 coordination.</div>
+        </article>
+        <article class="card red">
+          <div class="micro-label red">Canada's 12-Part Stack</div>
+          <h4>Canadian pieces used in this comparison</h4>
+          <div class="compare-stack">
+            <article class="compact-card blue">
+              <div class="micro-label blue">#2 Prioritization</div>
+              <h4>Critical Drugs List</h4>
+              <p>Canada named the critical medicines. The response behind the list isn't built yet.</p>
+            </article>
+            <article class="compact-card blue">
+              <div class="micro-label blue">#3 Readiness</div>
+              <h4>Safety Stock and SPMP</h4>
+              <p>Inventory rules are tightening. The domestic backup behind them isn't there.</p>
+            </article>
+            <article class="compact-card green">
+              <div class="micro-label green">#5 Readiness</div>
+              <h4>Defence and Life Sciences</h4>
+              <p>The security language exists. The permanent federal setup doesn't.</p>
+            </article>
+            <article class="compact-card amber">
+              <div class="micro-label amber">#7 Coordination</div>
+              <h4>Task Force Window</h4>
+              <p>Canada has expedited approval. It doesn't have the standing federal setup the US has built.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+      <div class="quote red">
+        <p>"The US lesson isn't bigger spending. It's using several federal tools at once."</p>
+      </div>
+      <div class="coverage-banner amber">
+        <div class="coverage-head">
+          <div>
+            <strong>The US covers 4 of Canada's 12 — still not the full picture</strong>
+          </div>
+          <div class="coverage-score">4 / 12</div>
+        </div>
+        <div class="coverage-grid" aria-label="United States coverage across Canada's 12-part stack">
+          <button type="button" class="coverage-pill" data-expand-key="Building Resilience Plan" title="#1 Strategy" aria-label="Lever 1 — Building Resilience Plan">1</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Critical Drugs List" title="#2 Prioritization" aria-label="Lever 2 — Critical Drugs List">2</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Safety Stock and SPMP" title="#3 Readiness" aria-label="Lever 3 — Safety Stock and SPMP">3</button>
+          <button type="button" class="coverage-pill" data-expand-key="NESS" title="#4 Stockpile" aria-label="Lever 4 — NESS">4</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Defence and Life Sciences" title="#5 Readiness" aria-label="Lever 5 — Defence and Life Sciences">5</button>
+          <button type="button" class="coverage-pill" data-expand-key="Buy Canadian Logic" title="#6 Procurement" aria-label="Lever 6 — Buy Canadian Logic">6</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Task Force Window" title="#7 Coordination" aria-label="Lever 7 — Task Force Window">7</button>
+          <button type="button" class="coverage-pill" data-expand-key="Strategic Innovation Fund" title="#8 Scale" aria-label="Lever 8 — Strategic Innovation Fund">8</button>
+          <button type="button" class="coverage-pill" data-expand-key="Biomanufacturing Support" title="#9 Precedent" aria-label="Lever 9 — Biomanufacturing Support">9</button>
+          <button type="button" class="coverage-pill" data-expand-key="Accelerated Approval Logic" title="#10 Regulatory" aria-label="Lever 10 — Accelerated Approval Logic">10</button>
+          <button type="button" class="coverage-pill" data-expand-key="Canadian Drug Agency" title="#11 Coordination" aria-label="Lever 11 — Canadian Drug Agency">11</button>
+          <button type="button" class="coverage-pill" data-expand-key="PrairiesCan and Alberta Fit" title="#12 Regional" aria-label="Lever 12 — PrairiesCan and Alberta Fit">12</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s17" class="comparison-slide" data-print-scale="0.92">
+    <div class="slide-shell compare-shell">
+      <div class="eyebrow green">Project Credibility</div>
+      <h2>Why Medicine Place can deliver this</h2>
+      <p class="subtitle">Medicine Place only works if it fits Canada&apos;s existing federal tools and comes in review-first, not contract-first.</p>
+      <div class="two-col">
+        <article class="card green">
+          <div class="micro-label green">What Medicine Place Brings</div>
+          <h4>A small, reviewable platform</h4>
+          <p>Pharma services experience, an Edmonton-region facility, an oral-first starting list, Glass Box reporting, and private capital tied to milestones.</p>
+        </article>
+        <article class="card blue">
+          <div class="micro-label blue">Canadian Implication</div>
+          <h4>It has to fit Canada&apos;s existing federal tools</h4>
+          <p>Supports the shortage plan, the CVDL, safety-stock rules, NESS, task-force review, and regional development — without touching provincial buying.</p>
+        </article>
+      </div>
+      <div class="compact-grid cols-4 project-fit-grid">
+        <article class="compact-card blue" data-expand-key="Building Resilience Plan">
+          <h4>Resilience agenda</h4>
+          <p>Domestic supply for CVDL medicines.</p>
+        </article>
+        <article class="compact-card blue" data-expand-key="Critical Drugs List">
+          <h4>CVDL targeting</h4>
+          <p>Starts with the medicines Ottawa already prioritizes.</p>
+        </article>
+        <article class="compact-card blue" data-expand-key="Safety Stock and SPMP">
+          <h4>Safety stock fit</h4>
+          <p>Strengthens Canadian inventory.</p>
+        </article>
+        <article class="compact-card green" data-expand-key="NESS">
+          <h4>NESS pathway</h4>
+          <p>A candidate stockpile partner.</p>
+        </article>
+        <article class="compact-card green" data-expand-key="Defence and Life Sciences">
+          <h4>Defence readiness</h4>
+          <p>Relevant for emergency-response molecules.</p>
+        </article>
+        <article class="compact-card red" data-expand-key="Buy Canadian Logic">
+          <h4>Canadian supply option</h4>
+          <p>Canadian content for selected federal supply.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="Task Force Window">
+          <h4>Task-force route</h4>
+          <p>Ready for federal review.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="Strategic Innovation Fund">
+          <h4>Industrial policy</h4>
+          <p>Privately funded, with room for support if needed.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="Biomanufacturing Support">
+          <h4>Manufacturing gap</h4>
+          <p>Oral generics are the gap.</p>
+        </article>
+        <article class="compact-card blue" data-expand-key="Accelerated Approval Logic">
+          <h4>Faster review fit</h4>
+          <p>Works with expedited review.</p>
+        </article>
+        <article class="compact-card blue" data-expand-key="Canadian Drug Agency">
+          <h4>Cross-government fit</h4>
+          <p>One platform, one review.</p>
+        </article>
+        <article class="compact-card amber" data-expand-key="PrairiesCan and Alberta Fit">
+          <h4>Edmonton-region fit</h4>
+          <p>Edmonton-region manufacturing base.</p>
+        </article>
+      </div>
+      <div class="coverage-banner green">
+        <div class="coverage-head">
+          <div>
+            <strong>Medicine Place is the only platform here that lines up with all 12</strong>
+            <div class="coverage-subtext">No foreign model covers all 12. Medicine Place only works if it fits all 12.</div>
+          </div>
+          <div class="coverage-score">12 / 12</div>
+        </div>
+        <div class="coverage-grid" aria-label="Medicine Place coverage across Canada's 12-part stack">
+          <button type="button" class="coverage-pill active" data-expand-key="Building Resilience Plan" title="#1 Strategy" aria-label="Lever 1 — Building Resilience Plan">1</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Critical Drugs List" title="#2 Prioritization" aria-label="Lever 2 — Critical Drugs List">2</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Safety Stock and SPMP" title="#3 Readiness" aria-label="Lever 3 — Safety Stock and SPMP">3</button>
+          <button type="button" class="coverage-pill active" data-expand-key="NESS" title="#4 Stockpile" aria-label="Lever 4 — NESS">4</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Defence and Life Sciences" title="#5 Readiness" aria-label="Lever 5 — Defence and Life Sciences">5</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Buy Canadian Logic" title="#6 Procurement" aria-label="Lever 6 — Buy Canadian Logic">6</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Task Force Window" title="#7 Coordination" aria-label="Lever 7 — Task Force Window">7</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Strategic Innovation Fund" title="#8 Scale" aria-label="Lever 8 — Strategic Innovation Fund">8</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Biomanufacturing Support" title="#9 Precedent" aria-label="Lever 9 — Biomanufacturing Support">9</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Accelerated Approval Logic" title="#10 Regulatory" aria-label="Lever 10 — Accelerated Approval Logic">10</button>
+          <button type="button" class="coverage-pill active" data-expand-key="Canadian Drug Agency" title="#11 Coordination" aria-label="Lever 11 — Canadian Drug Agency">11</button>
+          <button type="button" class="coverage-pill active" data-expand-key="PrairiesCan and Alberta Fit" title="#12 Regional" aria-label="Lever 12 — PrairiesCan and Alberta Fit">12</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s18">
+    <div class="slide-shell">
+      <div class="eyebrow green">Phased Delivery</div>
+      <h2>Start small. Expand after proof.</h2>
+      <p class="subtitle">This is a first step on Canada&apos;s shortage-prone generics — not a plan to replace the whole market.</p>
+      <div class="two-col">
+        <article class="card blue" data-expand-key="Lower-complexity oral core">
+          <div class="micro-label blue">Phase 1</div>
+          <h3>Start with a small set of oral CVDL medicines</h3>
+          <ul>
+            <li>Lower execution risk than a broad launch</li>
+            <li>Easier for officials to evaluate</li>
+            <li>Faster federal review on a narrow set</li>
+            <li>An opening dozen, not a locked list</li>
+          </ul>
+        </article>
+        <article class="card green" data-expand-key="No maturity inflation">
+          <div class="micro-label green">Phase 2</div>
+          <h3>Expand only after proof</h3>
+          <ul>
+            <li>Add more orals only after phase one proves out</li>
+            <li>Consider complex formats only after readiness</li>
+            <li>Tie expansion to demand, regulatory, and operating milestones</li>
+            <li>Scale only if the federal route actually works</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="slide-shell">
+      <div class="eyebrow green">Medicine Place</div>
+      <h2>A practical way to deliver this federally</h2>
+      <p class="subtitle">Medicine Place fits because it's narrow, phased, and built around shortages — not a procurement overhaul.</p>
+      <div class="card-grid cols-2">
+        <article class="card amber media-card media-card-lg" data-expand-key="Triggered supply model">
+          <img class="media-thumb" src="images/factory-card.jpg" alt="Domestic pharmaceutical production floor representing activated resilience supply">
+          <div class="media-copy">
+            <div class="media-kicker">Resilience Supply</div>
+            <h4>Triggered resilience supply model</h4>
+            <p>A standby Canadian supply that turns on only when a shortage, stockpile, or readiness need calls for it.</p>
+          </div>
+        </article>
+        <article class="card blue media-card media-card-lg" data-expand-key="CVDL targeting">
+          <img class="media-thumb" src="images/pills2-card.jpg" alt="Medicine tablets and capsules representing an oral-first CVDL starting set">
+          <div class="media-copy">
+            <div class="media-kicker">Starting Set</div>
+            <h4>Selected oral CVDL start set</h4>
+            <p>Start with lower-complexity oral molecules that already go short.</p>
+          </div>
+        </article>
+        <article class="card red media-card media-card-lg" data-expand-key="Glass Box transparency">
+          <img class="media-thumb" src="images/dashboard-crisp-card.svg" alt="Crisp analytics dashboard representing Glass Box reporting and visibility">
+          <div class="media-copy">
+            <div class="media-kicker">Visibility Layer</div>
+            <h4>Glass Box reporting</h4>
+            <p>Clearer production, inventory, and supply-chain data than the current market provides.</p>
+          </div>
+        </article>
+        <article class="card green media-card media-card-lg" data-expand-key="Private capital tied to delivery">
+          <img class="media-thumb" src="images/warehouse-card.jpg" alt="Modern warehouse interior representing private capital tied to delivery infrastructure">
+          <div class="media-copy">
+            <div class="media-kicker">Execution Capital</div>
+            <h4>Private capital tied to delivery</h4>
+            <p>Privately financed, tied to milestones, contracted demand, and phased scale-up.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s19">
+    <div class="slide-shell">
+      <div class="eyebrow blue">Facility</div>
+      <h2>Edmonton-Region Facility</h2>
+      <p class="subtitle">Illustrative facility and layout showing how this would be built.</p>
+      <div class="two-col">
+        <article class="card blue">
+          <div class="micro-label blue">Visual</div>
+          <h3>Aerial facility image</h3>
+          <img src="images/facility-aerial.png" alt="Aerial facility image used to illustrate the Edmonton-region facility pathway" style="display:block; width:100%; height:280px; margin-top:18px; border-radius:18px; object-fit:cover; border:1px solid rgba(25, 34, 43, 0.1);">
+        </article>
+        <article class="card green">
+          <div class="micro-label green">Layout</div>
+          <h3>Drug-manufacturing layout</h3>
+          <img src="images/facility-layout-drug-manufacturing.jpg" alt="Drug-manufacturing facility layout used to illustrate the Edmonton-region facility pathway" style="display:block; width:100%; height:280px; margin-top:18px; border-radius:18px; object-fit:contain; background:#fff; padding:14px; border:1px solid rgba(25, 34, 43, 0.1);">
+        </article>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-summary">
+          <strong>Project In One Line</strong>
+          <p>Edmonton-region, privately financed, phased oral-first build, targeting selected CVDL medicines.</p>
+          <div style="display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:16px;">
+            <img src="images/medicine-place-logo.png" alt="Medicine Place" style="height:42px;" onerror="this.style.display='none'">
+            <img src="images/MedPac-Logo-Sep-2025.png" alt="MedPac" style="height:28px;" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="footer-contacts">
+          <strong class="heading">Contacts</strong>
+          <div class="contact-item">
+            <strong>Farooq Jutt</strong>
+            <a href="mailto:farooq@medicineplace.ca" style="color: var(--blue); text-decoration: none;">farooq@medicineplace.ca</a>
+          </div>
+          <div class="contact-item">
+            <strong>Alfred Chau</strong>
+            <a href="mailto:alfred@medicineplace.ca" style="color: var(--blue); text-decoration: none;">alfred@medicineplace.ca</a>
+          </div>
+        </div>
+      </div>
+      <div class="callout-row">
+        <div class="callout blue"><p>Edmonton-region.</p></div>
+        <div class="callout green"><p><a href="glass-box-appendix.html" style="text-decoration: none;">Open transparency appendix</a></p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const isExportMode = urlParams.get('export') === 'pdf';
+if (isExportMode) {
+  document.body.classList.add('export-pdf');
+}
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+const mainEl = document.querySelector('main');
+const sections = Array.from(document.querySelectorAll('main > section'));
+const progress = document.getElementById('progress');
+const headerStatus = document.getElementById('header-status');
+const headerToc = document.getElementById('header-toc');
+const headerPills = Array.from(document.querySelectorAll('.header-pill'));
+const navPrev = document.getElementById('nav-prev');
+const navNext = document.getElementById('nav-next');
+const floatingCoverageRail = document.getElementById('floating-coverage-rail');
+
+let currentSlide = 0;
+let isAnimating = false;
+let printFitRaf = 0;
+
+const slideThemes = {
+  s1: 'overview',
+  s2: 'overview',
+  s3: 'problem',
+  s4: 'problem',
+  s5: 'problem',
+  s6: 'path',
+  s9: 'path',
+  s10: 'path',
+  s12: 'path',
+  s13: 'path',
+  s14: 'peers',
+  s15: 'peers',
+  s16: 'peers',
+  s17: 'project',
+  s18: 'project',
+  s19: 'project'
+};
+
+function getInitialSlideIndex() {
+  const hash = window.location.hash;
+  if (!hash) return 0;
+  const idx = sections.findIndex(function(section) {
+    return "#" + section.id === hash;
+  });
+  return idx >= 0 ? idx : 0;
+}
+
+function getSlideTheme(slide) {
+  return slideThemes[slide.id] || 'overview';
+}
+
+function layoutSlides() {
+  sections.forEach(function(section, index) {
+    section.classList.toggle('is-active', index === currentSlide);
+    if (index < currentSlide) {
+      section.style.transform = 'translateY(-100dvh)';
+      section.style.opacity = '0';
+      section.style.pointerEvents = 'none';
+      section.setAttribute('aria-hidden', 'true');
+    } else if (index === currentSlide) {
+      section.style.transform = 'translateY(0)';
+      section.style.opacity = '1';
+      section.style.pointerEvents = 'auto';
+      section.setAttribute('aria-hidden', 'false');
+    } else {
+      section.style.transform = 'translateY(100dvh)';
+      section.style.opacity = '0';
+      section.style.pointerEvents = 'none';
+      section.setAttribute('aria-hidden', 'true');
+    }
+  });
+}
+
+function updateUI() {
+  const slide = sections[currentSlide];
+  const label = (currentSlide + 1) + ' / ' + sections.length;
+  const pct = sections.length > 1 ? (currentSlide / (sections.length - 1)) * 100 : 0;
+  const hasCoverageBanner = !!slide.querySelector('.coverage-banner');
+
+  progress.style.width = pct + '%';
+  headerStatus.textContent = label;
+  navPrev.disabled = currentSlide === 0;
+  navNext.disabled = currentSlide === sections.length - 1;
+  const activeTheme = getSlideTheme(slide);
+  let activeThemeIndex = 0;
+  headerPills.forEach(function(link) {
+    const isActive = link.dataset.theme === activeTheme;
+    link.classList.toggle('is-active', isActive);
+    if (isActive) {
+      activeThemeIndex = headerPills.indexOf(link);
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+  if (headerToc) {
+    headerToc.style.setProperty('--toc-index', String(activeThemeIndex));
+  }
+  document.body.classList.toggle('compare-active', hasCoverageBanner);
+  syncFloatingCoverageRail(slide);
+
+  if (slide && slide.id) {
+    try {
+      history.replaceState(null, '', '#' + slide.id);
+    } catch (error) {}
+  }
+}
+
+function getPrintTarget(section) {
+  const firstChild = section.firstElementChild;
+  if (firstChild && (firstChild.classList.contains('slide-shell') || firstChild.classList.contains('footer-panel'))) {
+    return firstChild;
+  }
+  return section.querySelector('.slide-shell, .footer-panel');
+}
+
+function clearPrintFit() {
+  if (printFitRaf) {
+    window.cancelAnimationFrame(printFitRaf);
+    printFitRaf = 0;
+  }
+
+  sections.forEach(function(section) {
+    const target = getPrintTarget(section);
+    if (!target) return;
+    target.style.removeProperty('--print-scale');
+  });
+}
+
+function getSectionPrintScaleCap(section) {
+  const raw = Number(section.dataset.printScale || '1');
+  if (!Number.isFinite(raw)) return 1;
+  return Math.min(1, Math.max(0.7, raw));
+}
+
+function measurePrintTarget(target) {
+  const rect = target.getBoundingClientRect();
+  return {
+    width: Math.max(target.scrollWidth || 0, target.offsetWidth || 0, rect.width || 0),
+    height: Math.max(target.scrollHeight || 0, target.offsetHeight || 0, rect.height || 0)
+  };
+}
+
+function applyPrintScale(section, pageW, pageH) {
+  const target = getPrintTarget(section);
+  if (!target) return;
+
+  const cap = getSectionPrintScaleCap(section);
+  target.style.setProperty('--print-scale', '1');
+
+  const contentBox = measurePrintTarget(target);
+  if (!contentBox.width || !contentBox.height) {
+    target.style.setProperty('--print-scale', String(cap));
+    return;
+  }
+
+  const autoFitScale = Math.min(
+    1,
+    pageW / contentBox.width,
+    pageH / contentBox.height
+  );
+
+  const safeScale = Math.min(1, autoFitScale * 0.975);
+  target.style.setProperty('--print-scale', String(Math.min(cap, safeScale)));
+}
+
+function fitSlidesForPrint() {
+  clearPrintFit();
+
+  document.body.classList.add('print-measuring');
+
+  printFitRaf = window.requestAnimationFrame(function() {
+    printFitRaf = window.requestAnimationFrame(function() {
+      var pageH = 8.5 * 96 - 0.7 * 96;
+      var pageW = 11 * 96 - 0.7 * 96;
+
+      sections.forEach(function(section) {
+        applyPrintScale(section, pageW, pageH);
+      });
+
+      document.body.classList.remove('print-measuring');
+      printFitRaf = 0;
+    });
+  });
+}
+
+async function prepareAndPrint() {
+  document.body.classList.add('print-measuring');
+  await new Promise(function(r) { requestAnimationFrame(r); });
+  await new Promise(function(r) { requestAnimationFrame(r); });
+
+  var pageH = 8.5 * 96 - 0.7 * 96;
+  var pageW = 11 * 96 - 0.7 * 96;
+
+  sections.forEach(function(section) {
+    applyPrintScale(section, pageW, pageH);
+  });
+
+  document.body.classList.remove('print-measuring');
+
+  if (document.fonts && document.fonts.ready) {
+    try {
+      await document.fonts.ready;
+    } catch (error) {}
+  }
+  window.setTimeout(function() {
+    window.print();
+  }, 80);
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= sections.length || index === currentSlide || isAnimating) return;
+  isAnimating = true;
+  closeAllPopovers();
+  resetEdgeTransferState();
+  releaseFocusedSection();
+  sections[index].scrollTop = 0;
+  currentSlide = index;
+  layoutSlides();
+  updateUI();
+  window.setTimeout(function() {
+    isAnimating = false;
+  }, 320);
+}
+
+function syncSlideToHash() {
+  const nextIndex = getInitialSlideIndex();
+  if (nextIndex === currentSlide) {
+    scheduleReleaseFocusedSection();
+    return;
+  }
+  closeAllPopovers();
+  resetEdgeTransferState();
+  currentSlide = nextIndex;
+  sections[currentSlide].scrollTop = 0;
+  layoutSlides();
+  updateUI();
+  scheduleReleaseFocusedSection();
+}
+
+function navigateToSlideHash(hash, pushHistory) {
+  if (!hash) return;
+  const nextIndex = sections.findIndex(function(section) {
+    return '#' + section.id === hash;
+  });
+  if (nextIndex < 0) return;
+
+  if (pushHistory && hash !== window.location.hash) {
+    try {
+      history.pushState(null, '', hash);
+    } catch (error) {
+      window.location.hash = hash;
+      return;
+    }
+  }
+
+  if (nextIndex === currentSlide) {
+    sections[currentSlide].scrollTop = 0;
+    layoutSlides();
+    updateUI();
+    scheduleReleaseFocusedSection();
+    return;
+  }
+
+  goToSlide(nextIndex);
+}
+
+function slideCanScroll(slide) {
+  return slide.scrollHeight > slide.clientHeight + 4;
+}
+
+function slideAtBottom(slide) {
+  return slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 4;
+}
+
+function slideAtTop(slide) {
+  return slide.scrollTop <= 4;
+}
+
+function slideNearBottom(slide, threshold) {
+  return slide.scrollTop + slide.clientHeight >= slide.scrollHeight - threshold;
+}
+
+function slideNearTop(slide, threshold) {
+  return slide.scrollTop <= threshold;
+}
+
+function releaseFocusedSection() {
+  const active = document.activeElement;
+  if (!active || active === document.body) return;
+  const activeSection = active.closest ? active.closest('main > section') : null;
+  if (!activeSection || active !== activeSection) return;
+  if (sections.indexOf(activeSection) === -1) return;
+  active.blur();
+}
+
+function scheduleReleaseFocusedSection() {
+  window.requestAnimationFrame(function() {
+    window.requestAnimationFrame(releaseFocusedSection);
+  });
+}
+
+const refs = {
+  cvdl: '<a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/critical-vulnerable-list.html" target="_blank" rel="noopener noreferrer">Health Canada — Critical and Vulnerable Drug List</a>',
+  resilience: '<a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028.html" target="_blank" rel="noopener noreferrer">Health Canada — Building resilience: 2024 to 2028 plan</a>',
+  resiliencePdf: 'https://www.canada.ca/content/dam/hc-sc/documents/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028/building-resilience-plan-to-address-health-product-shortages-2024-2028.pdf',
+  taskForce: '<a href="https://www.canada.ca/en/health-canada/news/2026/03/new-task-force-to-enhance-canadas-competitiveness-and-improve-access-to-innovative-medicines.html" target="_blank" rel="noopener noreferrer">Health Canada — Pharmaceutical and Life Sciences Sector Task Force</a>',
+  ness: '<a href="https://www.canada.ca/en/public-health/services/emergency-preparedness-response/national-emergency-strategic-stockpile.html" target="_blank" rel="noopener noreferrer">PHAC — National Emergency Strategic Stockpile</a>',
+  shortageReview: '<a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/2024-2025-review.html" target="_blank" rel="noopener noreferrer">Health Canada — Drug Shortages in Canada, 2024-2025 Review</a>',
+  shortageDb: '<a href="https://healthproductshortages.ca/" target="_blank" rel="noopener noreferrer">Health Product Shortages Canada — mandatory reporting database</a>',
+  gazette: '<a href="https://www.canada.ca/en/health-canada/programs/consultation-proposed-amendments-regulations-health-product-shortages.html" target="_blank" rel="noopener noreferrer">Health Canada — proposed shortage regulations consultation</a> · <a href="https://www.canada.ca/en/health-canada/programs/consultation-amend-regulations-address-health-product-shortages/notice-intent.html" target="_blank" rel="noopener noreferrer">Health Canada — notice of intent on shortage regulations</a> · <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/regulations-guidance/guide-shortage-prevention-mitigation-plans.html" target="_blank" rel="noopener noreferrer">Health Canada — SPMP draft guide</a> · <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/regulations-guidance/guide-safety-stocks.html" target="_blank" rel="noopener noreferrer">Health Canada — safety stock draft guide</a>',
+  pspc: '<a href="https://www.canada.ca/en/public-services-procurement/corporate/mandate.html" target="_blank" rel="noopener noreferrer">PSPC — central purchasing agent mandate</a> · <a href="https://www.canada.ca/en/public-services-procurement/services/acquisitions/support-for-businesses/understand-procurement-process.html" target="_blank" rel="noopener noreferrer">PSPC — federal procurement process</a>',
+  buyCanadian: '<a href="https://www.canada.ca/en/public-services-procurement/services/acquisitions/selling-federal-government/buy-canadian.html" target="_blank" rel="noopener noreferrer">PSPC — Buy Canadian</a> · <a href="https://canadabuys.canada.ca/en/buy-canadian-policy/buy-canadian-procurement-policy-framework" target="_blank" rel="noopener noreferrer">CanadaBuys — Buy Canadian Procurement Policy Framework</a>',
+  dnd: '<a href="https://www.canada.ca/en/department-national-defence/corporate/reports-publications/industrial-strategy/security-sovereignty-prosperity.html" target="_blank" rel="noopener noreferrer">DND — Canada’s Defence Industrial Strategy</a>',
+  prairies: '<a href="https://www.canada.ca/en/prairies-economic-development/news/2026/04/government-of-canada-announces-additional-investment-to-support-the-canadian-critical-drug-initiative.html" target="_blank" rel="noopener noreferrer">PrairiesCan — Canadian Critical Drug Initiative release (Apr. 10, 2026)</a>',
+  ised: '<a href="https://ised-isde.canada.ca/site/ised/en/programs-and-initiatives/health-emergency-readiness-canada/overview-canadas-biomanufacturing-and-life-sciences-strategy" target="_blank" rel="noopener noreferrer">ISED — Overview of Canada’s Biomanufacturing and Life Sciences Strategy</a> · <a href="https://ised-isde.canada.ca/site/ised/en/programs-and-initiatives/health-emergency-readiness-canada/biomanufacturing/about-biomanufacturing-and-life-sciences-canada" target="_blank" rel="noopener noreferrer">ISED — About biomanufacturing and life sciences in Canada</a>',
+  cgpa: '<a href="https://canadiangenerics.ca/new-study-calls-for-action-to-protect-canadas-supply-of-prescription-medicines/" target="_blank" rel="noopener noreferrer">CGPA — domestic capacity study summary</a> · <a href="https://canadiangenerics.ca/wp-content/uploads/2022/02/02.22-EY-CGPA-Capacity-Study_FINAL-1.pdf" target="_blank" rel="noopener noreferrer">CGPA / EY — Manufacturing Capacity Study</a> · <a href="https://canadiangenerics.ca/medicines/drug-shortages/" target="_blank" rel="noopener noreferrer">CGPA — Drug shortages overview</a>',
+  cpha: '<a href="https://www.pharmacists.ca/advocacy/issues/drug-shortages/?lang=en" target="_blank" rel="noopener noreferrer">CPhA — Drug Shortages</a> · <a href="https://www.pharmacists.ca/advocacy/issues/drug-shortages/advocacy-activities/" target="_blank" rel="noopener noreferrer">CPhA — advocacy activities on shortages</a> · <a href="https://www.pharmacists.ca/advocacy/issues/drug-shortages/managing-current-drug-shortages/" target="_blank" rel="noopener noreferrer">CPhA — managing current shortages</a>',
+  whoTb: '<a href="https://www.who.int/health-topics/tuberculosis" target="_blank" rel="noopener noreferrer">WHO tuberculosis guidance</a>',
+  whoEssential: '<a href="https://www.who.int/groups/expert-committee-on-selection-and-use-of-essential-medicines" target="_blank" rel="noopener noreferrer">WHO essential medicines framework</a>',
+  hc: '<a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer">Health Canada — Drug shortages in Canada</a>',
+  phac: '<a href="https://www.canada.ca/en/public-health/corporate/mandate/about-agency/mandate.html" target="_blank" rel="noopener noreferrer">PHAC — mandate and emergency response role</a> · <a href="https://www.canada.ca/en/public-health/services/emergency-preparedness-response/national-emergency-strategic-stockpile/comprehensive-management-plan.html" target="_blank" rel="noopener noreferrer">PHAC — NESS comprehensive management plan</a>',
+  germany: '<a href="https://www.bfarm.de/EN/Medicinal-products/Information-on-medicinal-products/Supply-shortages/_node.html" target="_blank" rel="noopener noreferrer">Germany — BfArM supply shortages</a> · <a href="https://www.bfarm.de/EN/Medicinal-products/Information-on-medicinal-products/Supply-shortages/ALBVVG/_artikel.html?nn=968802" target="_blank" rel="noopener noreferrer">Germany — ALBVVG</a>',
+  france: '<a href="https://sante.gouv.fr/IMG/pdf/dp_relocalisation_medicaments_essentiels.pdf" target="_blank" rel="noopener noreferrer">France — essential medicines relocalization dossier</a> · <a href="https://www.entreprises.gouv.fr/la-dge/actualites/france-2030-accelerer-la-relocalisation-des-medicaments-essentiels" target="_blank" rel="noopener noreferrer">France — France 2030 medicines relocalization</a>',
+  japan: '<a href="https://www.cao.go.jp/keizai_anzen_hosho/suishinhou/supply_chain/doc/jissekienglish.pdf" target="_blank" rel="noopener noreferrer">Japan — economic security supply-chain resilience</a> · <a href="https://www.mhlw.go.jp/stf/newpage_48834.html" target="_blank" rel="noopener noreferrer">Japan — stable pharmaceutical supply support program</a>',
+  us: '<a href="https://aspr.hhs.gov/ibx/Pages/EssentialMedicines-2022.aspx" target="_blank" rel="noopener noreferrer">United States — HHS essential medicines resilience assessment</a> · <a href="https://aspr.hhs.gov/legal/DPA/Pages/Title-III.aspx" target="_blank" rel="noopener noreferrer">United States — HHS Defense Production Act Title III</a>',
+  cda: '<a href="https://www.canada.ca/en/health-canada/corporate/about-health-canada/activities-responsibilities/canadian-drug-agency-transition-office.html" target="_blank" rel="noopener noreferrer">Health Canada — Canadian Drug Agency Transition Office</a>',
+  antibioticNotice: '<a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/information-consumers/supply-notices/antibiotic-oral-suspension.html" target="_blank" rel="noopener noreferrer">Health Canada — antibiotic oral suspension shortage notice</a>',
+  amoxApi: '<a href="https://globalnews.ca/news/9254123/antibiotic-amoxicillin-shortage-canada/" target="_blank" rel="noopener noreferrer">Global News — amoxicillin shortage tied to API supply in China and India</a>',
+  compounding: '<a href="https://globalnews.ca/news/9560598/calgary-compounding-pharmacies-children-medicine/" target="_blank" rel="noopener noreferrer">Global News — compounding pharmacies under pressure during pediatric shortages</a>',
+  parolConcentration: '<a href="https://globalnews.ca/news/9561007/alberta-imported-childrens-pain-medication-concentration/" target="_blank" rel="noopener noreferrer">Global News — Parol concentration and counselling issues</a>',
+  parolAftermath: '<a href="https://globalnews.ca/news/10906333/alberta-turkey-pain-medication-money/" target="_blank" rel="noopener noreferrer">Global News — later fallout over Alberta\'s Turkish medication deal</a>'
+};
+
+const expandCopy = {
+  'Nobody in Ottawa knows': {
+    plain: 'Visibility goes first. API and fill-finish problems show up at offshore plants and in wholesaler systems — not on a federal dashboard. During the amoxicillin shortage, the signals came from raw-ingredient suppliers in China and India. Health Canada later called the oral-suspension shortage a demand problem running since fall 2022.',
+    impact: 'That delay costs. By the time Ottawa sees it, inventory is allocated, specific DINs and pack sizes are tight, and the easy fixes are gone.',
+    source: refs.amoxApi + ' · ' + refs.antibioticNotice
+  },
+  'Pharmacists notice': {
+    plain: 'The first signal shows up at the pharmacy counter — backorders, brand switching, rationing, compounding, prescriber callbacks, families calling multiple stores. During the pediatric shortage, compounding pharmacies carried the extra load long before supply stabilized.',
+    impact: 'This is when families feel it. Pharmacies spend hours on substitutions and counselling. Clinicians start prescribing differently because the usual product isn\'t dependable.',
+    source: refs.antibioticNotice + ' · ' + refs.compounding + ' · ' + refs.cpha
+  },
+  'Systems start triage': {
+    plain: 'Once it\'s obvious, it widens fast. Provinces, hospitals, distributors, manufacturers, and Health Canada shift into allocation, rationing, communications, and import planning. Health Canada\'s antibiotic notice lists monitoring, production increases, and alternative-supply efforts.',
+    impact: 'That gets expensive. It\'s no longer a purchasing problem — it\'s clinical workarounds, communications, distribution control, and emergency sourcing across the system.',
+    source: refs.antibioticNotice + ' · ' + refs.shortageReview
+  },
+  'The shortage resolves unevenly': {
+    plain: 'The shortage ends on paper before it ends in practice. Canada used foreign-authorized imports during the amoxicillin episode. Alberta\'s Parol/Atabay stopgap showed what late fixes look like — delayed rollout, different concentration, behind-the-counter dispensing, extra pharmacist training, and later questions about unused stock and contract terms.',
+    impact: 'Emergency imports work, but they aren\'t clean. Recovery often means new dosing rules, new labels, more counselling, procurement arguments, and an uneven return to normal.',
+    source: refs.antibioticNotice + ' · ' + refs.parolConcentration + ' · ' + refs.parolAftermath
+  },
+  'Final CVDL': {
+    plain: 'The CVDL is Ottawa\'s own list of medicines where a shortage does the most harm. It gives officials a prioritization anchor before they decide what to stockpile, buy, or manufacture.',
+    source: refs.cvdl
+  },
+  'NESS': {
+    plain: 'NESS is a federal pharmaceutical function that already exists. The open problem is refilling it when global supply tightens.',
+    source: refs.ness
+  },
+  'SPMP and safety stock': {
+    plain: 'Health Canada is moving shortage-prevention and safety-stock rules forward through draft guidance, proposed regulations, and a clearer readiness agenda. That tightens discipline — and exposes the missing piece: a domestic fallback when imports fail.',
+    source: refs.gazette + ' · ' + refs.resilience
+  },
+  'Task force and resilience agenda': {
+    plain: 'The Task Force is the open window for made-in-Canada pharma proposals. It turns resilience talk into a real review on a short clock.',
+    source: refs.taskForce
+  },
+  'of prescriptions in Canada are generics': {
+    plain: 'Three of every four Canadian prescriptions are generic. Generic shortages are a routine care problem, not a niche industrial one.',
+    source: refs.cgpa + ' · ' + refs.cpha
+  },
+  'of generics sold in Canada are made here': {
+    plain: 'Canada uses generics at scale and makes almost none of them. That\'s the sovereignty gap.',
+    source: refs.cgpa
+  },
+  'drug shortage reports in 2024-25': {
+    plain: 'Every report is a product, strength, or dosage patients couldn\'t reliably get. The volume shows this is chronic.',
+    source: refs.shortageReview
+  },
+  'shortage reports still active at year-end': {
+    plain: 'Year-end active reports show how much shortage pressure carries over. It\'s a continuing load, not a seasonal spike.',
+    source: refs.shortageReview
+  },
+  'of APIs are manufactured domestically': {
+    plain: 'Finished tablets are only part of it. If APIs sit offshore, Canada stays exposed even with local packaging.',
+    source: refs.cgpa
+  },
+  'Health Canada shortage plan': {
+    plain: 'Ottawa treats shortages as an ongoing problem, not a one-off. The plan by itself doesn\'t create manufacturing capacity or a procurement route.',
+    source: refs.resilience
+  },
+  'Publish the CVDL': {
+    plain: 'Health Canada will publish and maintain a list of drugs that are both critical and shortage-prone, along with how the list is built.',
+    impact: 'High impact on prioritization. Governments, manufacturers, distributors, and clinicians now share a definition of which shortages matter most. That sharpens every downstream decision.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=13" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 01 (Publish the CVDL)</a>'
+  },
+  'Require SPMPs': {
+    plain: 'Health Canada has put shortage-prevention and safety-stock obligations on an explicit footing, through the plan, draft guidance, and regulatory work. Implementation details are still being set.',
+    impact: 'High impact on prevention. This is the action that moves the system from reacting to shortages toward preventing them.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=15" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 02 (Require SPMPs and safety stocks)</a>'
+  },
+  'Strengthen Responses': {
+    plain: 'Health Canada will broaden regulatory responses and reporting — covering products currently outside scope and giving officials better tools for early intervention.',
+    impact: 'High impact on mitigation. Officials get more legal and operational room, earlier — including exceptional import pathways.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=16" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 03 (Enhance regulatory responses and reporting)</a>'
+  },
+  'Improve Reporting': {
+    plain: 'Health Canada will make shortage reporting easier to use, align it across drugs and devices, and open it up beyond manufacturers and government.',
+    impact: 'Operational impact. Better reporting won\'t prevent shortages, but it reduces confusion and helps clinicians, patients, and policy teams react faster.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=17" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 04 (Improve reporting systems)</a>'
+  },
+  'Build Analytics': {
+    plain: 'Health Canada will link datasets, pull in new sources, and build analytic capacity across the supply chain to detect and anticipate shortages.',
+    impact: 'Potentially very high impact if executed. It\'s the clearest early-warning tool in the plan — catching pressure before pharmacists and patients do.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=18" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 05 (Strengthen data analytics and shortage management capacity)</a>'
+  },
+  'Information Sharing': {
+    plain: 'Health Canada will open stronger information sharing, including a secure platform for demand and inventory data that companies don\'t share publicly.',
+    impact: 'High impact on coordination — if stakeholders use it. It would surface building pressure and improve how governments, distributors, and providers coordinate.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=19" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 06 (Improve information sharing)</a>'
+  },
+  'Transparency': {
+    plain: 'Health Canada will improve public channels so clinicians, patients, and caregivers get clearer information on shortages and the response.',
+    impact: 'Moderate front-line impact. Transparency doesn\'t create supply, but it reduces confusion and helps clinicians and families navigate.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=20" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 07 (Enhance transparency and clear communication)</a>'
+  },
+  'Modernize Frameworks': {
+    plain: 'Health Canada will keep modernizing licensing, agile regulations, clinical-trial rules, and shortage programs so the system can keep up with new products and risks.',
+    impact: 'Medium-to-high long-term impact. It\'s invisible during a shortage, but it reduces friction for market entry and keeps shortage tools current.',
+    source: '<a href="\' + refs.resiliencePdf + \'#page=21" target="_blank" rel="noopener noreferrer">Health Canada plan PDF — Action 08 (Modernize regulatory frameworks)</a>'
+  },
+  'Resilience context': {
+    plain: 'Trade risk, tariffs, defence readiness, and domestic manufacturing policy all reinforce the health case. Officials have more than one reason to take this seriously now.',
+    source: refs.taskForce + ' · ' + refs.buyCanadian + ' · ' + refs.dnd
+  },
+  'What Ottawa Has': {
+    plain: 'Ottawa has the prioritization tools, the stockpile, the task force, and the procurement design capacity. The federal question isn\'t abstract anymore.',
+    source: refs.cvdl + ' · ' + refs.ness + ' · ' + refs.taskForce + ' · ' + refs.pspc
+  },
+  'What Ottawa Still Needs': {
+    plain: 'What\'s missing is the step between a priority list and a supply plan — who reviews it, which federal path fits, what evidence is needed, and how supply moves in a shortage.',
+    source: refs.taskForce + ' · ' + refs.pspc
+  },
+  'Phased domestic platform': {
+    plain: 'Oral-first and phased because that\'s where credibility is highest. It matches the CVDL problem that\'s large, recurring, and better suited to stockpile or standby supply than sterile products.',
+    source: refs.cvdl + ' · ' + refs.resilience
+  },
+  'Not a broad industrial ask': {
+    plain: 'This isn\'t a request to replace provincial buying, build every dosage form, or sign a blank cheque.',
+    source: refs.taskForce
+  },
+  'Lower-complexity oral core': {
+    plain: 'High-volume oral medicines with visible shortage risk and lower execution risk than sterile products. Easier for officials to picture as phase one.',
+    source: refs.cvdl + ' · ' + refs.shortageDb
+  },
+  'Higher-policy-value molecules': {
+    plain: 'These medicines matter clinically and politically, but belong in phase two. Sequencing them right is what makes the platform credible.',
+    source: refs.cvdl
+  },
+  'TB regimen should move together': {
+    plain: 'TB drugs are a cluster, not four separate SKUs. If one is missing, the regimen weakens and resistance risk rises — which is why a bundled domestic path makes sense.',
+    source: refs.whoTb
+  },
+  'Evaluation first': {
+    plain: 'The first federal step is review, not a contract. That keeps the ask narrow.',
+    source: refs.taskForce
+  },
+  'No jurisdiction rewrite': {
+    plain: 'Provinces stay the buyers. Ottawa handles stockpiling, readiness rules, and procurement design. No constitutional rewrite needed.',
+    source: refs.ness + ' · ' + refs.pspc
+  },
+  'No maturity inflation': {
+    plain: 'The claim is sequencing, not instant readiness. In pharma, policy clarity and demand certainty come before build-out, qualification, and ANDS.',
+    source: refs.taskForce
+  },
+  'No single-instrument fiction': {
+    plain: 'There may be no single perfect mechanism. The working path likely combines NESS, PSPC, and regulatory conditions.',
+    source: refs.ness + ' · ' + refs.pspc + ' · ' + refs.resilience
+  },
+  'Triggered supply model': {
+    plain: 'A standby domestic route that turns on only when a shortage, stockpile, or readiness need calls for it. Narrower than routine federal purchasing, still usable in a crisis.',
+    source: refs.ness + ' · ' + refs.pspc + ' · ' + refs.taskForce
+  },
+  'CVDL targeting': {
+    plain: 'The strongest first phase uses Ottawa\'s own prioritization. Selected oral CVDL medicines keep the review narrow and testable — with room to expand later.',
+    source: refs.cvdl + ' · ' + refs.resilience
+  },
+  'Glass Box transparency': {
+    plain: 'The differentiator is visibility — clearer production, inventory, and supply-chain reporting than the market gives officials today.',
+    source: refs.resilience + ' · <a href="glass-box-appendix.html">Transparency technical appendix</a>'
+  },
+  'Private capital tied to delivery': {
+    plain: 'Financing stays milestone-based. This isn\'t speculative scale — it\'s a phased path where capital, demand, readiness, and delivery obligations line up.'
+  },
+  'Health Canada': {
+    plain: 'Health Canada is the policy and regulatory anchor. It owns the shortage strategy, the CVDL, and the case for a narrow pilot review.',
+    source: refs.hc + ' · ' + refs.resilience
+  },
+  'PHAC / NESS': {
+    plain: 'PHAC runs NESS — the clearest federal stockpile we have. It\'s the most practical place to start.',
+    source: refs.phac + ' · ' + refs.ness
+  },
+  'PSPC': {
+    plain: 'PSPC is where the lawful mechanism gets built. If a pilot is approved, PSPC turns it into terms and structure.',
+    source: refs.pspc
+  },
+  'ISED / PrairiesCan': {
+    plain: 'Industrial support only makes sense once the health case is credible. It follows the health case, not the other way around.',
+    source: refs.ised + ' · ' + refs.prairies
+  },
+  'DND': {
+    plain: 'Defence is a supporting route, not the main one. It matters when a molecule has real deployment, emergency, or countermeasure value.',
+    source: refs.dnd
+  },
+  'Risk signal appears': {
+    plain: 'It starts with a real trigger — a supply interruption, a demand spike, or a stockpile need. The point is to act before provinces pay emergency import prices.',
+    source: refs.shortageDb + ' · ' + refs.resilience
+  },
+  'Federal review logic applies': {
+    plain: 'Not every shortage is federal. The filter is Ottawa\'s own criteria — criticality, vulnerability, stockpile relevance, and a lawful federal role.',
+    source: refs.cvdl + ' · ' + refs.taskForce
+  },
+  'NESS, PSPC, or combined route activates': {
+    plain: 'The mechanism gets designed before the shortage, not during. That\'s how policy becomes response time.',
+    source: refs.ness + ' · ' + refs.pspc
+  },
+  'Domestic supply moves': {
+    plain: 'Domestic supply isn\'t symbolism — it\'s time. Shorter transit, fewer borders, clearer visibility — a scramble becomes a controlled response.',
+    source: refs.shortageDb
+  },
+  'Dashboard and reporting track status': {
+    plain: 'Reporting isn\'t optics. Officials need to see inventory, production, and replenishment for the mechanism to be credible.',
+    source: refs.resilience + ' · <a href="glass-box-appendix.html">Transparency technical appendix</a>'
+  },
+  'Pre-set structure': {
+    plain: 'Officials engage when the mechanism looks disciplined up front — triggers, reporting, terms, who does what. Structure reduces procurement risk.',
+    source: refs.pspc + ' · ' + refs.ness
+  },
+  'No need for routine federal volume': {
+    plain: 'Ottawa doesn\'t have to replace provincial purchasing. A dormant mechanism is enough to justify review.',
+    source: refs.pspc + ' · ' + refs.ness
+  },
+  'Is this actually federal?': {
+    plain: 'Yes — framed through NESS, shortage policy, procurement design, and cross-department coordination. That\'s what keeps it federal.',
+    source: refs.ness + ' · ' + refs.pspc + ' · ' + refs.taskForce
+  },
+  'Is the project mature enough?': {
+    plain: 'Mature enough for evaluation because the ask is phased and honest. We aren\'t claiming production readiness — we\'re claiming readiness for a federal test.',
+    source: refs.taskForce
+  },
+  'Why not rely only on incumbents?': {
+    plain: 'This isn\'t a knock on current suppliers. The question is narrower: for medicines the market has repeatedly failed to supply, should Ottawa test a domestic option?',
+    source: refs.shortageDb + ' · ' + refs.cpha
+  },
+  'Why Medicine Place?': {
+    plain: 'The differentiator isn\'t size. It\'s discipline — oral-first sequencing, Edmonton-region fit, private capital tied to delivery, and transparency the current market doesn\'t offer.',
+    source: refs.taskForce + ' · ' + refs.prairies
+  },
+  'Evaluate': {
+    plain: 'The ask: evaluate whether selected oral CVDL medicines meet Ottawa\'s criteria for resilience, visibility, stockpile fit, and domestic value. That commits government to a review, nothing more.',
+    source: refs.cvdl + ' · ' + refs.taskForce
+  },
+  'Determine': {
+    plain: 'We\'re not forcing one instrument. NESS replenishment, a PSPC structure, a combined model, or another lawful route — any of them could be right.',
+    source: refs.ness + ' · ' + refs.pspc
+  },
+  'Name': {
+    plain: 'One working group, not six separate conversations. Health Canada, PHAC, PSPC, and the industry-support groups each hold a piece.',
+    source: refs.hc + ' · ' + refs.phac + ' · ' + refs.pspc + ' · ' + refs.ised
+  },
+  'Define': {
+    plain: 'A serious review names the evidence that matters — sequencing, reporting, supply visibility, readiness milestones, and the conditions for federal use.',
+    source: refs.taskForce + ' · ' + refs.resilience
+  },
+  'Building Resilience Plan': {
+    plain: 'Health Canada\'s main shortage plan. It explains the federal approach but doesn\'t create supply.',
+    source: refs.resilience
+  },
+  'Critical Drugs List': {
+    plain: 'The list of medicines that matter most in a shortage. It sets priorities — it doesn\'t solve supply.',
+    source: refs.cvdl
+  },
+  'Safety Stock and SPMP': {
+    plain: 'Readiness rules work better with a domestic fallback. Without one, you get stronger obligations and the same offshore dependency.',
+    source: refs.gazette + ' · ' + refs.resilience
+  },
+  'Defence and Life Sciences': {
+    plain: 'Some medicines cross health, emergency response, and manufacturing. Defence readiness adds weight to the health case.',
+    source: refs.dnd
+  },
+  'Buy Canadian Logic': {
+    plain: 'The framework allows a Canadian-supply preference. The question is how far Ottawa will apply it to medicines.',
+    source: refs.buyCanadian
+  },
+  'Task Force Window': {
+    plain: 'The task force is meeting now and built for made-in-Canada proposals. It\'s the clearest way in.',
+    source: refs.taskForce
+  },
+  'Strategic Innovation Fund': {
+    plain: 'Ottawa already funds pharma through industrial programs. What\'s missing is a clear oral-generic supply goal inside them.',
+    source: refs.ised
+  },
+  'Biomanufacturing Support': {
+    plain: 'Biomanufacturing support shows Ottawa will fund health manufacturing when the case is strong. The question is whether oral generics can make that case now.',
+    source: refs.ised
+  },
+  'Accelerated Approval Logic': {
+    plain: 'Faster review helps most when there\'s a domestic manufacturer to use it. On its own, it doesn\'t solve supply.',
+    source: refs.resilience + ' · ' + refs.gazette
+  },
+  'Canadian Drug Agency': {
+    plain: 'The Agency improves national coordination on evidence, formularies, and demand. It doesn\'t solve shortages, but it helps line things up.',
+    source: refs.cda
+  },
+  'PrairiesCan and Alberta Fit': {
+    plain: 'Regional development tools work when the location story is credible. Edmonton isn\'t the whole case, but it makes the build path concrete.',
+    source: refs.prairies
+  },
+  'Industrial Funding Tools': {
+    plain: 'Canada has funding tools for manufacturing. The open issue is whether oral generic supply becomes an explicit goal.',
+    source: refs.ised + ' · ' + refs.prairies
+  },
+  'One framework holds the shortage rules, monitoring, procurement, and production support': {
+    plain: 'Germany\'s lesson: several tools used as one system, not separate files. That\'s the comparison Canada should care about.',
+    source: refs.germany
+  },
+  'Relocation, safety stock, industrial support': {
+    plain: 'France has been more direct than Canada on essential-medicine supply. The lesson isn\'t to copy France — it\'s to see how policy, stock rules, and industry support work together.',
+    source: refs.france
+  },
+  'Economic-security law plus standing backup capacity': {
+    plain: 'Japan treats critical supply chains as economic security. Drug manufacturing is supported as national backup capacity, not just an industry.',
+    source: refs.japan
+  },
+  'Priority lists, contracts, emergency powers, standing coordination': {
+    plain: 'The US runs several federal tools at once — lists, contracts, emergency programs, standing coordination. It shows what permanent federal capacity looks like.',
+    source: refs.us
+  },
+  'Each country proves part of the point, not the whole Canadian design': {
+    plain: 'The G7 comparison isn\'t about imitation. It\'s to show the basic idea is normal in peer countries, built differently in each.',
+    source: refs.germany + ' · ' + refs.france + ' · ' + refs.japan + ' · ' + refs.us
+  },
+  'Canada should use its own tools, not copy another country': {
+    plain: 'Canada has enough pieces. The job is using them together. Medicine Place is one concrete way to test that.',
+    source: refs.cvdl + ' · ' + refs.taskForce + ' · ' + refs.ness
+  }
+};
+
+const expandAliases = {
+  'CVDL': 'Final CVDL',
+  'Critical Drugs List': 'Final CVDL',
+  'of prescriptions dispensed in Canada were generic (2022)': 'of prescriptions in Canada are generics',
+  'of generic volume sold in Canada was manufactured domestically': 'of generics sold in Canada are made here',
+  'new drug shortage reports in FY 2024-25': 'drug shortage reports in 2024-25',
+  'Task force': 'Task force and resilience agenda',
+  'PHAC / NESS': 'NESS',
+  'Task force window': 'Task force and resilience agenda',
+  'Task Force Window': 'Task force and resilience agenda',
+  'March 18, 2026 task force': 'Task force and resilience agenda',
+  'Defence, trade, and domestic capacity': 'Resilience context',
+  'No routine federal buying required': 'No need for routine federal volume',
+  'Triggered resilience supply model': 'Triggered supply model',
+  'Selected oral CVDL start set': 'CVDL targeting',
+  'Selected oral CVDL opening cohort': 'CVDL targeting',
+  'Oral-first start set': 'CVDL targeting',
+  'SPMP and safety-stock fit': 'SPMP and safety stock',
+  'proposed SPMP and safety-stock framework': 'SPMP and safety stock',
+  'Glass Box reporting': 'Glass Box transparency',
+  'Phased oral-first platform': 'Phased domestic platform',
+  'Execution discipline over overclaiming': 'No maturity inflation',
+  'Choose the right federal route': 'Determine',
+  'Run one federal review': 'Name',
+  'Assess Medicine Place': 'Why Medicine Place?',
+  'Phase 1 — selected oral CVDL opening cohort': 'Lower-complexity oral core',
+  'Phase 2 — broaden only after proof': 'No maturity inflation',
+  'Why Medicine Place can deliver this': 'Why Medicine Place?'
+};
+
+const popoverBackdrop = document.createElement('div');
+popoverBackdrop.className = 'popover-backdrop';
+document.body.appendChild(popoverBackdrop);
+
+const popoverModal = document.createElement('div');
+popoverModal.className = 'popover-modal';
+popoverModal.setAttribute('role', 'dialog');
+popoverModal.setAttribute('aria-modal', 'true');
+popoverModal.setAttribute('aria-hidden', 'true');
+popoverModal.setAttribute('tabindex', '-1');
+popoverModal.innerHTML = '<div class="popover-modal-body"></div><button type="button" class="modal-close-btn">Close</button>';
+document.body.appendChild(popoverModal);
+
+const popoverModalBody = popoverModal.querySelector('.popover-modal-body');
+let lastPopoverTrigger = null;
+popoverModal.querySelector('.modal-close-btn').addEventListener('click', function(event) {
+  event.stopPropagation();
+  closeAllPopovers();
+});
+
+function getExpandKey(target) {
+  if (target.dataset.expandKey) return target.dataset.expandKey;
+  const titleNode = target.querySelector('h3, h4, strong, .label');
+  return titleNode ? titleNode.textContent.replace(/\s+/g, ' ').trim() : '';
+}
+
+function getExpandEntry(key) {
+  return expandCopy[key] || expandCopy[expandAliases[key]] || null;
+}
+
+function getShortSourceLabel(anchor) {
+  const original = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+  const parts = original.split(/\s+[—-]\s+/).map(function(part) {
+    return part.trim();
+  }).filter(Boolean);
+  const firstSegment = parts[0] || '';
+  if (parts.length > 1) {
+    const descriptor = parts.slice(1).join(' — ')
+      .replace(/\s+/g, ' ')
+      .replace(/[()]/g, '')
+      .trim()
+      .split(' ')
+      .slice(0, 4)
+      .join(' ');
+    const candidate = (firstSegment ? firstSegment + ': ' : '') + descriptor + (parts.slice(1).join(' ').split(' ').length > 4 ? '…' : '');
+    if (candidate && candidate.length <= 44) return candidate;
+  }
+  if (firstSegment && firstSegment.length <= 24) return firstSegment;
+  try {
+    const href = anchor.getAttribute('href') || '';
+    const url = new URL(href, window.location.href);
+    const host = url.hostname.replace(/^www\./, '');
+    if (host.includes('canada.ca')) return 'Canada.ca: official page';
+    if (host.includes('globalnews.ca')) return 'Global News: coverage';
+    if (host.includes('canadiangenerics.ca')) return 'CGPA: industry brief';
+    if (host.includes('pharmacists.ca')) return 'CPhA: pharmacy brief';
+    if (host.includes('canadabuys.canada.ca')) return 'CanadaBuys: policy';
+    if (host.includes('ised-isde.canada.ca')) return 'ISED: program page';
+    if (host.includes('mhlw.go.jp')) return 'Japan MHLW: program';
+    if (host.includes('cao.go.jp')) return 'Japan: policy page';
+    if (host.includes('who.int')) return 'WHO: guidance';
+    if (host.includes('bfarm.de')) return 'Germany BfArM: shortages';
+    if (host.includes('entreprises.gouv.fr') || host.includes('sante.gouv.fr')) return 'France: policy page';
+    if (host.includes('aspr.hhs.gov')) return 'HHS: resilience page';
+    if (url.pathname.includes('glass-box-appendix.html')) return 'Appendix: transparency';
+    return host.length <= 24 ? host : host.slice(0, 21).trim() + '...';
+  } catch (error) {
+    return firstSegment || 'Source';
+  }
+}
+
+function shortenSourceMarkup(markup) {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = markup;
+  const anchors = Array.from(wrapper.querySelectorAll('a'));
+  if (!anchors.length) return markup;
+  anchors.forEach(function(anchor) {
+    const original = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+    anchor.textContent = getShortSourceLabel(anchor);
+    anchor.classList.add('source-link');
+    if (original) anchor.setAttribute('title', original);
+  });
+  return '<div class="detail-sources-links">' + anchors.map(function(anchor) {
+    return anchor.outerHTML;
+  }).join('') + '</div>';
+}
+
+function buildExpandMarkup(detail) {
+  let html = '';
+  if (detail.plain) {
+    html += '<div class="detail-meaning"><div class="detail-heading">In Plain Terms</div>' + detail.plain + '</div>';
+  }
+  if (detail.impact) {
+    html += '<div class="detail-impact"><div class="detail-heading">Expected Impact</div>' + detail.impact + '</div>';
+  }
+  if (detail.source) {
+    html += '<div class="detail-sources"><div class="detail-heading">Reference</div>' + shortenSourceMarkup(detail.source) + '</div>';
+  }
+  return html;
+}
+
+function syncFloatingCoverageRail(slide) {
+  if (!floatingCoverageRail) return;
+  const banner = slide ? slide.querySelector('.coverage-banner') : null;
+  if (!banner) {
+    floatingCoverageRail.innerHTML = '';
+    floatingCoverageRail.classList.remove('active');
+    floatingCoverageRail.setAttribute('aria-hidden', 'true');
+    return;
+  }
+
+  floatingCoverageRail.innerHTML = banner.outerHTML;
+  floatingCoverageRail.classList.add('active');
+  floatingCoverageRail.setAttribute('aria-hidden', 'false');
+  attachExpandableCards(floatingCoverageRail);
+}
+
+function closeAllPopovers(options) {
+  const restoreFocus = !options || options.restoreFocus !== false;
+  const focusTarget = restoreFocus ? lastPopoverTrigger : null;
+  document.querySelectorAll('.expandable.expanded').forEach(function(target) {
+    target.classList.remove('expanded');
+    target.setAttribute('aria-expanded', 'false');
+  });
+  lastPopoverTrigger = null;
+  document.body.classList.remove('popover-open');
+  popoverBackdrop.classList.remove('active');
+  popoverModal.classList.remove('active');
+  popoverModal.setAttribute('aria-hidden', 'true');
+  popoverModalBody.innerHTML = '';
+  if (focusTarget && document.contains(focusTarget)) {
+    window.requestAnimationFrame(function() {
+      focusTarget.focus({ preventScroll: true });
+    });
+  }
+}
+
+function toggleExpandable(target) {
+  const isOpen = target.classList.contains('expanded');
+  const detailMarkup = target._expandMarkup;
+  closeAllPopovers({ restoreFocus: false });
+  if (isOpen || !detailMarkup) return;
+  lastPopoverTrigger = target;
+  target.classList.add('expanded');
+  target.setAttribute('aria-expanded', 'true');
+  popoverModalBody.innerHTML = detailMarkup;
+  document.body.classList.add('popover-open');
+  popoverBackdrop.classList.add('active');
+  popoverModal.classList.add('active');
+  popoverModal.setAttribute('aria-hidden', 'false');
+  window.requestAnimationFrame(function() {
+    const focusTarget = popoverModal.querySelector('.modal-close-btn') || popoverModal;
+    focusTarget.focus({ preventScroll: true });
+  });
+}
+
+function attachExpandableCards(root) {
+  const scope = root || document;
+  const targets = scope.querySelectorAll('.card, .compact-card, .stat-card, .gap-panel, .flow-step, .tl-item, .ask-list li, .coverage-pill');
+  targets.forEach(function(target) {
+    const key = getExpandKey(target);
+    const detail = getExpandEntry(key);
+    if (!detail) return;
+
+    target.classList.add('expandable');
+    if (target.tagName !== 'BUTTON') {
+      target.setAttribute('tabindex', '0');
+      target.setAttribute('role', 'button');
+    }
+    target.setAttribute('aria-expanded', 'false');
+    target._expandMarkup = buildExpandMarkup(detail);
+  });
+}
+
+attachExpandableCards();
+
+document.body.addEventListener('click', function(event) {
+  if (event.target.closest('.modal-close-btn')) return;
+  if (event.target.closest('.popover-modal')) return;
+  if (event.target.closest('a')) return;
+
+  const target = event.target.closest('.expandable');
+  if (!target) return;
+  toggleExpandable(target);
+});
+
+popoverBackdrop.addEventListener('click', closeAllPopovers);
+
+function triggerNav(direction, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  goToSlide(currentSlide + direction);
+}
+
+navPrev.addEventListener('click', function(event) {
+  triggerNav(-1, event);
+});
+
+navNext.addEventListener('click', function(event) {
+  triggerNav(1, event);
+});
+
+navPrev.addEventListener('touchend', function(event) {
+  triggerNav(-1, event);
+}, { passive: false });
+
+navNext.addEventListener('touchend', function(event) {
+  triggerNav(1, event);
+}, { passive: false });
+
+headerPills.forEach(function(link) {
+  link.addEventListener('click', function(event) {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    navigateToSlideHash(link.getAttribute('href'), true);
+  });
+});
+
+document.addEventListener('keydown', function(event) {
+  if (document.body.classList.contains('popover-open')) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeAllPopovers();
+    }
+    return;
+  }
+
+  const expandableTarget = event.target.closest('.expandable');
+  if (expandableTarget && (event.key === 'Enter' || event.key === ' ')) {
+    event.preventDefault();
+    toggleExpandable(expandableTarget);
+    return;
+  }
+
+  const slide = sections[currentSlide];
+  const interactive = event.target.closest('button, a');
+  if (interactive) return;
+
+  if (event.key === 'ArrowDown' || event.key === ' ') {
+    if (slideCanScroll(slide) && !slideAtBottom(slide)) return;
+    event.preventDefault();
+    goToSlide(currentSlide + 1);
+  } else if (event.key === 'ArrowUp') {
+    if (slideCanScroll(slide) && !slideAtTop(slide)) return;
+    event.preventDefault();
+    goToSlide(currentSlide - 1);
+  } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+    event.preventDefault();
+    goToSlide(currentSlide + 1);
+  } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+    event.preventDefault();
+    goToSlide(currentSlide - 1);
+  } else if (event.key === 'Home') {
+    event.preventDefault();
+    goToSlide(0);
+  } else if (event.key === 'End') {
+    event.preventDefault();
+    goToSlide(sections.length - 1);
+  }
+});
+
+let wheelTimeout = null;
+let wheelLocked = false;
+let wheelAccumDirection = 0;
+let wheelAccumDelta = 0;
+let wheelAccumLastAt = 0;
+let wheelPrimedDirection = 0;
+let wheelPrimedAt = 0;
+
+const WHEEL_NAV_THRESHOLD = 120;
+const WHEEL_NAV_THRESHOLD_SCROLLABLE = 150;
+const WHEEL_NAV_STRONG_THRESHOLD = 240;
+const WHEEL_NAV_STRONG_THRESHOLD_SCROLLABLE = 280;
+const WHEEL_ACCUM_IDLE_MS = 320;
+const WHEEL_PRIME_WINDOW_MS = 1200;
+const WHEEL_LOCKOUT_MS = 360;
+
+function resetWheelAccum() {
+  wheelAccumDirection = 0;
+  wheelAccumDelta = 0;
+  wheelAccumLastAt = 0;
+}
+
+function resetWheelPrime() {
+  wheelPrimedDirection = 0;
+  wheelPrimedAt = 0;
+}
+
+let touchPrimedDirection = 0;
+let touchPrimedAt = 0;
+
+function resetTouchPrime() {
+  touchPrimedDirection = 0;
+  touchPrimedAt = 0;
+}
+
+function resetEdgeTransferState() {
+  resetWheelAccum();
+  resetWheelPrime();
+  resetTouchPrime();
+}
+
+function fireWheelNav(direction) {
+  wheelLocked = true;
+  resetWheelAccum();
+  goToSlide(currentSlide + direction);
+  window.clearTimeout(wheelTimeout);
+  wheelTimeout = window.setTimeout(function() {
+    wheelLocked = false;
+  }, WHEEL_LOCKOUT_MS);
+}
+
+window.addEventListener('wheel', function(event) {
+  if (document.body.classList.contains('popover-open')) return;
+  if (event.target.closest('.deck-header, .slide-nav')) return;
+
+  const slide = sections[currentSlide];
+  let dy = event.deltaY;
+  if (event.deltaMode === 1) dy *= 40;
+  else if (event.deltaMode === 2) dy *= slide.clientHeight;
+
+  if (Math.abs(dy) < 2) return;
+
+  const scrollable = slideCanScroll(slide);
+  const goingDown = dy > 0;
+  const direction = goingDown ? 1 : -1;
+
+  if (wheelLocked) {
+    event.preventDefault();
+    return;
+  }
+
+  if (scrollable) {
+    if (goingDown && !slideAtBottom(slide)) {
+      resetWheelAccum();
+      resetWheelPrime();
+      return;
+    }
+    if (!goingDown && !slideAtTop(slide)) {
+      resetWheelAccum();
+      resetWheelPrime();
+      return;
+    }
+  }
+
+  event.preventDefault();
+  const navThreshold = scrollable ? WHEEL_NAV_THRESHOLD_SCROLLABLE : WHEEL_NAV_THRESHOLD;
+  const strongThreshold = scrollable ? WHEEL_NAV_STRONG_THRESHOLD_SCROLLABLE : WHEEL_NAV_STRONG_THRESHOLD;
+
+  const now = Date.now();
+  if (wheelAccumDirection !== direction || now - wheelAccumLastAt > WHEEL_ACCUM_IDLE_MS) {
+    wheelAccumDirection = direction;
+    wheelAccumDelta = 0;
+  }
+  wheelAccumDelta += Math.abs(dy);
+  wheelAccumLastAt = now;
+
+  if (wheelAccumDelta < navThreshold) return;
+
+  if (wheelAccumDelta >= strongThreshold) {
+    fireWheelNav(direction);
+    return;
+  }
+
+  if (wheelPrimedDirection === direction && now - wheelPrimedAt <= WHEEL_PRIME_WINDOW_MS) {
+    fireWheelNav(direction);
+    return;
+  }
+
+  wheelPrimedDirection = direction;
+  wheelPrimedAt = now;
+  resetWheelAccum();
+
+}, { passive: false });
+
+let touchStartY = 0;
+let touchStartTime = 0;
+let touchStartScroll = 0;
+let touchStartNearBottom = false;
+let touchStartNearTop = false;
+
+document.addEventListener('touchstart', function(event) {
+  if (document.body.classList.contains('popover-open')) return;
+  if (event.target.closest('.deck-header, .slide-nav')) return;
+  const slide = sections[currentSlide];
+  touchStartY = event.touches[0].clientY;
+  touchStartTime = Date.now();
+  touchStartScroll = slide.scrollTop;
+  touchStartNearBottom = slideNearBottom(slide, 36);
+  touchStartNearTop = slideNearTop(slide, 24);
+}, { passive: true });
+
+document.addEventListener('touchend', function(event) {
+  if (document.body.classList.contains('popover-open')) return;
+  if (event.target.closest('.deck-header, .slide-nav')) return;
+
+  const dy = touchStartY - event.changedTouches[0].clientY;
+  const dt = Date.now() - touchStartTime;
+  const slide = sections[currentSlide];
+  const scrollable = slideCanScroll(slide);
+  const magnitude = Math.abs(dy);
+  const direction = dy > 0 ? 1 : -1;
+  const atBoundary = direction > 0 ? (!scrollable || slideNearBottom(slide, 40)) : (!scrollable || slideNearTop(slide, 24));
+  const startedAtBoundary = direction > 0 ? touchStartNearBottom : touchStartNearTop;
+  const strongBoundarySwipe = magnitude >= 72 && dt < 560;
+
+  if (magnitude < 44 || dt >= 760) return;
+
+  if (scrollable && Math.abs(slide.scrollTop - touchStartScroll) > 10) {
+    if (atBoundary && (startedAtBoundary || strongBoundarySwipe)) {
+      resetTouchPrime();
+      if (direction > 0) goToSlide(currentSlide + 1);
+      else goToSlide(currentSlide - 1);
+      return;
+    }
+    if (atBoundary) {
+      touchPrimedDirection = direction;
+      touchPrimedAt = Date.now();
+    } else {
+      resetTouchPrime();
+    }
+    return;
+  }
+
+  if (!atBoundary) {
+    resetTouchPrime();
+    return;
+  }
+
+  if (!scrollable) {
+    resetTouchPrime();
+    if (direction > 0) goToSlide(currentSlide + 1);
+    else goToSlide(currentSlide - 1);
+    return;
+  }
+
+  if (startedAtBoundary || strongBoundarySwipe) {
+    resetTouchPrime();
+    if (direction > 0) goToSlide(currentSlide + 1);
+    else goToSlide(currentSlide - 1);
+    return;
+  }
+
+  const now = Date.now();
+  if (touchPrimedDirection === direction && now - touchPrimedAt <= 2200) {
+    resetTouchPrime();
+    if (direction > 0) goToSlide(currentSlide + 1);
+    else goToSlide(currentSlide - 1);
+    return;
+  }
+
+  touchPrimedDirection = direction;
+  touchPrimedAt = now;
+}, { passive: true });
+
+window.addEventListener('hashchange', syncSlideToHash);
+window.addEventListener('popstate', syncSlideToHash);
+
+window.addEventListener('beforeprint', fitSlidesForPrint);
+window.addEventListener('afterprint', clearPrintFit);
+
+if (window.matchMedia) {
+  const printMedia = window.matchMedia('print');
+  if (printMedia.addEventListener) {
+    printMedia.addEventListener('change', function(event) {
+      if (event.matches) fitSlidesForPrint();
+      else clearPrintFit();
+    });
+  } else if (printMedia.addListener) {
+    printMedia.addListener(function(event) {
+      if (event.matches) fitSlidesForPrint();
+      else clearPrintFit();
+    });
+  }
+}
+
+currentSlide = getInitialSlideIndex();
+
+function wait(ms) {
+  return new Promise(function(resolve) {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+async function waitForWindowLoad(timeoutMs) {
+  if (document.readyState === 'complete') return;
+  await Promise.race([
+    new Promise(function(resolve) {
+      window.addEventListener('load', resolve, { once: true });
+    }),
+    wait(timeoutMs)
+  ]);
+}
+
+async function waitForFonts(timeoutMs) {
+  if (!document.fonts || !document.fonts.ready) return;
+  await Promise.race([
+    document.fonts.ready.catch(function() {}),
+    wait(timeoutMs)
+  ]);
+}
+
+async function waitForImages(timeoutMs) {
+  const images = Array.from(document.images || []).filter(function(img) {
+    return img.currentSrc || img.getAttribute('src');
+  });
+
+  if (!images.length) return;
+
+  const imagePromises = images.map(function(img) {
+    if (img.complete) {
+      if (typeof img.decode === 'function') {
+        return img.decode().catch(function() {});
+      }
+      return Promise.resolve();
+    }
+
+    return new Promise(function(resolve) {
+      function done() {
+        img.removeEventListener('load', done);
+        img.removeEventListener('error', done);
+        resolve();
+      }
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    });
+  });
+
+  await Promise.race([
+    Promise.all(imagePromises),
+    wait(timeoutMs)
+  ]);
+}
+
+async function bootDeck() {
+  layoutSlides();
+  updateUI();
+  releaseFocusedSection();
+
+  await waitForWindowLoad(2200);
+  await Promise.all([
+    waitForFonts(2200),
+    waitForImages(2200)
+  ]);
+
+  await new Promise(function(resolve) {
+    requestAnimationFrame(function() {
+      requestAnimationFrame(resolve);
+    });
+  });
+}
+
+function revealDeck() {
+  if (mainEl) {
+    mainEl.classList.add('ready');
+  }
+  document.body.classList.remove('app-loading');
+  scheduleReleaseFocusedSection();
+}
+
+function prepareExportLayout() {
+  if (!isExportMode) return;
+  fitSlidesForPrint();
+}
+
+const bootFailSafe = window.setTimeout(function() {
+  revealDeck();
+  prepareExportLayout();
+}, 2600);
+
+bootDeck().then(function() {
+  window.clearTimeout(bootFailSafe);
+  revealDeck();
+  prepareExportLayout();
+}).catch(function(error) {
+  try {
+    layoutSlides();
+    updateUI();
+  } catch (innerError) {}
+  window.clearTimeout(bootFailSafe);
+  revealDeck();
+  prepareExportLayout();
+});
+</script>
+</body>
+</html>
