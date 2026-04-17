@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+  <title id="title">Analytics dashboard</title>
+  <desc id="desc">A crisp analytics dashboard with KPI cards, charts, and data tables.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6fafc"/>
+      <stop offset="100%" stop-color="#eaf2f7"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3f7ea2"/>
+      <stop offset="100%" stop-color="#5f9ebf"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#94a8b7" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="720" height="480" fill="url(#bg)"/>
+  <rect x="32" y="28" width="656" height="424" rx="28" fill="#ffffff" filter="url(#shadow)"/>
+
+  <rect x="60" y="54" width="600" height="46" rx="16" fill="url(#hero)"/>
+  <circle cx="88" cy="77" r="6" fill="#ffffff" opacity="0.85"/>
+  <circle cx="110" cy="77" r="6" fill="#ffffff" opacity="0.7"/>
+  <circle cx="132" cy="77" r="6" fill="#ffffff" opacity="0.55"/>
+  <rect x="164" y="68" width="210" height="18" rx="9" fill="#ffffff" opacity="0.8"/>
+  <rect x="506" y="66" width="126" height="22" rx="11" fill="#ffffff" opacity="0.22"/>
+
+  <g fill="#f4f8fb">
+    <rect x="60" y="126" width="136" height="88" rx="18"/>
+    <rect x="214" y="126" width="136" height="88" rx="18"/>
+    <rect x="368" y="126" width="136" height="88" rx="18"/>
+    <rect x="522" y="126" width="138" height="88" rx="18"/>
+  </g>
+
+  <g fill="#617c90" font-family="Arial, sans-serif" font-size="14" font-weight="700">
+    <text x="80" y="154">OUTPUT</text>
+    <text x="234" y="154">INVENTORY</text>
+    <text x="388" y="154">LEAD TIME</text>
+    <text x="542" y="154">ALERTS</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-weight="700">
+    <text x="80" y="192" fill="#203242" font-size="34">91.4%</text>
+    <text x="234" y="192" fill="#203242" font-size="34">38 days</text>
+    <text x="388" y="192" fill="#203242" font-size="34">6.2 wks</text>
+    <text x="542" y="192" fill="#b84f43" font-size="34">2 open</text>
+  </g>
+
+  <rect x="60" y="236" width="392" height="176" rx="22" fill="#f8fbfd"/>
+  <rect x="476" y="236" width="184" height="176" rx="22" fill="#f8fbfd"/>
+
+  <g fill="none" stroke="#d6e1e8" stroke-width="2">
+    <path d="M84 378H428"/>
+    <path d="M84 336H428"/>
+    <path d="M84 294H428"/>
+  </g>
+
+  <polyline points="90,360 140,332 188,344 240,286 292,300 344,248 396,220 422,238"
+    fill="none" stroke="#4f8db3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="90,350 140,366 188,340 240,332 292,320 344,298 396,274 422,286"
+    fill="none" stroke="#d46655" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+
+  <g fill="#4f8db3">
+    <circle cx="140" cy="332" r="6"/>
+    <circle cx="240" cy="286" r="6"/>
+    <circle cx="344" cy="248" r="6"/>
+    <circle cx="396" cy="220" r="6"/>
+  </g>
+
+  <g transform="translate(506 264)">
+    <circle cx="54" cy="60" r="44" fill="none" stroke="#dbe5eb" stroke-width="20"/>
+    <circle cx="54" cy="60" r="44" fill="none" stroke="#5ea069" stroke-width="20" stroke-dasharray="110 166" stroke-linecap="round" transform="rotate(-90 54 60)"/>
+    <circle cx="54" cy="60" r="44" fill="none" stroke="#4f8db3" stroke-width="20" stroke-dasharray="76 200" stroke-linecap="round" transform="rotate(30 54 60)"/>
+    <rect x="18" y="128" width="72" height="12" rx="6" fill="#d7e2e9"/>
+    <rect x="18" y="146" width="104" height="10" rx="5" fill="#ebf1f5"/>
+  </g>
+</svg>

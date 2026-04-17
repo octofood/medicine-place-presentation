@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Glass Box Technical Prototype: Health Canada readiness-first dashboard pairing federal shortage-resilience priorities with Medicine Place operating evidence for selected critical and watchlist medicines.">
+<meta property="og:title" content="Medicine Place | Glass Box Readiness Prototype">
+<meta property="og:description" content="Illustrative Health Canada readiness dashboard showing current shortage-program signals, proposed Gazette-direction readiness layers, and Medicine Place operating evidence.">
+<title>Medicine Place | Glass Box Readiness Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#102131;--text:#1b3142;--muted:#647789;
+  --stone:#edf2f6;--stone-deep:#e5edf4;--stone-side:#dde6ef;
+  --card:rgba(251,253,255,0.96);--surface-alt:rgba(244,248,252,0.98);
+  --panel-tint:rgba(228,236,245,0.72);
+  --border:rgba(16,33,49,0.14);--border-strong:rgba(16,33,49,0.22);
+  --blue:#1b67c9;--blue-soft:rgba(27,103,201,0.08);
+  --green:#0f7b68;--green-soft:rgba(15,123,104,0.08);
+  --amber:#a56a22;--amber-soft:rgba(165,106,34,0.1);
+  --red:#c4584d;--red-soft:rgba(196,88,77,0.08);
+  --nav-bg:rgba(18,38,58,0.94);
+  --shadow:0 16px 34px rgba(17,32,48,0.08);
+  --shadow-soft:0 10px 24px rgba(17,32,48,0.06);
+  --font-serif:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --font-sans:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --header-height:56px;
+  --radius:8px;
+  --radius-sm:6px;
+}
+*{box-sizing:border-box;margin:0}
+html{background:var(--stone);scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+  font-family:var(--font-mono);
+  color:var(--text);
+  background:linear-gradient(180deg,var(--stone) 0%,var(--stone-deep) 100%);
+  -webkit-font-smoothing:antialiased;
+  font-size:13px;
+  line-height:1.55;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(220,230,239,0.88) 0 240px, transparent 240px),
+    radial-gradient(circle at 82% 8%, rgba(27,103,201,0.08), transparent 24%),
+    radial-gradient(circle at 18% 18%, rgba(15,123,104,0.05), transparent 20%),
+    repeating-linear-gradient(135deg, rgba(16,33,49,0.024) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 180px);
+}
+a{color:inherit}
+
+/* ── NAV ── */
+.topbar{
+  position:sticky;top:0;z-index:50;min-height:var(--header-height);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  gap:8px 14px;padding:10px 16px;background:var(--nav-bg);color:#fff;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 8px 28px rgba(11,25,38,0.22);
+  backdrop-filter:blur(14px);
+}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+.topbar-left img{display:block;flex:0 0 auto;opacity:0.96}
+.logo-mp{height:22px}.logo-medpac{height:18px}
+.brand-divider{width:1px;height:18px;background:rgba(255,255,255,0.18)}
+.topbar-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.topbar-kicker{
+  font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.52)
+}
+.topbar-title{
+  font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(255,255,255,0.94);white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.topbar-right{display:flex;align-items:center;flex-wrap:wrap;gap:8px;flex:0 0 auto}
+.tag,.back-link{
+  display:inline-flex;align-items:center;gap:5px;border-radius:6px;
+  border:1px solid rgba(255,255,255,0.14);padding:5px 10px;font-size:10px;
+  font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;
+  color:rgba(255,255,255,0.72);background:rgba(255,255,255,0.03)
+}
+.tag.amber{background:rgba(155,90,25,0.25);border-color:rgba(155,90,25,0.35);color:#e8a84c}
+.back-link:hover{background:rgba(255,255,255,0.08);color:#fff}
+.ts-label{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.35);white-space:nowrap}
+
+/* ── LAYOUT ── */
+.page{width:min(1400px,100%);margin:0 auto;padding:14px 16px 34px;position:relative;z-index:1}
+.tabbar{
+  position:sticky;top:var(--header-height);z-index:40;display:flex;gap:4px;
+  margin-bottom:12px;padding:6px;background:rgba(226,234,242,0.88);
+  border-radius:var(--radius);border:1px solid var(--border);
+  box-shadow:var(--shadow-soft);backdrop-filter:blur(10px)
+}
+.tab{
+  appearance:none;border:none;background:transparent;color:var(--muted);border-radius:var(--radius-sm);
+  padding:9px 14px;font:inherit;font-size:11px;font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;cursor:pointer;transition:all 0.15s
+}
+.tab:hover{background:rgba(255,255,255,0.78);color:var(--ink)}
+.tab.active{
+  background:#12263a;color:#f4f8fc;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.12)
+}
+.tab:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.panel{display:none}.panel.active{display:block}
+
+/* ── SECTION ── */
+.section{margin-bottom:14px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.section-kicker{
+  font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--blue);white-space:nowrap;padding:6px 8px;border-radius:4px;
+  background:rgba(27,103,201,0.08);border:1px solid rgba(27,103,201,0.12)
+}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg, rgba(27,103,201,0.24), rgba(27,103,201,0.04))}
+
+/* ── GRIDS ── */
+.grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+
+/* ── METRIC CARDS ── */
+.metric-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 13px 10px;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-soft)
+}
+.metric-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.metric-card::after{
+  content:"";position:absolute;inset:8px;border:1px solid rgba(27,103,201,0.06);
+  border-radius:4px;pointer-events:none
+}
+.metric-card.blue::before{background:var(--blue)}
+.metric-card.green::before{background:var(--green)}
+.metric-card.amber::before{background:var(--amber)}
+.metric-card.red::before{background:var(--red)}
+.metric-label{
+  display:flex;align-items:center;gap:4px;margin-bottom:6px;font-size:10px;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)
+}
+.metric-value{font-family:var(--font-mono);font-size:29px;font-weight:600;line-height:1;color:var(--ink)}
+.metric-card.blue .metric-value{color:var(--blue)}
+.metric-card.green .metric-value{color:var(--green)}
+.metric-card.amber .metric-value{color:var(--amber)}
+.metric-card.red .metric-value{color:var(--red)}
+.metric-note{margin-top:6px;font-size:11px;line-height:1.5;color:var(--muted);font-family:var(--font-sans)}
+
+/* ── TOOLTIP ── */
+.info-tip{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(25,34,43,0.08);color:var(--muted);font-size:9px;font-weight:800;cursor:help;position:relative;flex-shrink:0;font-style:normal;line-height:1}
+.info-tip:hover::after,.info-tip:focus::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#12263a;color:#fff;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;
+  padding:7px 10px;border-radius:6px;white-space:normal;width:220px;z-index:100;line-height:1.45;
+  pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.2);font-family:var(--font-sans)
+}
+.info-tip:hover::before,.info-tip:focus::before{content:"";position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink);z-index:100}
+
+/* ── PILLS ── */
+.pill{
+  display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 8px;font-size:10px;
+  font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:1px solid transparent;white-space:nowrap
+}
+.pill.green{color:var(--green);background:var(--green-soft);border-color:rgba(17,100,83,0.14)}
+.pill.amber{color:var(--amber);background:var(--amber-soft);border-color:rgba(155,90,25,0.16)}
+.pill.red{color:var(--red);background:var(--red-soft);border-color:rgba(155,74,66,0.15)}
+.pill.blue{color:var(--blue);background:var(--blue-soft);border-color:rgba(50,91,122,0.16)}
+.pill.neutral{color:var(--muted);background:rgba(25,34,43,0.05);border-color:rgba(25,34,43,0.1)}
+
+/* ── FORMAT PILLS ── */
+.fmt{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:rgba(25,34,43,0.06);color:var(--muted)}
+
+/* ── TABLES ── */
+.table-wrap{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));box-shadow:var(--shadow-soft)
+}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid rgba(25,34,43,0.07);vertical-align:middle}
+th{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:#e6eef6;position:sticky;top:0}
+td{color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:rgba(16,33,49,0.018)}
+.mono{font-family:var(--font-mono);font-size:11px}
+.text-right{text-align:right}
+.fw700{font-weight:700;color:var(--ink)}
+
+/* ── ACCORDION ── */
+.accordion{
+  border-radius:var(--radius-sm);border:1px solid var(--border);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  box-shadow:var(--shadow-soft);overflow:hidden
+}
+.acc-row{border-bottom:1px solid rgba(25,34,43,0.07)}
+.acc-row:last-child{border-bottom:none}
+.acc-header{
+  display:flex;align-items:center;gap:6px;padding:8px 10px;cursor:pointer;user-select:none;font-size:12px;
+  font-weight:600;color:var(--ink);transition:background 0.12s;position:relative;background:linear-gradient(180deg,#ffffff,#f7fbfe)
+}
+.acc-header::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(27,103,201,0.28)
+}
+.acc-header:hover{background:rgba(255,255,255,0.96)}
+.acc-header:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.acc-chevron{display:inline-flex;width:16px;height:16px;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.acc-row.open .acc-chevron{transform:rotate(90deg)}
+.acc-cols{display:flex;align-items:center;flex:1;min-width:0;gap:4px}
+.acc-col{flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acc-col.mol{width:130px;font-weight:700;color:var(--ink)}
+.acc-col.sup{width:90px;font-size:11px;color:var(--muted)}
+.acc-col.geo{width:100px;display:flex;gap:2px;align-items:center}
+.acc-col.lt{width:70px;font-family:var(--font-mono);font-size:11px}
+.acc-col.hc{width:110px}
+.acc-col.price{width:70px;font-family:var(--font-mono);font-size:11px}
+.acc-col.risk{width:70px}
+.geo-bar{height:6px;border-radius:3px;flex:1}
+.geo-bar.cn{background:var(--red)}.geo-bar.in{background:var(--amber)}.geo-bar.eu{background:var(--blue)}.geo-bar.ca{background:var(--green)}
+.acc-body{display:none;padding:10px 10px 12px;background:var(--surface-alt);border-top:1px solid rgba(25,34,43,0.06)}
+.acc-row.open .acc-body{display:block}
+
+/* detail grid inside accordion */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.detail-section{padding:10px;background:var(--card);border:1px solid var(--border);border-radius:6px;box-shadow:var(--shadow-soft)}
+.detail-section h5{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.detail-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid rgba(25,34,43,0.04)}
+.detail-row:last-child{border-bottom:none}
+.detail-row .lbl{color:var(--muted);font-family:var(--font-sans)}.detail-row .val{font-weight:600;color:var(--ink);font-family:var(--font-mono);font-size:10px;text-align:right}
+.safety-bar{height:6px;border-radius:3px;background:rgba(25,34,43,0.08);overflow:hidden;margin-top:4px}
+.safety-fill{height:100%;border-radius:3px}
+
+/* FG product sub-table */
+.fg-table{margin-top:8px}
+.fg-table th{font-size:9px;padding:4px 6px}
+.fg-table td{font-size:11px;padding:4px 6px}
+
+/* ── CLUSTER HEADER ── */
+.cluster-header{
+  padding:7px 10px;background:#e6eef6;border-bottom:1px solid rgba(25,34,43,0.07);font-size:10px;
+  font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:6px
+}
+
+/* ── ALERTS ── */
+.alert-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 13px;margin-bottom:8px;box-shadow:var(--shadow-soft);border-top:2px solid transparent
+}
+.alert-card.critical{border-top-color:var(--red)}
+.alert-card.warning{border-top-color:var(--amber)}
+.alert-card.info{border-top-color:var(--blue)}
+.alert-level{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px}
+.alert-card.critical .alert-level{color:var(--red)}
+.alert-card.warning .alert-level{color:var(--amber)}
+.alert-card.info .alert-level{color:var(--blue)}
+.alert-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.alert-meta{font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;font-family:var(--font-sans)}
+
+/* ── TIMELINE ── */
+.timeline{list-style:none;padding:0 0 0 14px;border-left:2px solid rgba(25,34,43,0.1)}
+.timeline li{position:relative;margin-bottom:10px;padding-left:16px;font-size:12px;line-height:1.5}
+.timeline li:last-child{margin-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-21px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--stone)}
+.timeline li.red::before{background:var(--red)}
+.timeline li.amber::before{background:var(--amber)}
+.timeline li.blue::before{background:var(--blue)}
+.timeline li.green::before{background:var(--green)}
+.timeline .time{display:block;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:1px}
+
+/* ── THRESHOLD TABLE ── */
+.thresh-table td:first-child{font-weight:700}
+
+/* ── DATA SOURCE CARDS ── */
+.ds-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));border:1px solid var(--border);
+  border-radius:var(--radius-sm);margin-bottom:8px;box-shadow:var(--shadow-soft);overflow:hidden
+}
+.ds-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;cursor:pointer;user-select:none}
+.ds-header:hover{background:rgba(25,34,43,0.02)}
+.ds-header:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.ds-title{font-size:13px;font-weight:700;color:var(--ink)}
+.ds-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ds-body{display:none;padding:10px 12px 12px;border-top:1px solid rgba(25,34,43,0.06);background:var(--surface-alt)}
+.ds-card.open .ds-body{display:block}
+.ds-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;border-bottom:1px solid rgba(25,34,43,0.04)}
+.ds-row:last-child{border-bottom:none}
+.ds-fields{margin-top:8px;font-size:11px;color:var(--muted);line-height:1.6;font-family:var(--font-sans)}
+.flow-box{margin-top:8px;padding:10px;border-radius:6px;background:#12263a;color:rgba(255,255,255,0.88);overflow-x:auto}
+.flow-box pre{margin:0;font-family:var(--font-mono);font-size:11px;line-height:1.6}
+
+/* ── TWO-TONE ── */
+.two-tone{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:var(--shadow-soft)}
+.two-tone>div{padding:12px 14px}
+.two-tone .bad{background:rgba(251,245,244,0.98);border-right:1px solid rgba(25,34,43,0.08)}
+.two-tone .good{background:rgba(244,250,247,0.98)}
+.two-tone h4{font-size:13px;margin-bottom:6px}
+.two-tone ul{padding-left:16px;font-size:12px;line-height:1.6;font-family:var(--font-sans)}
+.two-tone li{margin-bottom:4px}
+
+/* ── SUPPLY TRACE ── */
+.trace-box{padding:12px;border-radius:6px;background:#12263a;color:rgba(255,255,255,0.88);overflow-x:auto;font-family:var(--font-mono);font-size:11px;line-height:1.65;white-space:pre}
+
+/* ── DEEP DIVE ── */
+.deep-intro{margin-bottom:10px;font-size:12px;line-height:1.6;color:var(--muted);max-width:980px;font-family:var(--font-sans)}
+.deep-sample{
+  margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));box-shadow:var(--shadow-soft);overflow:hidden
+}
+.deep-sample summary{list-style:none;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:11px 12px;cursor:pointer;user-select:none;background:rgba(16,33,49,0.025)}
+.deep-sample summary::-webkit-details-marker{display:none}
+.deep-sample[open] summary{background:rgba(16,33,49,0.045)}
+.deep-summary-left{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.deep-chevron{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-top:2px;font-size:10px;color:var(--muted);transition:transform 0.18s}
+.deep-sample[open] .deep-chevron{transform:rotate(90deg)}
+.deep-title-wrap{min-width:0}
+.deep-title{font-size:14px;font-weight:700;color:var(--ink)}
+.deep-subtitle{margin-top:2px;font-size:11px;line-height:1.45;color:var(--muted);font-family:var(--font-sans)}
+.deep-summary-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.deep-body{padding:12px;border-top:1px solid rgba(25,34,43,0.08);background:var(--surface-alt)}
+.deep-caption{margin-bottom:10px;font-size:12px;line-height:1.6;color:var(--muted);font-family:var(--font-sans)}
+.deep-subhead{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.trace-tight{font-size:10.5px;line-height:1.72}
+.deep-stack{display:grid;grid-template-columns:1.15fr 0.85fr;gap:10px;margin-top:10px}
+.deep-stack .stack-col{display:grid;gap:10px}
+
+/* ── FOOTER ── */
+.footer-panel{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft);
+  margin-top:16px;padding:14px 16px;text-align:center
+}
+.footer-panel p{margin:4px 0 0;font-size:12px;color:var(--muted);font-family:var(--font-sans)}
+.footer-links{margin-top:6px;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:12px;font-family:var(--font-sans)}
+.subtle{color:var(--muted)}
+
+/* ── READINESS REFRAME ── */
+.hero-grid{display:grid;grid-template-columns:1.25fr 0.75fr;gap:10px;margin-bottom:12px}
+.hero-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft);position:relative;overflow:hidden
+}
+.hero-card.main{
+  padding:18px 20px 16px;
+  background:
+    linear-gradient(90deg, rgba(27,103,201,0.08) 0 92px, transparent 92px),
+    repeating-linear-gradient(0deg, transparent 0 21px, rgba(16,33,49,0.03) 21px 22px),
+    linear-gradient(180deg, rgba(27,103,201,0.04), rgba(255,255,255,0) 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98))
+}
+.hero-card.side{padding:15px 16px;background:linear-gradient(180deg, rgba(231,239,247,0.72), rgba(250,252,254,0.98))}
+.hero-kicker{display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue)}
+.hero-title{
+  font-family:var(--font-mono);font-size:34px;line-height:1.02;color:var(--ink);
+  margin-bottom:10px;letter-spacing:-0.03em;text-transform:uppercase;max-width:15ch
+}
+.hero-copy{font-size:13px;line-height:1.68;color:var(--text);max-width:860px;font-family:var(--font-sans)}
+.hero-copy a,.matrix-link{color:var(--blue);text-decoration:underline}
+.hero-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:12px;color:var(--muted)}
+.hero-links a{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:6px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.72);text-decoration:none;color:var(--blue);font-size:11px
+}
+.hero-links a:hover{background:#fff}
+.note-label{display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green)}
+.note-list{padding-left:16px;font-size:12px;line-height:1.6;color:var(--text);font-family:var(--font-sans)}
+.note-list li{margin-bottom:4px}
+.status-system{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 12px 10px;
+  margin-bottom:12px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft);position:relative
+}
+.status-system::before{
+  content:"SYSTEM LEGEND";display:block;position:absolute;top:8px;left:12px;font-size:9px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--blue)
+}
+.status-copy{font-size:12px;color:var(--muted);padding-top:18px;font-family:var(--font-sans)}
+.status-row{display:flex;flex-wrap:wrap;gap:8px}
+.program-badge{
+  display:inline-flex;align-items:center;gap:6px;border-radius:6px;padding:4px 10px;font-size:10px;
+  font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:1px solid transparent;white-space:nowrap
+}
+.program-badge.active{background:var(--blue-soft);border-color:rgba(50,91,122,0.18);color:var(--blue)}
+.program-badge.proposed{background:var(--amber-soft);border-color:rgba(155,90,25,0.18);color:var(--amber)}
+.program-badge.internal{background:rgba(25,34,43,0.05);border-color:rgba(25,34,43,0.12);color:var(--muted)}
+.section-intro{margin:0 0 10px;font-size:12px;line-height:1.62;color:var(--muted);max-width:980px;font-family:var(--font-sans)}
+.matrix-note{margin-top:8px;font-size:11px;color:var(--muted);font-family:var(--font-sans)}
+.partner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.partner-card{
+  padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft)
+}
+.partner-card h4{font-size:14px;margin:4px 0 6px}
+.partner-card p{font-size:12px;line-height:1.55;color:var(--muted);font-family:var(--font-sans)}
+.partner-label{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+.partner-label.blue{color:var(--blue)}
+.partner-label.green{color:var(--green)}
+.partner-label.amber{color:var(--amber)}
+.partner-label.red{color:var(--red)}
+.expansion-grid{display:grid;grid-template-columns:0.95fr 1.05fr;gap:10px}
+.expansion-card{
+  padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft)
+}
+.expansion-card h4{font-size:14px;margin-bottom:6px}
+.expansion-card p{font-size:12px;line-height:1.6;color:var(--muted);font-family:var(--font-sans)}
+.parallel-table th:first-child,.parallel-table td:first-child{min-width:150px}
+.group-shell{
+  margin-bottom:14px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:linear-gradient(180deg, rgba(228,236,245,0.58), rgba(249,251,253,0.9));box-shadow:var(--shadow-soft)
+}
+.group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.group-title h3{font-size:15px;color:var(--ink)}
+.group-title p{font-size:11px;color:var(--muted);font-family:var(--font-sans)}
+.acc-col.tier{width:84px}
+.acc-col.cont{width:140px}
+.acc-col.cvdl{width:110px}
+.fed-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.fed-item{padding:9px;background:rgba(255,255,255,0.84);border:1px solid rgba(25,34,43,0.08);border-radius:6px}
+.fed-item .lbl{display:block;margin-bottom:4px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.fed-item .val{font-size:11px;font-weight:700;color:var(--ink);line-height:1.48;font-family:var(--font-sans)}
+.timing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.timing-card{
+  padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+  border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft)
+}
+.timing-card .big{font-family:var(--font-mono);font-size:30px;line-height:1;color:var(--ink)}
+.timing-card h4{font-size:13px;margin:6px 0 4px}
+.timing-card p{font-size:11px;line-height:1.55;color:var(--muted);font-family:var(--font-sans)}
+.layer-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.source-caption{margin:8px 0 0;font-size:11px;color:var(--muted);line-height:1.55;font-family:var(--font-sans)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1080px){
+  .grid-6{grid-template-columns:repeat(3,1fr)}
+  .grid-4,.detail-grid{grid-template-columns:1fr 1fr}
+  .deep-stack{grid-template-columns:1fr}
+  .acc-col.geo,.acc-col.sup{display:none}
+  .hero-grid,.expansion-grid,.partner-grid,.fed-strip,.timing-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  :root{--header-height:46px}
+  .topbar{padding:6px 10px;gap:8px}
+  .page{padding:8px 8px 20px}
+  .grid-6,.grid-4,.grid-3,.grid-2,.detail-grid{grid-template-columns:1fr}
+  .hero-grid,.expansion-grid,.partner-grid,.fed-strip,.timing-grid{grid-template-columns:1fr}
+  .two-tone{grid-template-columns:1fr}
+  .tab{width:100%;text-align:center;justify-content:center}
+  .tabbar{flex-wrap:wrap}
+  table{min-width:600px}
+  .acc-col.price,.acc-col.lt,.acc-col.cvdl{display:none}
+  .ts-label{display:none}
+  .deep-sample summary{flex-direction:column;align-items:flex-start}
+  .deep-summary-right{justify-content:flex-start}
+  .trace-tight{font-size:10px}
+  .hero-title{font-size:28px}
+}
+@media print{
+  @page{size:letter landscape;margin:0.4in}
+  body{background:#fff;font-size:10px}
+  body::before{display:none}
+  .topbar{position:static;background:#222;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tabbar{position:static}
+  .panel{display:block!important;page-break-before:always;break-before:page}
+  .panel:first-of-type{page-break-before:auto;break-before:auto}
+  .acc-row.open .acc-body,.ds-card.open .ds-body{display:block}
+  .acc-body,.ds-body{display:block!important}
+  .deep-sample{break-inside:avoid-page}
+  .acc-row{break-inside:avoid}
+  .flow-box,.trace-box{background:#e8e8e8!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <img class="logo-mp" src="images/medicine-place-logo.png" alt="Medicine Place" onerror="this.style.display='none'">
+    <div class="brand-divider"></div>
+    <img class="logo-medpac" src="images/MedPac-Logo-Sep-2025.png" alt="MedPac" onerror="this.style.display='none'">
+    <div class="topbar-copy">
+      <div class="topbar-kicker">Health Canada Readiness + Operating Evidence</div>
+      <div class="topbar-title">Glass Box &mdash; Readiness Prototype</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="ts-label">Representative as of 2026-04-05</span>
+    <span class="tag amber">Illustrative Prototype</span>
+    <a class="back-link" href="glass-box-appendix.html">&#8592; Appendix</a>
+  </div>
+</header>
+
+<!-- ═══════════════ PAGE ═══════════════ -->
+<main class="page">
+
+<div class="tabbar" role="tablist" aria-label="Dashboard sections">
+  <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-panel="federal" onclick="showTab('federal',this)">Federal Readiness</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="operations" onclick="showTab('operations',this)">Operational Evidence</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="signals" onclick="showTab('signals',this)">Signals &amp; Response</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="sources" onclick="showTab('sources',this)">Evidence &amp; Sources</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="obligations" onclick="showTab('obligations',this)">Obligations</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="governance" onclick="showTab('governance',this)">Data + Governance</button>
+</div>
+
+<div class="status-system">
+  <div class="status-copy">This legend stays constant across the dashboard so current Health Canada tools, proposed Gazette-direction obligations, and internal prototype logic remain visibly separate.</div>
+  <div class="status-row">
+    <span class="program-badge active">Active HC Program</span>
+    <span class="program-badge proposed">Proposed in Gazette Part I</span>
+    <span class="program-badge internal">Internal / Illustrative</span>
+  </div>
+</div>
+
+<div id="panel-federal" class="panel active" role="tabpanel">
+  <div class="hero-grid">
+    <div class="hero-card main">
+      <div class="hero-kicker">Health Canada Readiness + Medicine Place Operating Evidence</div>
+      <h1 class="hero-title">What Health Canada Is Trying To See</h1>
+      <p class="hero-copy">This prototype now leads with the federal view: CVDL alignment, shortage visibility, continuity posture, and reporting readiness. It pairs the June 2024 resilience plan with current shortage-program tools and a clearly segregated proposed Gazette layer so federal readers can see what is active today versus what remains draft or illustrative.</p>
+      <div class="hero-links">
+        <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028.html" target="_blank" rel="noopener noreferrer">Health Canada plan 2024-2028</a>
+        <a href="https://www.canada.ca/content/dam/hc-sc/documents/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028/building-resilience-plan-to-address-health-product-shortages-2024-2028.pdf" target="_blank" rel="noopener noreferrer">Plan PDF</a>
+        <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/critical-vulnerable-drug-list.html" target="_blank" rel="noopener noreferrer">Live CVDL</a>
+        <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer">Current shortage program</a>
+      </div>
+    </div>
+    <div class="hero-card side">
+      <div class="note-label">Guardrails</div>
+      <ul class="note-list">
+        <li>Representative data only, not live federal telemetry.</li>
+        <li>Not a substitute for Health Canada systems, Drug Shortages Canada, or formal reporting channels.</li>
+        <li>Drug-detail views reflect real prototype logic for shortage detection and continuity planning.</li>
+        <li>Medical-device content is program-parallel only and does not imply Medicine Place device operations.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">What Health Canada Is Trying To See</span><span class="section-line"></span></div>
+    <p class="section-intro">The first screen is now anchored to six readiness concepts that map directly to current Health Canada practice and the resilience plan rather than generic operations language.</p>
+    <div class="grid-6">
+      <div class="metric-card blue">
+        <span class="metric-label">CVDL coverage <i class="info-tip" data-tip="How much of the selected critical set remains tied to the live CVDL rather than an internal watchlist." tabindex="0">i</i></span>
+        <div class="metric-value">9 / 9</div>
+        <div class="metric-note">Selected CVDL set reconciled to the final live list; watchlist split out below.</div>
+      </div>
+      <div class="metric-card red">
+        <span class="metric-label">Actual / anticipated shortage <i class="info-tip" data-tip="Count of selected molecules with actual or anticipated shortage relevance in the current monitoring set." tabindex="0">i</i></span>
+        <div class="metric-value">5</div>
+        <div class="metric-note">Amoxicillin active; rifampin, ciprofloxacin, isoniazid, and mife/miso carried as anticipated-pressure cases.</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">In-Canada buffer position <i class="info-tip" data-tip="Representative finished-goods and releasable inventory position against internal continuity targets for selected molecules." tabindex="0">i</i></span>
+        <div class="metric-value">74<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">Portfolio-weighted buffer is below a 90-day illustrative continuity target.</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Single-site dependency <i class="info-tip" data-tip="Selected molecules that still rely on a single manufacturing or single qualified-source pathway at a key step." tabindex="0">i</i></span>
+        <div class="metric-value">4</div>
+        <div class="metric-note">Highest concentration remains in the beta-lactam and TB clusters.</div>
+      </div>
+      <div class="metric-card blue">
+        <span class="metric-label">Restart time <i class="info-tip" data-tip="Representative time required to stand up the next qualified source or recover a constrained batch path." tabindex="0">i</i></span>
+        <div class="metric-value">41<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">Illustrative median from source activation through first qualifying release.</div>
+      </div>
+      <div class="metric-card green">
+        <span class="metric-label">Reporting readiness <i class="info-tip" data-tip="Readiness to answer current shortage-program requests and to prepare for draft Gazette-direction obligations without conflating the two." tabindex="0">i</i></span>
+        <div class="metric-value">Mixed</div>
+        <div class="metric-note">Current shortage visibility is active; SPMP and safety-stock layers remain modeled as proposed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Current vs Proposed Readiness Framework</span><span class="section-line"></span></div>
+    <p class="section-intro">The dashboard distinguishes between what federal readers can act on today through existing Health Canada programs and what the prototype is preparing for as a proposed Gazette-direction layer.</p>
+    <div class="grid-2" style="margin-bottom:10px">
+      <div class="expansion-card">
+        <span class="program-badge active">Active HC Program</span>
+        <h4 style="margin-top:10px">Current tools already in force</h4>
+        <p>Drug Shortages Canada reporting, the live CVDL, shortage notices, discontinuation monitoring, Tier 3 / TAC-style escalation context, and the exceptional importation / extended-expiration toolkit that Health Canada can use during shortage response.</p>
+      </div>
+      <div class="expansion-card">
+        <span class="program-badge proposed">Proposed in Gazette Part I</span>
+        <h4 style="margin-top:10px">Draft readiness layer kept separate</h4>
+        <p>SPMPs, safety-stock obligations, expanded scope lists, and demand-surge reporting are shown as proposed readiness architecture only. They are included to align the page to the direction of travel without presenting unverified final-law status.</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="min-width:170px">Plan Action</th>
+            <th style="min-width:200px">Why it matters</th>
+            <th style="min-width:220px">Current evidence on this page</th>
+            <th style="min-width:180px">Current HC program</th>
+            <th style="min-width:180px">Proposed readiness layer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw700">1. Prioritize and identify risks</td>
+            <td>Federal readers need to know which medicines are critical, vulnerable, and concentrated.</td>
+            <td>CVDL split, single-site dependency count, cluster concentration notes, watchlist separation.</td>
+            <td><span class="program-badge active">Active HC Program</span> Live CVDL and shortage-program prioritization.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Expanded-scope logic for broader readiness obligations.</td>
+          </tr>
+          <tr>
+            <td class="fw700">2. Anticipate shortages and minimize impact</td>
+            <td>Earlier signal detection is the difference between a shortage notice and an avoided shortage.</td>
+            <td>Molecule-level anticipated vs actual status, mitigation pathways, readiness ladder.</td>
+            <td><span class="program-badge active">Active HC Program</span> Drug Shortages Canada and shortage notices.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Demand-surge and discontinuation tightening.</td>
+          </tr>
+          <tr>
+            <td class="fw700">3. Strengthen response to shortages</td>
+            <td>Response capacity matters when buffers are already drawing down.</td>
+            <td>Restart time, in-Canada buffer metric, deep-dive mitigation tables, federal partner roles.</td>
+            <td><span class="program-badge active">Active HC Program</span> Exceptional importation and extended-expiration response tools.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Safety-stock and SPMP preparation.</td>
+          </tr>
+          <tr>
+            <td class="fw700">4. Improve reporting systems and capabilities</td>
+            <td>Federal programs need comparable, structured inputs rather than ad hoc updates.</td>
+            <td>Evidence tab, event-ledger traces, per-molecule federal status strip, timing callouts.</td>
+            <td><span class="program-badge active">Active HC Program</span> Current shortage reporting pathways and notices.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> SPMP submission and refresh cadence.</td>
+          </tr>
+          <tr>
+            <td class="fw700">5. Build analytics and detection capacity</td>
+            <td>Policy goals depend on pattern recognition before clinical impact becomes widespread.</td>
+            <td>Readiness metrics, ladder thresholds, cluster analysis, anticipated shortage watch cases.</td>
+            <td><span class="program-badge active">Active HC Program</span> Current shortage monitoring and CVDL context.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Higher-frequency demand signal reporting.</td>
+          </tr>
+          <tr>
+            <td class="fw700">6. Improve information sharing</td>
+            <td>Health Canada cannot coordinate across partners if the same signal means different things to each institution.</td>
+            <td>Shared partner cards and evidence taxonomy built for HC, PHAC / NESS, PSPC, and DND / ISED readers.</td>
+            <td><span class="program-badge active">Active HC Program</span> Current shortage communications and federal coordination.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Expanded information-sharing expectations around CVDL medicines.</td>
+          </tr>
+          <tr>
+            <td class="fw700">7. Strengthen transparency and communication</td>
+            <td>Readers need source status, provenance, and plain-language context on the same screen.</td>
+            <td>Status legend, guardrails, source captions, per-event reporting implications.</td>
+            <td><span class="program-badge active">Active HC Program</span> Public shortage database and supply notices.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Additional transparency around mitigation plans and safety stock.</td>
+          </tr>
+          <tr>
+            <td class="fw700">8. Modernize and adapt the framework</td>
+            <td>Health Canada is moving from reactive shortage response toward a stronger resilience architecture.</td>
+            <td>Hybrid dashboard structure, current vs proposed split, medical-device parallels without over-claiming scope.</td>
+            <td><span class="program-badge active">Active HC Program</span> Current shortage program and resilience-plan direction.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span> Future compliance-facing readiness layer.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="matrix-note">Primary reference: <a class="matrix-link" href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028.html" target="_blank" rel="noopener noreferrer">Health Canada plan page</a> and the linked <a class="matrix-link" href="https://www.canada.ca/content/dam/hc-sc/documents/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028/building-resilience-plan-to-address-health-product-shortages-2024-2028.pdf" target="_blank" rel="noopener noreferrer">June 2024 PDF</a>.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Federal Partners</span><span class="section-line"></span></div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <div class="partner-label blue">Health Canada</div>
+        <h4>Shortage visibility and compliance posture</h4>
+        <p>CVDL prioritization, current shortage signals, discontinuation logic, and the active-versus-proposed split all resolve first to Health Canada readers.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label green">PHAC / NESS</div>
+        <h4>Reserve relevance and public-health continuity</h4>
+        <p>In-Canada buffer positions, replenishment time, and TB-cluster continuity help frame what matters for federal reserve planning without claiming a live NESS integration.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label amber">PSPC</div>
+        <h4>Instrument and trigger readiness</h4>
+        <p>The ladder translates operational signals into procurement-readable trigger points so a future response mechanism could be tested against explicit thresholds and evidence.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label red">DND / ISED</div>
+        <h4>Strategic resilience and industrial concentration</h4>
+        <p>Single-site dependency, restart time, and concentration exposures are surfaced as resilience signals rather than routine commercial reporting.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Health Product Expansion</span><span class="section-line"></span></div>
+    <div class="expansion-grid">
+      <div class="expansion-card">
+        <h4>Medical Device Parallels</h4>
+        <p>This dashboard remains drug-focused. The purpose of the device section is only to show that the resilience framework now reaches beyond drugs at the program level and that the same federal readiness questions recur across health products.</p>
+        <div class="layer-row">
+          <span class="program-badge active">Active HC Program</span>
+          <span class="program-badge internal">Internal / Illustrative</span>
+        </div>
+      </div>
+      <div class="expansion-card">
+        <table class="parallel-table">
+          <thead>
+            <tr>
+              <th>Program parallel</th>
+              <th>What the dashboard can truthfully show</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw700">Device shortage reporting</td>
+              <td>Parallel visibility need: which products are in shortage, which alternatives exist, and where federal readers need earlier warning.</td>
+            </tr>
+            <tr>
+              <td class="fw700">Discontinuation reporting</td>
+              <td>Same continuity question as drugs: which exits could tighten substitution options before provincial buyers feel the impact.</td>
+            </tr>
+            <tr>
+              <td class="fw700">Exceptional importation</td>
+              <td>Emergency access tools can exist for devices as well, but this page does not imply Medicine Place participates in device manufacturing.</td>
+            </tr>
+            <tr>
+              <td class="fw700">Information sharing</td>
+              <td>Federal readiness still depends on demand, inventory, and mitigation data sharing across public-health and procurement actors.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="panel-operations" class="panel" role="tabpanel">
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Operational Evidence</span><span class="section-line"></span></div>
+    <p class="section-intro">The molecule set is now split cleanly into the final live CVDL selection and a separate internal watchlist. No molecule appears under a CVDL heading unless it is on the final list, and every row shows the same federal-status scaffold.</p>
+  </div>
+
+  <div class="group-shell">
+    <div class="group-title">
+      <h3>Final CVDL-listed drug set</h3>
+      <p>Representative federal posture for the nine molecules carried here as CVDL-aligned drug evidence.</p>
+    </div>
+    <div class="accordion">
+      <div class="cluster-header" style="background:rgba(25,34,43,0.03);color:var(--muted);gap:0">
+        <span style="width:16px"></span>
+        <div class="acc-cols" style="font-size:9px">
+          <span class="acc-col mol">Molecule</span>
+          <span class="acc-col cvdl">CVDL membership</span>
+          <span class="acc-col hc">Drug Shortages Canada</span>
+          <span class="acc-col tier">Tier 3</span>
+          <span class="acc-col cont">Internal continuity posture</span>
+          <span class="acc-col risk">Layer</span>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-amoxicillin">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-amoxicillin')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-amoxicillin')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Amoxicillin</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill red">Actual shortage</span></span>
+            <span class="acc-col tier"><span class="pill amber">TAC / Tier 3 watch</span></span>
+            <span class="acc-col cont">Batch acceleration</span>
+            <span class="acc-col risk"><span class="pill blue">Active</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Actual shortage pressure in oral formats.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">Escalation-sensitive because of broad clinical substitution impact.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Accelerate alternate source and protect suspension release slots.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Actual shortage</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">42 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">API delay + spillover demand</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Re-sequence suspension batches</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Advance alternate-source qualification</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Rebuild buffer after next release cycle</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shortage notice and supply updates</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Safety-stock / SPMP readiness modeled only</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Active HC program</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-rifampin">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-rifampin')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-rifampin')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Rifampin</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill amber">Anticipated</span></span>
+            <span class="acc-col tier"><span class="pill amber">TB cluster</span></span>
+            <span class="acc-col cont">Dual-source hold</span>
+            <span class="acc-col risk"><span class="pill blue">Active</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Anticipated tight-market posture.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">TB continuity makes escalation consequences outsized.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Hold reserve and preserve dual-source qualification.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Anticipated shortage</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">61 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Competitor exits + shared intermediates</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Stress-test TB cluster batches</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Hold contingency inventory</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Protect two-source coverage across cluster</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shortage watch and discontinuation context</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">SPMP readiness carried as draft</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Active HC program</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-ciprofloxacin">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-ciprofloxacin')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-ciprofloxacin')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ciprofloxacin</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill amber">Anticipated</span></span>
+            <span class="acc-col tier"><span class="pill neutral">No formal tie</span></span>
+            <span class="acc-col cont">Demand-surge monitor</span>
+            <span class="acc-col risk"><span class="pill blue">Active</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Anticipated tightness and substitution pressure.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None explicit in this prototype view.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Track regional demand surge and preserve alternate-route sourcing.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Anticipated shortage</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">74 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Regional substitution demand</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Adjust sourcing mix</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Hold freight capacity</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Normalize after comparator supply recovery</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Current shortage monitoring applies</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Demand-surge trigger modeled if threshold is crossed</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Active HC program</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-acetylcysteine">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-acetylcysteine')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-acetylcysteine')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Acetylcysteine</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill green">Clear</span></span>
+            <span class="acc-col tier"><span class="pill neutral">No formal tie</span></span>
+            <span class="acc-col cont">Stable buffer</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">No active shortage signal in this representative view.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None carried here.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Maintain diversification and keep Canadian-release option warm.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Clear</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">88 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">None material</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Maintain qualification pack</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Hold safety review cadence</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Not on recovery path today</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Reference clear-state case</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Would populate draft safety-stock logic only</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-asa">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-asa')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-asa')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Acetylsalicylic acid</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill green">Clear</span></span>
+            <span class="acc-col tier"><span class="pill neutral">No formal tie</span></span>
+            <span class="acc-col cont">Platelet-use reserve</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Clear in the representative view.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None explicit; platelet-aggregation use is the continuity note here.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Maintain stable buffer for platelet-aggregation indications.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Clear</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">96 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Low current pressure</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Keep diversified source mix</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Watch packaging continuity</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">No active recovery cycle</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shows clear-state CVDL discipline</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Safety-stock draft logic only</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cluster-header"><span style="font-size:12px">&#9670;</span> Anti-TB cluster - cascade risk monitored across shared intermediates and release timing</div>
+
+      <div class="acc-row" id="mol-isoniazid">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-isoniazid')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-isoniazid')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Isoniazid</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill amber">Anticipated</span></span>
+            <span class="acc-col tier"><span class="pill amber">TB cluster</span></span>
+            <span class="acc-col cont">Cluster reserve</span>
+            <span class="acc-col risk"><span class="pill blue">Active</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Anticipated pressure tied to TB-cluster exposure.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">Escalation-sensitive because the cluster shares intermediates.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Preserve cluster reserve and align batch timing with rifampin risk.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Anticipated shortage</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">72 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Cluster-intermediate concentration</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Reserve synchronized release slot</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Maintain second-source readiness</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Recover with cluster sequencing, not one-off batches</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shortage watch and public-health continuity logic</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">SPMP and safety-stock prep modeled separately</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Active HC program</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-ethambutol">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-ethambutol')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-ethambutol')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ethambutol</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill green">Clear</span></span>
+            <span class="acc-col tier"><span class="pill amber">TB cluster</span></span>
+            <span class="acc-col cont">Monitor adjacency</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Clear, but clustered with TB continuity risk.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">Adjacency to TB escalation decisions.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Keep shared intermediates and release windows visible.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Clear</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">68 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Cluster adjacency</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Maintain coordinated procurement</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Hold backup intermediate orders</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">N/A unless TB cluster escalates</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Reference case for cluster continuity</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Would inherit draft readiness obligations if finalized</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-pyrazinamide">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-pyrazinamide')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-pyrazinamide')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Pyrazinamide</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill green">Clear</span></span>
+            <span class="acc-col tier"><span class="pill amber">TB cluster</span></span>
+            <span class="acc-col cont">Monitor adjacency</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Clear in the current representative view.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">TB-cluster adjacency remains relevant.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Keep the cluster reserve model balanced across TB molecules.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Clear</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">65 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Same cluster intermediates as TB set</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Preserve coordinated sourcing</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Keep reserve drawdown model current</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Not on active recovery path</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Supports cluster continuity view</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Draft safety-stock posture only</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-mifepristone">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-mifepristone')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-mifepristone')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Mifepristone / Misoprostol</span>
+            <span class="acc-col cvdl"><span class="pill blue">Listed</span></span>
+            <span class="acc-col hc"><span class="pill amber">Anticipated</span></span>
+            <span class="acc-col tier"><span class="pill neutral">No formal tie</span></span>
+            <span class="acc-col cont">Dual-source priority</span>
+            <span class="acc-col risk"><span class="pill blue">Active</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Final live CVDL selection retained.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Anticipated continuity pressure in a sensitive therapy area.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None explicit in this prototype view.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Protect dual-source allocation and preserve next release window.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Anticipated shortage</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">74 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Low-substitution continuity sensitivity</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Lock secondary-source allocation</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Confirm dual-batch release schedule</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Return to target buffer after next cycle</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shortage watch if continuity deteriorates</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Draft safety-stock / SPMP posture modeled</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Active HC program</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-shell">
+    <div class="group-title">
+      <h3>Internal watchlist / non-CVDL</h3>
+      <p>These molecules remain visible as internal continuity signals, but they are explicitly separated from the CVDL-branded set.</p>
+    </div>
+    <div class="accordion">
+      <div class="cluster-header" style="background:rgba(25,34,43,0.03);color:var(--muted);gap:0">
+        <span style="width:16px"></span>
+        <div class="acc-cols" style="font-size:9px">
+          <span class="acc-col mol">Molecule</span>
+          <span class="acc-col cvdl">CVDL membership</span>
+          <span class="acc-col hc">Drug Shortages Canada</span>
+          <span class="acc-col tier">Tier 3</span>
+          <span class="acc-col cont">Internal continuity posture</span>
+          <span class="acc-col risk">Layer</span>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-lithium">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-lithium')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-lithium')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Lithium carbonate</span>
+            <span class="acc-col cvdl"><span class="pill neutral">Non-CVDL</span></span>
+            <span class="acc-col hc"><span class="pill amber">Watch</span></span>
+            <span class="acc-col tier"><span class="pill neutral">None</span></span>
+            <span class="acc-col cont">Feedstock monitor</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Internal watchlist only.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Watch posture due to feedstock volatility.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Monitor tariff and raw-material exposure.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Watch</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">78 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Feedstock pricing and trade risk</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Preserve alternate salt source</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Track market volatility weekly</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Normalize after feedstock market settles</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">No CVDL claim; context only</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">Not positioned as a Gazette-obligation case</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-cefixime">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-cefixime')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-cefixime')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Cefixime</span>
+            <span class="acc-col cvdl"><span class="pill neutral">Non-CVDL</span></span>
+            <span class="acc-col hc"><span class="pill amber">Watch</span></span>
+            <span class="acc-col tier"><span class="pill neutral">None</span></span>
+            <span class="acc-col cont">Secondary watch</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Internal watchlist only.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Watch case for substitution-demand spillover.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Maintain a secondary antibiotic watch separate from CVDL logic.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Watch</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">85 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Antibiotic substitution pressure</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">Hold procurement option</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Watch comparator DIN status</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">N/A unless market tightens</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Shortage context only</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">No separate draft obligation implied</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-row" id="mol-ivabradine">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-ivabradine')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-ivabradine')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ivabradine</span>
+            <span class="acc-col cvdl"><span class="pill neutral">Non-CVDL</span></span>
+            <span class="acc-col hc"><span class="pill green">Clear</span></span>
+            <span class="acc-col tier"><span class="pill neutral">None</span></span>
+            <span class="acc-col cont">Routine monitor</span>
+            <span class="acc-col risk"><span class="pill neutral">Internal</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="fed-strip">
+            <div class="fed-item"><span class="lbl">CVDL membership</span><span class="val">Internal watchlist only.</span></div>
+            <div class="fed-item"><span class="lbl">Drug Shortages Canada status</span><span class="val">Clear in the representative view.</span></div>
+            <div class="fed-item"><span class="lbl">Tier 3 relevance</span><span class="val">None.</span></div>
+            <div class="fed-item"><span class="lbl">Internal continuity posture</span><span class="val">Keep a low-frequency monitor on source concentration.</span></div>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Shortage status</h5>
+              <div class="detail-row"><span class="lbl">Representative signal</span><span class="val">Clear</span></div>
+              <div class="detail-row"><span class="lbl">In-Canada buffer</span><span class="val">82 days</span></div>
+              <div class="detail-row"><span class="lbl">Constraint</span><span class="val">Low current pressure</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Mitigation path</h5>
+              <div class="detail-row"><span class="lbl">Immediate</span><span class="val">No intervention</span></div>
+              <div class="detail-row"><span class="lbl">Next step</span><span class="val">Monitor source concentration quarterly</span></div>
+              <div class="detail-row"><span class="lbl">Recovery</span><span class="val">Not applicable</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Federal reporting implications</h5>
+              <div class="detail-row"><span class="lbl">Current program</span><span class="val">Not a CVDL-facing case</span></div>
+              <div class="detail-row"><span class="lbl">Proposed layer</span><span class="val">None positioned here</span></div>
+              <div class="detail-row"><span class="lbl">Primary layer</span><span class="val">Internal / illustrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Drug-Focused Deep-Dive Traces</span><span class="section-line"></span></div>
+    <p class="deep-intro">Each trace now carries the same four decision fields: shortage status, mitigation path, federal reporting implications, and the layer in which the signal currently sits.</p>
+
+    <details class="deep-sample" open>
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Amoxicillin - suspension-led shortage trace</div>
+            <div class="deep-subtitle">A current-program case where the active shortage layer matters first and the proposed layer is only readiness context.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill red">Actual shortage</span>
+          <span class="pill blue">Active HC Program</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">The trace follows one shortage pathway from supplier delay to federal-facing implications. The page distinguishes what would be reported today from what the dashboard is preparing for if Gazette-direction rules advance.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width:120px">Event</th>
+                <th style="min-width:120px">Shortage status</th>
+                <th style="min-width:180px">Mitigation path</th>
+                <th style="min-width:190px">Federal reporting implications</th>
+                <th style="min-width:150px">Layer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">2026-03-12</td>
+                <td>Anticipated pressure begins after API ETA slips +9 days.</td>
+                <td>Re-sequence suspension batches and preserve releasable stock.</td>
+                <td>No formal notice yet; internal continuity trigger only.</td>
+                <td><span class="program-badge internal">Internal / Illustrative</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-18</td>
+                <td>Comparator shortage and spillover demand tighten the case.</td>
+                <td>Advance alternate-source qualification.</td>
+                <td>Strengthens rationale for current shortage monitoring and supply updates.</td>
+                <td><span class="program-badge active">Active HC Program</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-31</td>
+                <td>Suspension coverage breaches internal threshold and becomes an actual shortage pathway.</td>
+                <td>Draw down protected inventory and shift release priority.</td>
+                <td>Current shortage-reporting logic becomes the primary federal obligation.</td>
+                <td><span class="program-badge active">Active HC Program</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-04-02</td>
+                <td>Response moves to recovery planning.</td>
+                <td>Prepare post-event safety-stock rebuild scenario.</td>
+                <td>SPMP and safety-stock prep remain visible as draft readiness only.</td>
+                <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-sample">
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Rifampin / TB cluster - escalation trace</div>
+            <div class="deep-subtitle">A cluster case where no single event is catastrophic, but public-health continuity makes escalation logic more important.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill amber">Anticipated</span>
+          <span class="pill blue">Active HC Program</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">The dashboard treats the TB set as a continuity cluster. That lets federal readers see why a still-clear molecule can matter when adjacent products tighten.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width:120px">Event</th>
+                <th style="min-width:120px">Shortage status</th>
+                <th style="min-width:180px">Mitigation path</th>
+                <th style="min-width:190px">Federal reporting implications</th>
+                <th style="min-width:150px">Layer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">2026-02-28</td>
+                <td>Two competitor exits shift rifampin from clear to anticipated pressure.</td>
+                <td>Hold reserve and freeze non-essential allocation changes.</td>
+                <td>Discontinuation context becomes relevant for active shortage monitoring.</td>
+                <td><span class="program-badge active">Active HC Program</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-17</td>
+                <td>Cluster-intermediate concentration raises isoniazid adjacency risk.</td>
+                <td>Run synchronized TB release scenarios.</td>
+                <td>Supports TAC / Tier 3-style continuity discussion if the cluster tightens further.</td>
+                <td><span class="program-badge active">Active HC Program</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-30</td>
+                <td>No actual shortage yet, but reserve coverage slips below preferred posture.</td>
+                <td>Protect two-source continuity and preserve reserve lots.</td>
+                <td>Current reporting remains active; proposed SPMP layer becomes a planning lens only.</td>
+                <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-sample">
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Mifepristone / Misoprostol - continuity-sensitive trace</div>
+            <div class="deep-subtitle">A continuity case where the federal question is less about a current shortage and more about how quickly the posture could deteriorate.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill amber">Anticipated</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">This sample keeps the trace drug-focused while showing how the page now records the layer of each signal instead of blending active programs with draft obligations.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width:120px">Event</th>
+                <th style="min-width:120px">Shortage status</th>
+                <th style="min-width:180px">Mitigation path</th>
+                <th style="min-width:190px">Federal reporting implications</th>
+                <th style="min-width:150px">Layer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">2026-02-27</td>
+                <td>Demand variance remains below shortage threshold but raises continuity attention.</td>
+                <td>Increase secondary-source allocation.</td>
+                <td>No current notice; internal continuity monitor only.</td>
+                <td><span class="program-badge internal">Internal / Illustrative</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-19</td>
+                <td>Coverage slips to 74 days, creating anticipated-pressure posture.</td>
+                <td>Confirm next dual-batch release and hold allocation discipline.</td>
+                <td>Would support current shortage watch if deterioration continues.</td>
+                <td><span class="program-badge active">Active HC Program</span></td>
+              </tr>
+              <tr>
+                <td class="mono">2026-03-28</td>
+                <td>Buffer remains stable but below ideal draft-readiness assumptions.</td>
+                <td>Model rebuild toward a stronger in-Canada position.</td>
+                <td>Shows where proposed safety-stock logic would bite first if finalized.</td>
+                <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div id="panel-signals" class="panel" role="tabpanel">
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Signals &amp; Response</span><span class="section-line"></span></div>
+    <p class="section-intro">The old generic threshold table is replaced with a readiness ladder that is easier for federal readers to interpret: which trigger is active, what response it implies, and whether it belongs to today&apos;s program or the proposed layer.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Current Priority Cases</span><span class="section-line"></span></div>
+    <div class="alert-card critical">
+      <div class="alert-level">Active HC Program</div>
+      <div class="alert-title">Amoxicillin has crossed from anticipated pressure into a representative actual shortage pathway.</div>
+      <div class="alert-meta"><span>Primary response: batch acceleration</span><span>Federal implication: current shortage reporting and update discipline</span><span>Draft layer: safety-stock rebuild only</span></div>
+    </div>
+    <div class="alert-card warning">
+      <div class="alert-level">Active HC Program</div>
+      <div class="alert-title">Rifampin / TB cluster remains an anticipated shortage case with escalation sensitivity.</div>
+      <div class="alert-meta"><span>Primary response: reserve hold</span><span>Federal implication: Tier 3 / TAC-style continuity attention</span><span>Draft layer: SPMP posture carried separately</span></div>
+    </div>
+    <div class="alert-card info">
+      <div class="alert-level">Proposed Readiness Layer</div>
+      <div class="alert-title">Several products would become draft safety-stock or SPMP edge cases before they become current-program shortage events.</div>
+      <div class="alert-meta"><span>Current view: no final-law claim</span><span>Purpose: make the direction of travel visible</span><span>Scope: illustrative readiness only</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Readiness Ladder</span><span class="section-line"></span></div>
+    <div class="table-wrap">
+      <table class="thresh-table">
+        <thead>
+          <tr>
+            <th style="min-width:170px">Trigger</th>
+            <th style="min-width:160px">What it means</th>
+            <th style="min-width:200px">Representative response</th>
+            <th style="min-width:180px">Federal implication</th>
+            <th style="min-width:150px">Layer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw700">Anticipated shortage</td>
+            <td>Current evidence suggests likely supply disruption before patient-level stockout.</td>
+            <td>Freeze critical allocation changes and activate mitigation planning.</td>
+            <td>Current shortage monitoring and update readiness.</td>
+            <td><span class="program-badge active">Active HC Program</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Actual shortage</td>
+            <td>Coverage or supply availability has crossed into an active shortage condition.</td>
+            <td>Release protected inventory and shift production priority.</td>
+            <td>Current shortage notice and supply communication discipline.</td>
+            <td><span class="program-badge active">Active HC Program</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Tier 3 / TAC escalation</td>
+            <td>Shortage context has elevated public-health or system-level consequences.</td>
+            <td>Escalate continuity planning across affected clusters or reserve scenarios.</td>
+            <td>TAC / Tier 3-style coordination context.</td>
+            <td><span class="program-badge active">Active HC Program</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Demand surge &gt; 250%</td>
+            <td>Demand moves beyond routine substitution pressure into a draft reporting threshold.</td>
+            <td>Freeze non-essential demand assumptions and prepare event reporting package.</td>
+            <td>Draft demand-surge reporting concept.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">SPMP update trigger</td>
+            <td>Continuity posture changes enough that a prevention / mitigation plan would need refresh.</td>
+            <td>Update structured mitigation logic and supplier contingencies.</td>
+            <td>SPMP submission or refresh if the draft framework is finalized.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Safety stock drawdown</td>
+            <td>In-Canada buffer begins moving below the draft readiness expectation.</td>
+            <td>Protect release timing and model rebuild path.</td>
+            <td>Draft safety-stock compliance lens only.</td>
+            <td><span class="program-badge proposed">Proposed in Gazette Part I</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Discontinuation</td>
+            <td>Competitor or holder exit reduces fallback supply options.</td>
+            <td>Re-score continuity risk and check substitution pressure.</td>
+            <td>Current discontinuation and shortage context.</td>
+            <td><span class="program-badge active">Active HC Program</span></td>
+          </tr>
+          <tr>
+            <td class="fw700">Exceptional importation / extended-expiration options</td>
+            <td>Current response tools are needed because domestic continuity is no longer enough.</td>
+            <td>Move from mitigation planning to emergency-response support.</td>
+            <td>Current Health Canada shortage-response toolkit.</td>
+            <td><span class="program-badge active">Active HC Program</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Timing Callouts</span><span class="section-line"></span></div>
+    <div class="timing-grid">
+      <div class="timing-card">
+        <div class="big">24</div>
+        <h4>24 hours on request</h4>
+        <p>Kept visible only as a proposed readiness benchmark in this prototype. It is not presented as a live obligation without final-law verification.</p>
+      </div>
+      <div class="timing-card">
+        <div class="big">3</div>
+        <h4>Every 3 years</h4>
+        <p>The page now makes clear that periodic plan refresh belongs to the draft readiness layer, not to the active shortage tools already in force.</p>
+      </div>
+      <div class="timing-card">
+        <div class="big">5</div>
+        <h4>Within 5 days after month-end</h4>
+        <p>Within five days after month-end is shown as a draft threshold for demand-surge reporting once the event exceeds the representative 250% trigger.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="panel-sources" class="panel" role="tabpanel">
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Active HC Systems</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-shortages-canada">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-shortages-canada')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-shortages-canada')}">
+        <div><span class="ds-title">Drug Shortages Canada</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Current system</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Primary public shortage status, anticipated shortage context, and supply notices for the drug set.</div>
+        <p class="source-caption">Status: active today. The prototype maps molecule rows back to the current national shortage database rather than treating it as a hypothetical feed.</p>
+        <p style="margin-top:8px"><a href="https://www.drugshortagescanada.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Drug Shortages Canada</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-cvdl-current">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-cvdl-current')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-cvdl-current')}">
+        <div><span class="ds-title">Critical and Vulnerable Drug List (CVDL)</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Current list</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Defines the final live drug set and prevents non-CVDL molecules from being shown under a CVDL heading.</div>
+        <p class="source-caption">Status: active today. This page now uses the final live CVDL as the dividing line between federal-readiness drugs and internal watchlist molecules.</p>
+        <p style="margin-top:8px"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/critical-vulnerable-drug-list.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open the CVDL</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-tier3">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-tier3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-tier3')}">
+        <div><span class="ds-title">Tier 3 shortages / TAC context</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Response context</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Explains when a shortage becomes system-significant enough to require broader public-health continuity attention.</div>
+        <p class="source-caption">Status: active today as current response context. The dashboard uses it as a federal-reading lens for the TB cluster and broad antibiotic substitution risk.</p>
+        <p style="margin-top:8px"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Health Canada shortage program page</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-supply-notices">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-supply-notices')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-supply-notices')}">
+        <div><span class="ds-title">Supply notices</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Current notices</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Supports active shortage communication and makes external comparator supply changes visible in the operational traces.</div>
+        <p class="source-caption">Status: active today. Used here as the current communication layer rather than a draft concept.</p>
+        <p style="margin-top:8px"><a href="https://www.drugshortagescanada.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open supply notices via Drug Shortages Canada</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-exceptional-importation">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-exceptional-importation')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-exceptional-importation')}">
+        <div><span class="ds-title">Exceptional importation</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Emergency response</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Shows what the current emergency-response toolkit looks like when normal continuity measures are no longer sufficient.</div>
+        <p class="source-caption">Status: active today. This is used in the readiness ladder as a current-response option, not as a proposed mechanism.</p>
+        <p style="margin-top:8px"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Health Canada shortage response tools</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-extended-expiration">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-extended-expiration')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-extended-expiration')}">
+        <div><span class="ds-title">Extended expiration dates</span></div>
+        <div class="ds-meta"><span class="program-badge active">Active HC Program</span><span class="pill neutral">Emergency response</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Represents a current shortage-response option when existing inventory can be preserved safely under regulatory direction.</div>
+        <p class="source-caption">Status: active today. It remains a current Health Canada response tool and is not treated as a Gazette-only future feature.</p>
+        <p style="margin-top:8px"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Health Canada shortage program page</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Proposed Regulatory Tools</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-spmp">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-spmp')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-spmp')}">
+        <div><span class="ds-title">SPMP</span></div>
+        <div class="ds-meta"><span class="program-badge proposed">Proposed in Gazette Part I</span><span class="pill neutral">Draft tool</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> The dashboard can already structure the mitigation and contingency data that an SPMP would require, but it does not claim a verified final-law obligation.</div>
+        <p class="source-caption">Status: proposed / draft. Timings such as 24 hours on request and three-year updates are shown as readiness assumptions only.</p>
+        <p style="margin-top:8px"><a href="https://gazette.gc.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Canada Gazette</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-safety-stock">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-safety-stock')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-safety-stock')}">
+        <div><span class="ds-title">Safety Stock List</span></div>
+        <div class="ds-meta"><span class="program-badge proposed">Proposed in Gazette Part I</span><span class="pill neutral">Draft tool</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Lets the prototype separate current in-Canada buffer evidence from draft safety-stock expectations so those ideas are not conflated.</div>
+        <p class="source-caption">Status: proposed / draft. Used here as a modeled readiness lens, not as an active compliance list.</p>
+        <p style="margin-top:8px"><a href="https://gazette.gc.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Canada Gazette</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-expanded-scope">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-expanded-scope')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-expanded-scope')}">
+        <div><span class="ds-title">Expanded Scope List</span></div>
+        <div class="ds-meta"><span class="program-badge proposed">Proposed in Gazette Part I</span><span class="pill neutral">Draft tool</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Supports the future-facing question of which additional products could be drawn into a stronger readiness framework beyond the current CVDL.</div>
+        <p class="source-caption">Status: proposed / draft. It is presented only as part of the anticipated federal direction of travel.</p>
+        <p style="margin-top:8px"><a href="https://gazette.gc.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Canada Gazette</a></p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-demand-surge">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-demand-surge')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-demand-surge')}">
+        <div><span class="ds-title">Demand surge reporting</span></div>
+        <div class="ds-meta"><span class="program-badge proposed">Proposed in Gazette Part I</span><span class="pill neutral">Draft tool</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Why it matters here:</strong> Connects substitution-driven demand spikes in the operational traces to a draft reporting threshold rather than treating them as current-law duties.</div>
+        <p class="source-caption">Status: proposed / draft. The ladder now shows the representative threshold as greater than 250% with reporting within five days after month-end.</p>
+        <p style="margin-top:8px"><a href="https://gazette.gc.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open Canada Gazette</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Internal Operating Feeds</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-erp-readiness">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-erp-readiness')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-erp-readiness')}">
+        <div><span class="ds-title">Medicine Place ERP / inventory posture</span></div>
+        <div class="ds-meta"><span class="program-badge internal">Internal / Illustrative</span><span class="pill neutral">Representative feed</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields modeled:</strong> releasable inventory, days of coverage, protected reserve lots, and in-Canada buffer position by representative molecule.</div>
+        <p class="source-caption">Status: internal / illustrative. This page uses it to show what federal readers would be able to see, not to claim a live integration.</p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-supplier-readiness">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-supplier-readiness')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-supplier-readiness')}">
+        <div><span class="ds-title">Supplier qualification and import-lane registry</span></div>
+        <div class="ds-meta"><span class="program-badge internal">Internal / Illustrative</span><span class="pill neutral">Representative feed</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields modeled:</strong> source count, single-site dependency, route concentration, alternate-source readiness, and restart timing.</div>
+        <p class="source-caption">Status: internal / illustrative. This is the operating evidence that lets federal readers see continuity posture rather than just final shortage status.</p>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-event-ledger">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-event-ledger')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-event-ledger')}">
+        <div><span class="ds-title">Batch and event ledger</span></div>
+        <div class="ds-meta"><span class="program-badge internal">Internal / Illustrative</span><span class="pill neutral">Representative feed</span><span class="ds-toggle" style="font-size:11px;color:var(--muted)">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields modeled:</strong> shortage-status transitions, mitigation actions, release timing, and event-to-reporting linkage for the deep-dive traces.</div>
+        <p class="source-caption">Status: internal / illustrative. It is how the prototype shows the evidence chain from upstream signal to federal-facing implication.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="panel-obligations" class="panel" role="tabpanel">
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Obligations</span><span class="section-line"></span></div>
+    <p class="section-intro">This tab adds the compliance-facing view without changing the older prototype&rsquo;s overall structure. Current shortage-program requirements, proposed Gazette-direction tools, and internal readiness signals remain explicitly separated so the page never implies that draft obligations are already in force.</p>
+    <div class="grid-2" style="margin-bottom:10px">
+      <div class="expansion-card">
+        <span class="program-badge active">Active HC Program</span>
+        <h4 style="margin-top:10px">Current requirements in force</h4>
+        <div class="fed-strip" style="margin-top:10px">
+          <div class="fed-item"><span class="lbl">Drug shortage reporting</span><span class="val">Current reporting base for applicable shortage files.</span></div>
+          <div class="fed-item"><span class="lbl">Discontinuation reporting</span><span class="val">Separate current pathway where exit risk affects continuity.</span></div>
+          <div class="fed-item"><span class="lbl">Tier 3 / TAC context</span><span class="val">Current response lens for system-significant shortage cases.</span></div>
+          <div class="fed-item"><span class="lbl">Supply notices / communications</span><span class="val">Current public and clinician communication duties.</span></div>
+        </div>
+      </div>
+      <div class="expansion-card">
+        <span class="program-badge proposed">Proposed in Gazette Part I</span>
+        <h4 style="margin-top:10px">Proposed / draft readiness layer</h4>
+        <div class="fed-strip" style="margin-top:10px">
+          <div class="fed-item"><span class="lbl">SPMP</span><span class="val">Draft prevention and mitigation plan structure kept separate from current law.</span></div>
+          <div class="fed-item"><span class="lbl">Safety stock</span><span class="val">Draft readiness expectations modeled against current in-Canada buffer evidence.</span></div>
+          <div class="fed-item"><span class="lbl">Expanded scope</span><span class="val">Draft logic for broader product coverage beyond the current live CVDL.</span></div>
+          <div class="fed-item"><span class="lbl">Demand surge reporting</span><span class="val">Draft threshold logic for substitution-driven or epidemiology-driven spikes.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="min-width:150px">Representative file</th>
+            <th style="min-width:170px">Current requirement</th>
+            <th style="min-width:130px">Current status</th>
+            <th style="min-width:190px">Proposed / draft readiness</th>
+            <th style="min-width:180px">Evidence on hand</th>
+            <th style="min-width:180px">Next action</th>
+            <th style="min-width:120px">Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw700">Amoxicillin oral suspension</td>
+            <td>Current shortage reporting and public update discipline.</td>
+            <td><span class="program-badge active">Active file</span></td>
+            <td>SPMP-ready mitigation fields partially structured; safety-stock posture below modeled target.</td>
+            <td>Current shortage status, in-Canada buffer posture, event-ledger trace.</td>
+            <td>Refresh alternate-source timing and clinician communication package.</td>
+            <td>HC case lead</td>
+          </tr>
+          <tr>
+            <td class="fw700">Rifampin capsules</td>
+            <td>Current anticipated-shortage monitoring and TB-cluster continuity attention.</td>
+            <td><span class="program-badge active">Watch</span></td>
+            <td>Draft readiness fields strong enough for SPMP-style mitigation logic.</td>
+            <td>Cluster dependency notes, restart timing, anticipated-shortage trace.</td>
+            <td>Maintain bundled TB-cluster continuity review.</td>
+            <td>TB continuity lead</td>
+          </tr>
+          <tr>
+            <td class="fw700">Isoniazid tablets</td>
+            <td>Current shortage watch and substitution-risk monitoring.</td>
+            <td><span class="program-badge active">Watch</span></td>
+            <td>Demand-surge and safety-stock readiness still modeled as draft-only.</td>
+            <td>Source concentration notes, reserve posture, cluster linkage.</td>
+            <td>Reconcile cluster reserve assumptions with current shortage status.</td>
+            <td>Program analyst</td>
+          </tr>
+          <tr>
+            <td class="fw700">Cefixime oral suspension</td>
+            <td>Current shortage watch and substitution-pressure monitoring.</td>
+            <td><span class="program-badge active">Watch</span></td>
+            <td>Demand-surge reporting logic remains draft but relevant.</td>
+            <td>Demand pressure notes, substitution pathway, event trace.</td>
+            <td>Track spillover from amoxicillin family pressure.</td>
+            <td>Shortage monitor</td>
+          </tr>
+          <tr>
+            <td class="fw700">Mifepristone</td>
+            <td>Current shortage watch and continuity communication planning.</td>
+            <td><span class="program-badge active">Watch</span></td>
+            <td>Draft readiness is limited; expanded-scope implications remain hypothetical.</td>
+            <td>Watchlist rationale, continuity posture, communication notes.</td>
+            <td>Keep watchlist separation explicit from the live CVDL set.</td>
+            <td>Policy lead</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-4" style="margin-top:10px">
+      <div class="metric-card green">
+        <span class="metric-label">Current reporting fields complete</span>
+        <div class="metric-value">9 / 12</div>
+        <div class="metric-note">Representative set with current shortage-program essentials documented.</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">SPMP-ready files</span>
+        <div class="metric-value">6 / 12</div>
+        <div class="metric-note">Modeled draft readiness only; not a claim of current legal obligation.</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Safety-stock gaps</span>
+        <div class="metric-value">4</div>
+        <div class="metric-note">Representative molecules where modeled target and actual buffer diverge.</div>
+      </div>
+      <div class="metric-card blue">
+        <span class="metric-label">Demand-surge watch files</span>
+        <div class="metric-value">3</div>
+        <div class="metric-note">Cases where substitution or demand pressure would matter if draft reporting is finalized.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="panel-governance" class="panel" role="tabpanel">
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Data + Governance</span><span class="section-line"></span></div>
+    <p class="section-intro">This tab keeps the older prototype&rsquo;s evidence-first tone while adding the more useful governance features from the newer model: source registry, provenance rules, auditability signals, and case-integrity checks. It still does not imply a live Health Canada integration.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="min-width:220px">Source</th>
+            <th style="min-width:100px">Type</th>
+            <th style="min-width:130px">Layer</th>
+            <th style="min-width:140px">Refresh / cadence</th>
+            <th style="min-width:170px">Coverage</th>
+            <th style="min-width:110px">Confidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="fw700">Health Canada resilience plan 2024-2028</td><td>Policy</td><td><span class="program-badge active">Active HC Program</span></td><td>Periodic policy update</td><td>Readiness framing and 8 actions</td><td>High</td></tr>
+          <tr><td class="fw700">Live CVDL</td><td>Program list</td><td><span class="program-badge active">Active HC Program</span></td><td>Live list</td><td>Current federal prioritization</td><td>High</td></tr>
+          <tr><td class="fw700">Drug Shortages Canada</td><td>Current system</td><td><span class="program-badge active">Active HC Program</span></td><td>Current reporting feed</td><td>Public shortage and anticipated shortage status</td><td>High</td></tr>
+          <tr><td class="fw700">Tier 3 / TAC context</td><td>Program context</td><td><span class="program-badge active">Active HC Program</span></td><td>Case dependent</td><td>System-significant escalation lens</td><td>Medium</td></tr>
+          <tr><td class="fw700">Draft SPMP guide</td><td>Draft guidance</td><td><span class="program-badge proposed">Proposed in Gazette Part I</span></td><td>Draft / consultation</td><td>Mitigation-plan readiness fields</td><td>Medium</td></tr>
+          <tr><td class="fw700">Draft safety-stock logic</td><td>Draft guidance</td><td><span class="program-badge proposed">Proposed in Gazette Part I</span></td><td>Draft / consultation</td><td>Modeled reserve and buffer expectations</td><td>Medium</td></tr>
+          <tr><td class="fw700">Internal ERP / inventory posture</td><td>Internal feed</td><td><span class="program-badge internal">Internal / Illustrative</span></td><td>Representative internal refresh</td><td>Releasable inventory and days of coverage</td><td>Representative</td></tr>
+          <tr><td class="fw700">Supplier readiness / event ledger</td><td>Internal feed</td><td><span class="program-badge internal">Internal / Illustrative</span></td><td>Representative internal refresh</td><td>Source count, restart timing, event trace</td><td>Representative</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Provenance Rules</span><span class="section-line"></span></div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <div class="partner-label blue">Official public</div>
+        <h4>Canada.ca and current HC systems</h4>
+        <p>Used where the dashboard references current shortage status, the live CVDL, current response tools, or public-facing program materials.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label amber">Proposed / draft</div>
+        <h4>Consultation and Gazette-direction logic</h4>
+        <p>Used only for modeled readiness views such as SPMP, safety stock, expanded scope, and demand-surge reporting.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label green">Internal / illustrative</div>
+        <h4>Operating evidence</h4>
+        <p>Used for inventory posture, source concentration, restart time, and event-ledger logic that illustrates what federal readers would need to see.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-label red">Derived management view</div>
+        <h4>Calculated readiness metrics</h4>
+        <p>Used for portfolio rollups like buffer position, cluster dependency, reporting completeness, and modeled compliance gaps.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Auditability + Integrity</span><span class="section-line"></span></div>
+    <div class="grid-4">
+      <div class="metric-card blue">
+        <span class="metric-label">Source rows tracked</span>
+        <div class="metric-value">8</div>
+        <div class="metric-note">Representative registry rows across current, draft, and internal layers.</div>
+      </div>
+      <div class="metric-card green">
+        <span class="metric-label">Molecules with evidence chain</span>
+        <div class="metric-value">12</div>
+        <div class="metric-note">Every representative molecule or watchlist file maps to at least one source lane.</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Files with draft-only gaps</span>
+        <div class="metric-value">4</div>
+        <div class="metric-note">Representative files where proposed readiness fields are still incomplete or modeled.</div>
+      </div>
+      <div class="metric-card green">
+        <span class="metric-label">Files missing owner</span>
+        <div class="metric-value">0</div>
+        <div class="metric-note">The governance view keeps accountability visible even in a representative prototype.</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:10px">
+      <div class="expansion-card">
+        <h4>Why this tab helps</h4>
+        <p>It converts the older evidence-and-sources idea into a more disciplined governance surface. That makes it easier to tell which inputs are current program facts, which are draft readiness assumptions, and which are illustrative operating feeds.</p>
+      </div>
+      <div class="expansion-card">
+        <h4>What it still does not claim</h4>
+        <p>No live Health Canada integration, no federal system-of-record status, and no automatic conversion of the live CVDL into current legal duties. The purpose is traceability, not over-claiming maturity.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-panel">
+  <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Prototype Note</div>
+  <p style="font-weight:600;color:var(--ink)">Health Canada readiness-first prototype with representative Medicine Place operating evidence</p>
+  <p>This version restores the earlier readiness-first presentation while adding focused obligations and governance tabs. Current Health Canada systems, proposed Gazette-direction obligations, and internal evidence still remain explicitly separated.</p>
+  <div class="footer-links">
+    <a href="mailto:farooq@medicineplace.ca">farooq@medicineplace.ca</a>
+    <span class="subtle">|</span>
+    <a href="mailto:alfred@medicineplace.ca">alfred@medicineplace.ca</a>
+    <span class="subtle">|</span>
+    <span class="subtle">Medicine Place Inc. &middot; April 2026</span>
+  </div>
+</footer>
+
+</main>
+
+<script>
+var allTabs = Array.from(document.querySelectorAll('.tab'));
+var panelMap = {
+  federal: document.getElementById('panel-federal'),
+  operations: document.getElementById('panel-operations'),
+  signals: document.getElementById('panel-signals'),
+  sources: document.getElementById('panel-sources'),
+  obligations: document.getElementById('panel-obligations'),
+  governance: document.getElementById('panel-governance')
+};
+
+function showTab(name, tabEl) {
+  allTabs.forEach(function(t) {
+    var isActive = t.dataset.panel === name;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    t.setAttribute('tabindex', isActive ? '0' : '-1');
+  });
+  Object.keys(panelMap).forEach(function(key) {
+    panelMap[key].classList.toggle('active', key === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelector('.tabbar').addEventListener('keydown', function(e) {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  e.preventDefault();
+  var current = allTabs.findIndex(function(t) { return t.classList.contains('active'); });
+  var next = e.key === 'ArrowRight' ? (current + 1) % allTabs.length : (current - 1 + allTabs.length) % allTabs.length;
+  allTabs[next].focus();
+  showTab(allTabs[next].dataset.panel, allTabs[next]);
+});
+
+function tog(id) {
+  var row = document.getElementById(id);
+  if (!row) return;
+  var isOpen = row.classList.toggle('open');
+  var header = row.querySelector('.acc-header');
+  if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+function togDs(id) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  var isOpen = card.classList.toggle('open');
+  var toggle = card.querySelector('.ds-toggle');
+  if (toggle) toggle.textContent = isOpen ? '- Hide' : '+ Details';
+}
+
+(function() {
+  if (window.innerWidth > 720) return;
+  var wraps = document.querySelectorAll('.table-wrap');
+  wraps.forEach(function(w) {
+    if (w.scrollWidth > w.clientWidth) {
+      var hint = document.createElement('div');
+      hint.style.cssText = 'font-size:10px;color:var(--muted);text-align:center;padding:4px;';
+      hint.textContent = '\u2190 scroll \u2192';
+      w.parentNode.insertBefore(hint, w.nextSibling);
+    }
+  });
+})();
+</script>
+</body>
+</html>
