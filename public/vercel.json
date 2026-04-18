@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/federal-resilience-brief.html",
+      "destination": "/critical-generic-medications-brief.html",
+      "permanent": true
+    }
+  ]
+}
