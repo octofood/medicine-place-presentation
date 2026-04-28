@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Glass Box prototype: a government-facing transparency dashboard showing how medicine shortage risks, sources, alerts, and response actions could be shared with Health Canada.">
+<meta property="og:title" content="Medicine Place | Glass Box &mdash; Shortage Early-Warning Prototype">
+<meta property="og:description" content="Example dashboard for Health Canada: early shortage signals, source traceability, response actions, and confidentiality controls.">
+<title>Medicine Place | Glass Box &mdash; Shortage Early-Warning Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#19222b;--text:#253340;--muted:#566672;
+  --parchment:#fbf7ef;--parchment-deep:#f4ecde;
+  --card:rgba(255,255,255,0.96);--surface-alt:rgba(250,246,239,0.98);
+  --border:rgba(25,34,43,0.14);
+  --blue:#325b7a;--blue-soft:rgba(50,91,122,0.08);
+  --green:#116453;--green-soft:rgba(17,100,83,0.08);
+  --amber:#9b5a19;--amber-soft:rgba(155,90,25,0.1);
+  --red:#9b4a42;--red-soft:rgba(155,74,66,0.08);
+  --nav-bg:#0c0c0c;
+  --shadow:0 8px 24px rgba(24,33,43,0.07);
+  --shadow-soft:0 4px 12px rgba(24,33,43,0.04);
+  --font-serif:"Source Serif 4",Georgia,serif;
+  --font-sans:"Manrope","Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --header-height:52px;
+  --radius:8px;
+}
+*{box-sizing:border-box;margin:0}
+html{background:var(--parchment);scroll-behavior:smooth}
+body{font-family:var(--font-sans);color:var(--text);background:linear-gradient(180deg,var(--parchment) 0%,var(--parchment-deep) 100%);-webkit-font-smoothing:antialiased;font-size:13px;line-height:1.5}
+a{color:inherit}
+
+/* ── NAV ── */
+.topbar{position:sticky;top:0;z-index:50;min-height:var(--header-height);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 16px;background:var(--nav-bg);color:#fff;border-bottom:1px solid rgba(255,255,255,0.06)}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+.topbar-left img{display:block;flex:0 0 auto}
+.logo-mp{height:22px}.logo-medpac{height:18px}
+.brand-divider{width:1px;height:18px;background:rgba(255,255,255,0.18)}
+.topbar-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.topbar-kicker{font-size:9px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)}
+.topbar-title{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.tag,.back-link{display:inline-flex;align-items:center;gap:5px;border-radius:999px;border:1px solid rgba(255,255,255,0.12);padding:5px 10px;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,0.65)}
+.tag.amber{background:rgba(155,90,25,0.25);border-color:rgba(155,90,25,0.35);color:#e8a84c}
+.back-link:hover{background:rgba(255,255,255,0.08);color:#fff}
+.ts-label{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.35);white-space:nowrap}
+
+/* ── LAYOUT ── */
+.page{width:min(1400px,100%);margin:0 auto;padding:10px 14px 30px}
+.tabbar{position:sticky;top:var(--header-height);z-index:40;display:flex;gap:2px;margin-bottom:10px;padding:4px;background:rgba(25,34,43,0.06);border-radius:var(--radius);backdrop-filter:blur(10px)}
+.tab{appearance:none;border:none;background:transparent;color:var(--muted);border-radius:6px;padding:7px 14px;font:inherit;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.15s}
+.tab:hover{background:rgba(255,255,255,0.7);color:var(--ink)}
+.tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.tab:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.panel{display:none}.panel.active{display:block}
+
+/* ── SECTION ── */
+.section{margin-bottom:14px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.section-kicker{font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.section-line{flex:1;height:1px;background:var(--border)}
+
+/* ── GOVERNMENT-FACING FRAMING ── */
+.purpose-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-soft);padding:14px 16px}
+.purpose-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:12px}
+.purpose-title{font-family:var(--font-serif);font-size:22px;font-weight:700;line-height:1.15;color:var(--ink)}
+.purpose-copy{margin-top:4px;font-size:12px;line-height:1.65;color:var(--muted);max-width:840px}
+.purpose-status{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+.purpose-grid,.governance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.purpose-cell,.governance-cell{border-top:1px solid rgba(25,34,43,0.08);padding-top:10px}
+.purpose-cell h4,.governance-cell h4{font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.purpose-cell p,.governance-cell p{font-size:12px;line-height:1.55;color:var(--text)}
+.source-note{font-family:var(--font-mono);font-size:9px;line-height:1.45;color:rgba(86,102,114,0.86);margin-top:7px;padding-top:6px;border-top:1px solid rgba(25,34,43,0.06)}
+.source-note strong{font-family:var(--font-sans);font-size:9px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+.source-intro{font-size:12px;color:var(--muted);line-height:1.65;max-width:980px;margin-bottom:10px}
+.data-class{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+
+/* ── GRIDS ── */
+.grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+
+/* ── METRIC CARDS ── */
+.metric-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px 8px;position:relative;overflow:visible;box-shadow:var(--shadow-soft)}
+.metric-card:hover,.metric-card:focus-within{z-index:20}
+.metric-label{display:flex;align-items:center;gap:4px;margin-bottom:4px;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+.metric-label::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted);flex:0 0 auto}
+.metric-card.blue .metric-label::before{background:var(--blue)}
+.metric-card.green .metric-label::before{background:var(--green)}
+.metric-card.amber .metric-label::before{background:var(--amber)}
+.metric-card.red .metric-label::before{background:var(--red)}
+.metric-value{font-family:var(--font-serif);font-size:28px;font-weight:700;line-height:1;color:var(--ink)}
+.metric-note{margin-top:4px;font-size:11px;line-height:1.4;color:var(--muted)}
+
+/* ── TOOLTIP ── */
+.info-tip{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(25,34,43,0.08);color:var(--muted);font-size:9px;font-weight:800;cursor:help;position:relative;flex-shrink:0;font-style:normal;line-height:1}
+.info-tip:hover::after,.info-tip:focus::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;padding:6px 10px;border-radius:6px;white-space:normal;width:220px;z-index:100;line-height:1.4;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.info-tip:hover::before,.info-tip:focus::before{content:"";position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink);z-index:100}
+
+/* ── PILLS ── */
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;border:1px solid transparent;white-space:nowrap}
+.pill.green{color:var(--green);background:var(--green-soft);border-color:rgba(17,100,83,0.14)}
+.pill.amber{color:var(--amber);background:var(--amber-soft);border-color:rgba(155,90,25,0.16)}
+.pill.red{color:var(--red);background:var(--red-soft);border-color:rgba(155,74,66,0.15)}
+.pill.blue{color:var(--blue);background:var(--blue-soft);border-color:rgba(50,91,122,0.16)}
+.pill.neutral{color:var(--muted);background:rgba(25,34,43,0.05);border-color:rgba(25,34,43,0.1)}
+
+/* ── FORMAT PILLS ── */
+.fmt{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;background:rgba(25,34,43,0.06);color:var(--muted)}
+
+/* ── TABLES ── */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow-soft)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid rgba(25,34,43,0.07);vertical-align:middle}
+th{font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);background:rgba(25,34,43,0.025);position:sticky;top:0}
+td{color:var(--text)}
+tr:last-child td{border-bottom:none}
+.mono{font-family:var(--font-mono);font-size:11px}
+.text-right{text-align:right}
+.fw700{font-weight:700;color:var(--ink)}
+
+/* ── ACCORDION ── */
+.accordion{border-radius:var(--radius);border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow-soft);overflow:hidden}
+.acc-row{border-bottom:1px solid rgba(25,34,43,0.07)}
+.acc-row:last-child{border-bottom:none}
+.acc-header{display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;user-select:none;font-size:12px;font-weight:600;color:var(--ink);transition:background 0.12s}
+.acc-header:hover{background:rgba(25,34,43,0.025)}
+.acc-header:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.acc-chevron{display:inline-flex;width:16px;height:16px;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.acc-row.open .acc-chevron{transform:rotate(90deg)}
+.acc-cols{display:flex;align-items:center;flex:1;min-width:0;gap:4px}
+.acc-col{flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acc-col.mol{width:130px;font-weight:700;color:var(--ink)}
+.acc-col.sup{width:90px;font-size:11px;color:var(--muted)}
+.acc-col.geo{width:100px;display:flex;gap:2px;align-items:center}
+.acc-col.lt{width:70px;font-family:var(--font-mono);font-size:11px}
+.acc-col.hc{width:110px}
+.acc-col.price{width:70px;font-family:var(--font-mono);font-size:11px}
+.acc-col.risk{width:70px}
+.geo-bar{height:6px;border-radius:3px;flex:1}
+.geo-bar.cn{background:var(--red)}.geo-bar.in{background:var(--amber)}.geo-bar.eu{background:var(--blue)}.geo-bar.ca{background:var(--green)}
+.acc-body{display:none;padding:8px 10px 12px;background:rgba(250,246,239,0.5);border-top:1px solid rgba(25,34,43,0.06)}
+.acc-row.open .acc-body{display:block}
+
+/* detail grid inside accordion */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.detail-section{padding:8px;background:var(--card);border:1px solid var(--border);border-radius:6px}
+.detail-section h5{font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.detail-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid rgba(25,34,43,0.04)}
+.detail-row:last-child{border-bottom:none}
+.detail-row .lbl{color:var(--muted)}.detail-row .val{font-weight:600;color:var(--ink);font-family:var(--font-mono);font-size:10px}
+.safety-bar{height:6px;border-radius:3px;background:rgba(25,34,43,0.08);overflow:hidden;margin-top:4px}
+.safety-fill{height:100%;border-radius:3px}
+
+/* FG product sub-table */
+.fg-table{margin-top:8px}
+.fg-table th{font-size:9px;padding:4px 6px}
+.fg-table td{font-size:11px;padding:4px 6px}
+
+/* ── CLUSTER HEADER ── */
+.cluster-header{padding:5px 10px;background:rgba(50,91,122,0.06);border-bottom:1px solid rgba(25,34,43,0.07);font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:6px}
+
+/* ── ALERTS ── */
+.alert-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow-soft)}
+.alert-level{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.alert-level::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted);flex:0 0 auto}
+.alert-card.critical .alert-level::before{background:var(--red)}
+.alert-card.warning .alert-level::before{background:var(--amber)}
+.alert-card.info .alert-level::before{background:var(--blue)}
+.alert-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.alert-meta{font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+
+/* ── TIMELINE ── */
+.timeline{list-style:none;padding:0 0 0 14px;border-left:2px solid rgba(25,34,43,0.1)}
+.timeline li{position:relative;margin-bottom:10px;padding-left:16px;font-size:12px;line-height:1.5}
+.timeline li:last-child{margin-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-21px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--parchment)}
+.timeline li.red::before{background:var(--red)}
+.timeline li.amber::before{background:var(--amber)}
+.timeline li.blue::before{background:var(--blue)}
+.timeline li.green::before{background:var(--green)}
+.timeline .time{display:block;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:1px}
+
+/* ── THRESHOLD TABLE ── */
+.thresh-table td:first-child{font-weight:700}
+
+/* ── EARLY-WARNING LADDER ── */
+.ewl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ewl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.ewl-card.watch .ewl-spark{color:var(--blue)}
+.ewl-card.warning .ewl-spark{color:var(--amber)}
+.ewl-card.critical .ewl-spark{color:var(--red)}
+.ewl-left{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ewl-kicker{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.ewl-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted);flex:0 0 auto}
+.ewl-card.watch .ewl-kicker::before{background:var(--blue)}
+.ewl-card.warning .ewl-kicker::before{background:var(--amber)}
+.ewl-card.critical .ewl-kicker::before{background:var(--red)}
+.ewl-val{font-family:var(--font-serif);font-size:24px;font-weight:700;line-height:1;color:var(--ink)}
+.ewl-delta{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+.ewl-spark{margin-left:auto;flex-shrink:0;opacity:0.85}
+
+/* ── DATA SOURCE CARDS ── */
+.ds-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px;box-shadow:var(--shadow-soft);overflow:hidden}
+.ds-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;user-select:none}
+.ds-header:hover{background:rgba(25,34,43,0.02)}
+.ds-header:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.ds-title{font-size:13px;font-weight:700;color:var(--ink)}
+.ds-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ds-body{display:none;padding:8px 12px 10px;border-top:1px solid rgba(25,34,43,0.06);background:rgba(250,246,239,0.5)}
+.ds-card.open .ds-body{display:block}
+.ds-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;border-bottom:1px solid rgba(25,34,43,0.04)}
+.ds-row:last-child{border-bottom:none}
+.ds-fields{margin-top:6px;font-size:11px;color:var(--muted);line-height:1.5}
+.flow-box{margin-top:8px;padding:10px;border-radius:6px;background:#18232c;color:rgba(255,255,255,0.85);overflow-x:auto}
+.flow-box pre{margin:0;font-family:var(--font-mono);font-size:11px;line-height:1.6}
+
+/* ── TWO-TONE ── */
+.two-tone{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-soft)}
+.two-tone>div{padding:12px 14px}
+.two-tone .bad{background:rgba(251,245,244,0.98);border-right:1px solid rgba(25,34,43,0.08)}
+.two-tone .good{background:rgba(244,250,247,0.98)}
+.two-tone h4{font-size:13px;margin-bottom:6px}
+.two-tone ul{padding-left:16px;font-size:12px;line-height:1.6}
+.two-tone li{margin-bottom:4px}
+
+/* ── SUPPLY TRACE ── */
+.trace-box{padding:12px;border-radius:6px;background:#18232c;color:rgba(255,255,255,0.85);overflow-x:auto;font-family:var(--font-mono);font-size:11px;line-height:1.65;white-space:pre}
+
+/* ── DEEP DIVE ── */
+.deep-intro{margin-bottom:10px;font-size:12px;line-height:1.6;color:var(--muted);max-width:980px}
+.deep-sample{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow-soft);overflow:hidden}
+.deep-sample summary{list-style:none;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 12px;cursor:pointer;user-select:none;background:rgba(25,34,43,0.02)}
+.deep-sample summary::-webkit-details-marker{display:none}
+.deep-sample[open] summary{background:rgba(25,34,43,0.04)}
+.deep-summary-left{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.deep-chevron{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-top:2px;font-size:10px;color:var(--muted);transition:transform 0.18s}
+.deep-sample[open] .deep-chevron{transform:rotate(90deg)}
+.deep-title-wrap{min-width:0}
+.deep-title{font-size:14px;font-weight:700;color:var(--ink)}
+.deep-subtitle{margin-top:2px;font-size:11px;line-height:1.45;color:var(--muted)}
+.deep-summary-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.deep-body{padding:12px;border-top:1px solid rgba(25,34,43,0.08);background:rgba(250,246,239,0.46)}
+.deep-caption{margin-bottom:10px;font-size:12px;line-height:1.6;color:var(--muted)}
+.deep-subhead{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.trace-tight{font-size:10.5px;line-height:1.72}
+.deep-stack{display:grid;grid-template-columns:1.15fr 0.85fr;gap:10px;margin-top:10px}
+.deep-stack .stack-col{display:grid;gap:10px}
+
+/* ── FOOTER ── */
+.footer-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-soft);margin-top:16px;padding:12px 14px;text-align:center}
+.footer-panel p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+.footer-links{margin-top:6px;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:12px}
+.subtle{color:var(--muted)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1080px){
+  .grid-6{grid-template-columns:repeat(3,1fr)}
+  .grid-4,.detail-grid{grid-template-columns:1fr 1fr}
+  .purpose-grid,.governance-grid{grid-template-columns:1fr}
+  .deep-stack{grid-template-columns:1fr}
+  .acc-col.geo,.acc-col.sup{display:none}
+}
+@media(max-width:720px){
+  :root{--header-height:46px}
+  .topbar{padding:6px 10px;gap:8px}
+  .page{padding:8px 8px 20px}
+  .grid-6,.grid-4,.grid-3,.grid-2,.detail-grid{grid-template-columns:1fr}
+  .purpose-head{flex-direction:column}
+  .purpose-status{justify-content:flex-start}
+  .two-tone{grid-template-columns:1fr}
+  .tab{width:100%;text-align:center;justify-content:center}
+  .tabbar{flex-wrap:wrap}
+  table{min-width:600px}
+  .acc-col.price,.acc-col.lt{display:none}
+  .ts-label{display:none}
+  .deep-sample summary{flex-direction:column;align-items:flex-start}
+  .deep-summary-right{justify-content:flex-start}
+  .trace-tight{font-size:10px}
+}
+@media print{
+  @page{size:letter landscape;margin:0.4in}
+  body{background:#fff;font-size:10px}
+  .topbar{position:static;background:#222;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tabbar{position:static}
+  .panel{display:block!important;page-break-before:always;break-before:page}
+  .panel:first-of-type{page-break-before:auto;break-before:auto}
+  .acc-row.open .acc-body,.ds-card.open .ds-body{display:block}
+  .acc-body,.ds-body{display:block!important}
+  .deep-sample{break-inside:avoid-page}
+  .acc-row{break-inside:avoid}
+  .flow-box,.trace-box{background:#e8e8e8!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <img class="logo-mp" src="images/medicine-place-logo.png" alt="Medicine Place" onerror="this.style.display='none'">
+    <div class="brand-divider"></div>
+    <img class="logo-medpac" src="images/MedPac-Logo-Sep-2025.png" alt="MedPac" onerror="this.style.display='none'">
+    <div class="topbar-copy">
+      <div class="topbar-kicker">Shortage Monitoring</div>
+      <div class="topbar-title">Glass Box &mdash; Medicine Shortage Early-Warning (Prototype)</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="ts-label">Example data, snapshot from 2026-04-05</span>
+    <span class="tag amber">Example only &mdash; not live data</span>
+    <a class="back-link" href="glass-box.html">&#8592; Back</a>
+  </div>
+</header>
+
+<!-- ═══════════════ PAGE ═══════════════ -->
+<main class="page">
+
+<!-- TABS -->
+<div class="tabbar" role="tablist" aria-label="Dashboard sections">
+  <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-panel="dashboard" onclick="showTab('dashboard',this)">Overview</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="sources" onclick="showTab('sources',this)">Where the Data Comes From</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="alerts" onclick="showTab('alerts',this)">Alerts</button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-panel="deepdive" onclick="showTab('deepdive',this)">Examples</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 1: DASHBOARD                          -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-dashboard" class="panel active" role="tabpanel">
+
+  <!-- PURPOSE -->
+  <div class="section">
+    <div class="purpose-panel">
+      <div class="purpose-head">
+        <div>
+          <div class="section-kicker">Purpose for Health Canada</div>
+          <div class="purpose-title">A shared transparency view for shortage prevention, response, and confidential supply-chain coordination.</div>
+          <p class="purpose-copy">This prototype shows how Medicine Place could give Health Canada a consistent view of medicines at risk, the source of each signal, the response underway, and the information that would remain confidential or aggregated. It is designed to complement Drug Shortages Canada and federal shortage-management processes, not replace them.</p>
+        </div>
+        <div class="purpose-status" aria-label="Prototype status">
+          <span class="pill amber">Illustrative data</span>
+          <span class="pill blue">Regulator view</span>
+          <span class="pill neutral">Snapshot: 2026-04-05</span>
+        </div>
+      </div>
+      <div class="purpose-grid">
+        <div class="purpose-cell">
+          <h4>What Health Canada can see</h4>
+          <p>Early shortage signals, supplier concentration, stock coverage, impacted products, current response actions, and the confidence level behind each alert.</p>
+        </div>
+        <div class="purpose-cell">
+          <h4>Decisions it supports</h4>
+          <p>Whether a risk needs monitoring, partner coordination, additional information from the company, or preparation for formal reporting and mitigation discussions.</p>
+        </div>
+        <div class="purpose-cell">
+          <h4>Boundary of this prototype</h4>
+          <p>No live feeds are connected. Dates, counts, suppliers, and thresholds are representative examples used to demonstrate the transparency model.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Shortage Risk at a Glance</span><span class="section-line"></span></div>
+    <div class="grid-6">
+      <div class="metric-card blue">
+        <span class="metric-label">CVDL Medicines in Portfolio <i class="info-tip" data-tip="Medicines that match Health Canada's Critical and Vulnerable Drug List or a comparable internal criticality mapping. This is separate from Tier 3 shortage assignment." tabindex="0">i</i></span>
+        <div class="metric-value">14</div>
+        <div class="metric-note">of 28 products</div>
+        <div class="source-note"><strong>Source</strong> CVDL match + product file | monthly | owner: Regulatory Affairs | public/internal | updated 2026-03-15</div>
+      </div>
+      <div class="metric-card red">
+        <span class="metric-label">CVDL Medicines with One Ingredient Supplier <i class="info-tip" data-tip="Medicines in the critical/vulnerable group where the active ingredient currently depends on one approved supplier." tabindex="0">i</i></span>
+        <div class="metric-value">4</div>
+        <div class="metric-note">of 14 CVDL medicines</div>
+        <div class="source-note"><strong>Source</strong> approved supplier list | on change | owner: Quality | confidential | updated 2026-03-20</div>
+      </div>
+      <div class="metric-card red">
+        <span class="metric-label">CVDL Medicines Running Low <i class="info-tip" data-tip="Medicines in the critical/vulnerable group where finished-product stock is below the internal planning target." tabindex="0">i</i></span>
+        <div class="metric-value">2</div>
+        <div class="metric-note">under 90 days of stock</div>
+        <div class="source-note"><strong>Source</strong> inventory + demand forecast | daily | owner: Supply Planning | confidential | updated 2026-04-05</div>
+      </div>
+      <div class="metric-card green">
+        <span class="metric-label">Lead Time Before Public Shortage Report <i class="info-tip" data-tip="Illustrative difference between the first internal risk signal and the date an anticipated or actual shortage report appears on Drug Shortages Canada." tabindex="0">i</i></span>
+        <div class="metric-value">23<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">before public report appears</div>
+        <div class="source-note"><strong>Source</strong> event log + Drug Shortages Canada | daily | owner: Regulatory Affairs | public/internal | updated 2026-04-04</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Shortages Also Flagged Abroad <i class="info-tip" data-tip="Medicines showing shortage or disruption signals in the US (FDA) or Europe (EMA) in the last 30 days, indicating possible spillover risk for Canada." tabindex="0">i</i></span>
+        <div class="metric-value">11</div>
+        <div class="metric-note">US or EU, last 30 days</div>
+        <div class="source-note"><strong>Source</strong> FDA/EMA monitoring | daily/weekly | owner: Regulatory Affairs | public | updated 2026-04-04</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Reserve Coverage for Priority Medicines <i class="info-tip" data-tip="How current company-held safety stock compares with an internal reserve target for priority medicines. This is not a claim about a federal stockpile." tabindex="0">i</i></span>
+        <div class="metric-value">62<small style="font-size:14px;font-weight:600">%</small></div>
+        <div class="metric-note">of internal reserve target</div>
+        <div class="source-note"><strong>Source</strong> safety-stock ledger | daily | owner: Supply Planning | confidential | updated 2026-04-05</div>
+      </div>
+      <div class="metric-card red">
+        <span class="metric-label">Products Running Low <i class="info-tip" data-tip="Products where days of stock are below the planned minimum." tabindex="0">i</i></span>
+        <div class="metric-value">3</div>
+        <div class="metric-note">of 28 products</div>
+        <div class="source-note"><strong>Source</strong> inventory + open orders | daily | owner: Supply Planning | confidential | updated 2026-04-05</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Average Days of Stock on Hand <i class="info-tip" data-tip="Estimated average days of supply on hand, weighted by product sales velocity." tabindex="0">i</i></span>
+        <div class="metric-value">78<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">Target: 90 days or more</div>
+        <div class="source-note"><strong>Source</strong> inventory + sales velocity | daily | owner: Supply Planning | confidential | updated 2026-04-05</div>
+      </div>
+      <div class="metric-card amber">
+        <span class="metric-label">Ingredients with Only One Supplier <i class="info-tip" data-tip="Active ingredients or key raw materials where only one supplier is approved for shipment." tabindex="0">i</i></span>
+        <div class="metric-value">7</div>
+        <div class="metric-note">of 19 ingredients</div>
+        <div class="source-note"><strong>Source</strong> approved supplier list | on change | owner: Quality | confidential | updated 2026-03-20</div>
+      </div>
+      <div class="metric-card red">
+        <span class="metric-label">Deliveries Running Late <i class="info-tip" data-tip="Purchase orders whose delivery dates have slipped past the contracted lead time." tabindex="0">i</i></span>
+        <div class="metric-value">4</div>
+        <div class="metric-note">orders past due</div>
+        <div class="source-note"><strong>Source</strong> purchase orders + logistics updates | daily | owner: Procurement | confidential | updated 2026-04-04</div>
+      </div>
+      <div class="metric-card blue">
+        <span class="metric-label">Time to Bring a Backup Supplier Online <i class="info-tip" data-tip="From backup-supplier outreach to first shipment clearance through quality checks, averaged across the portfolio." tabindex="0">i</i></span>
+        <div class="metric-value">41<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">average</div>
+        <div class="source-note"><strong>Source</strong> supplier qualification history | monthly | owner: Quality | confidential | updated 2026-03-31</div>
+      </div>
+      <div class="metric-card green">
+        <span class="metric-label">Time to Rebuild Safety Stock <i class="info-tip" data-tip="How long it would take to top up safety-stock reserves back to target, assuming suppliers are behaving normally." tabindex="0">i</i></span>
+        <div class="metric-value">52<small style="font-size:14px;font-weight:600">d</small></div>
+        <div class="metric-note">back to target</div>
+        <div class="source-note"><strong>Source</strong> production plan + supplier lead times | weekly | owner: Operations | confidential | updated 2026-04-03</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARLY-WARNING LADDER -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Early Warnings &mdash; Last 90 Days</span><span class="section-line"></span></div>
+    <div class="ewl">
+      <div class="ewl-card watch">
+        <div class="ewl-left">
+          <span class="ewl-kicker">Watch — monitoring signal</span>
+          <div class="ewl-val">14</div>
+          <span class="ewl-delta">3 more than the previous 30 days</span>
+        </div>
+        <svg class="ewl-spark" width="120" height="32" viewBox="0 0 120 32" aria-hidden="true" focusable="false">
+          <polyline fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" points="0,22 10,21 20,23 30,19 40,20 50,17 60,18 70,15 80,16 90,13 100,14 110,11 120,9"/>
+        </svg>
+      </div>
+      <div class="ewl-card warning">
+        <div class="ewl-left">
+          <span class="ewl-kicker">Warning — action required</span>
+          <div class="ewl-val">6</div>
+          <span class="ewl-delta">1 more than the previous 30 days</span>
+        </div>
+        <svg class="ewl-spark" width="120" height="32" viewBox="0 0 120 32" aria-hidden="true" focusable="false">
+          <polyline fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" points="0,24 10,23 20,22 30,24 40,20 50,21 60,17 70,18 80,16 90,15 100,13 110,14 120,12"/>
+        </svg>
+      </div>
+      <div class="ewl-card critical">
+        <div class="ewl-left">
+          <span class="ewl-kicker">Critical — active response</span>
+          <div class="ewl-val">2</div>
+          <span class="ewl-delta">same as the previous 30 days</span>
+        </div>
+        <svg class="ewl-spark" width="120" height="32" viewBox="0 0 120 32" aria-hidden="true" focusable="false">
+          <polyline fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" points="0,26 10,25 20,26 30,24 40,25 50,23 60,24 70,22 80,23 90,22 100,21 110,22 120,21"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOLECULE TABLE -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Medicines Tracked</span><span class="section-line"></span></div>
+
+    <!-- column headers -->
+    <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)">
+      <span style="width:16px"></span>
+      <span class="acc-col mol">Medicine <i class="info-tip" data-tip="The active ingredient in the medicine (what does the actual work in the body)." tabindex="0">i</i></span>
+      <span class="acc-col sup">Ingredient Suppliers <i class="info-tip" data-tip="Number of approved active-ingredient suppliers. More approved suppliers reduces exposure to a single failure." tabindex="0">i</i></span>
+      <span class="acc-col geo">Source Region <i class="info-tip" data-tip="Where approved suppliers are located. Red = China, Amber = India, Blue = Europe, Green = Canada." tabindex="0">i</i></span>
+      <span class="acc-col lt">Delivery Delay <i class="info-tip" data-tip="How much later shipments are arriving compared with contracted delivery dates. &quot;Stable&quot; means on time." tabindex="0">i</i></span>
+      <span class="acc-col hc">Public Status <i class="info-tip" data-tip="Whether an anticipated or actual shortage report appears on Drug Shortages Canada for this medicine." tabindex="0">i</i></span>
+      <span class="acc-col price">Price (90d) <i class="info-tip" data-tip="How much the market price of the ingredient has moved over the last 90 days." tabindex="0">i</i></span>
+      <span class="acc-col risk">Risk <i class="info-tip" data-tip="Overall risk score combining supplier concentration, price swings, regulator signals, and stock on hand." tabindex="0">i</i></span>
+    </div>
+
+    <div class="accordion" id="mol-accordion">
+
+      <!-- 1. Amoxicillin -->
+      <div class="acc-row open" id="mol-amox">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="true" onclick="tog('mol-amox')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-amox')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Amoxicillin</span>
+            <span class="acc-col sup">3 (2 at risk)</span>
+            <span class="acc-col geo"><span class="geo-bar cn" style="flex:2" title="China 60%"></span><span class="geo-bar in" style="flex:1" title="India 30%"></span><span class="geo-bar ca" style="flex:0.3" title="Canada 10%"></span></span>
+            <span class="acc-col lt" style="color:var(--red)">+18d</span>
+            <span class="acc-col hc"><span class="pill amber">Shortage anticipated</span></span>
+            <span class="acc-col price" style="color:var(--red)">+34%</span>
+            <span class="acc-col risk"><span class="pill red">High</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Ingredient Suppliers</h5>
+              <div class="detail-row"><span class="lbl">Supplier A (Shandong)</span><span class="val pill red">Disrupted</span></div>
+              <div class="detail-row"><span class="lbl">Supplier B (Gujarat)</span><span class="val pill amber">Delayed</span></div>
+              <div class="detail-row"><span class="lbl">Supplier C (Ontario)</span><span class="val pill green">Shipping</span></div>
+              <div class="detail-row"><span class="lbl">Time to qualify backup</span><span class="val">~35 days est.</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Market &amp; Regulator Signals</h5>
+              <div class="detail-row"><span class="lbl">Market price</span><span class="val">$42.60/kg</span></div>
+              <div class="detail-row"><span class="lbl">Contract price</span><span class="val">$31.80/kg</span></div>
+              <div class="detail-row"><span class="lbl">Drug Shortages Canada status</span><span class="val pill amber">Anticipated report</span></div>
+              <div class="detail-row"><span class="lbl">US (FDA) status</span><span class="val pill amber">US import alert</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Company Position</h5>
+              <div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">186 kg</span></div>
+              <div class="detail-row"><span class="lbl">Sourcing</span><span class="val pill blue">Evaluating backup</span></div>
+              <div class="detail-row"><span class="lbl">Safety stock</span></div>
+              <div class="safety-bar"><div class="safety-fill" style="width:42%;background:var(--amber)"></div></div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">42% of target (186/440 kg)</div>
+            </div>
+          </div>
+          <!-- FG Products -->
+          <div class="table-wrap fg-table" style="margin-top:10px">
+            <table>
+              <thead><tr>
+                <th>Product</th><th>Format</th><th>Strength</th><th>Pack size</th><th>Drug ID <i class="info-tip" data-tip="Canada's unique Drug Identification Number (DIN) for this product." tabindex="0">i</i></th><th>Yearly units</th><th>On-shelf stock</th><th>Days of supply <i class="info-tip" data-tip="Estimated days of supply at the current sales pace." tabindex="0">i</i></th><th>Batch</th><th>Status</th>
+              </tr></thead>
+              <tbody>
+                <tr><td class="fw700">Amoxicillin Cap</td><td><span class="fmt">Capsule</span></td><td class="mono">250 mg</td><td class="mono">100</td><td class="mono">02XXXXXX</td><td class="mono text-right">1.2M</td><td class="mono text-right">42,000</td><td class="mono text-right" style="color:var(--red)">36d</td><td class="mono">B2026-041</td><td><span class="pill amber">Low stock</span></td></tr>
+                <tr><td class="fw700">Amoxicillin Cap</td><td><span class="fmt">Capsule</span></td><td class="mono">500 mg</td><td class="mono">100</td><td class="mono">02XXXXXX</td><td class="mono text-right">2.8M</td><td class="mono text-right">98,000</td><td class="mono text-right" style="color:var(--amber)">52d</td><td class="mono">B2026-042</td><td><span class="pill amber">Low stock</span></td></tr>
+                <tr><td class="fw700">Amoxicillin Susp</td><td><span class="fmt">Suspension</span></td><td class="mono">125mg/5mL</td><td class="mono">150mL</td><td class="mono">02XXXXXX</td><td class="mono text-right">680K</td><td class="mono text-right">28,000</td><td class="mono text-right" style="color:var(--red)">31d</td><td class="mono">B2026-043</td><td><span class="pill red">Critical</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Rifampin -->
+      <div class="acc-row" id="mol-rif">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-rif')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-rif')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Rifampin</span>
+            <span class="acc-col sup">2</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:2" title="India 65%"></span><span class="geo-bar eu" style="flex:1" title="EU 35%"></span></span>
+            <span class="acc-col lt" style="color:var(--amber)">+9d</span>
+            <span class="acc-col hc"><span class="pill red">Active shortage</span></span>
+            <span class="acc-col price" style="color:var(--amber)">+21%</span>
+            <span class="acc-col risk"><span class="pill red">High</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h5>Ingredient Suppliers</h5>
+              <div class="detail-row"><span class="lbl">Supplier D (Maharashtra)</span><span class="val pill amber">Limited</span></div>
+              <div class="detail-row"><span class="lbl">Supplier E (Italy)</span><span class="val pill green">Shipping</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Market &amp; Regulator Signals</h5>
+              <div class="detail-row"><span class="lbl">Market price</span><span class="val">$128.40/kg</span></div>
+              <div class="detail-row"><span class="lbl">Contract price</span><span class="val">$106.10/kg</span></div>
+              <div class="detail-row"><span class="lbl">Drug Shortages Canada status</span><span class="val pill red">Actual shortage report</span></div>
+              <div class="detail-row"><span class="lbl">US (FDA) status</span><span class="val pill amber">US import alert</span></div>
+            </div>
+            <div class="detail-section">
+              <h5>Company Position</h5>
+              <div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">54 kg</span></div>
+              <div class="detail-row"><span class="lbl">Sourcing</span><span class="val pill amber">Expediting order</span></div>
+              <div class="safety-bar"><div class="safety-fill" style="width:38%;background:var(--red)"></div></div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">38% of target</div>
+            </div>
+          </div>
+          <div class="table-wrap fg-table" style="margin-top:10px">
+            <table>
+              <thead><tr><th>Product</th><th>Format</th><th>Strength</th><th>Pack size</th><th>Drug ID</th><th>Yearly units</th><th>On-shelf stock</th><th>Days of supply</th><th>Batch</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="fw700">Rifampin Cap</td><td><span class="fmt">Capsule</span></td><td class="mono">150 mg</td><td class="mono">100</td><td class="mono">02XXXXXX</td><td class="mono text-right">180K</td><td class="mono text-right">6,200</td><td class="mono text-right" style="color:var(--red)">28d</td><td class="mono">B2026-R01</td><td><span class="pill red">Critical</span></td></tr>
+                <tr><td class="fw700">Rifampin Cap</td><td><span class="fmt">Capsule</span></td><td class="mono">300 mg</td><td class="mono">100</td><td class="mono">02XXXXXX</td><td class="mono text-right">320K</td><td class="mono text-right">14,500</td><td class="mono text-right" style="color:var(--amber)">44d</td><td class="mono">B2026-R02</td><td><span class="pill amber">Low stock</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Ciprofloxacin -->
+      <div class="acc-row" id="mol-cipro">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-cipro')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-cipro')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ciprofloxacin</span>
+            <span class="acc-col sup">4</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:1.5" title="India 40%"></span><span class="geo-bar eu" style="flex:1.5" title="EU 40%"></span><span class="geo-bar ca" style="flex:0.6" title="Canada 20%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">+2%</span>
+            <span class="acc-col risk"><span class="pill green">Low</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="detail-grid">
+            <div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">4 approved suppliers</span><span class="val pill green">All shipping</span></div><div class="detail-row"><span class="lbl">Supplier geography</span><span class="val">Good</span></div></div>
+            <div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$18.20/kg</span></div><div class="detail-row"><span class="lbl">Drug Shortages Canada status</span><span class="val pill green">No report</span></div><div class="detail-row"><span class="lbl">US (FDA) status</span><span class="val pill green">No shortage</span></div></div>
+            <div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">310 kg</span></div><div class="detail-row"><span class="lbl">Sourcing</span><span class="val pill green">Normal</span></div><div class="safety-bar"><div class="safety-fill" style="width:92%;background:var(--green)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">92% of target</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Lithium carbonate -->
+      <div class="acc-row" id="mol-lith">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-lith')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-lith')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Lithium carbonate</span>
+            <span class="acc-col sup">2</span>
+            <span class="acc-col geo"><span class="geo-bar cn" style="flex:2" title="China 70%"></span><span class="geo-bar ca" style="flex:0.8" title="Canada 30%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price" style="color:var(--green)">-5%</span>
+            <span class="acc-col risk"><span class="pill amber">Med</span></span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="detail-grid">
+            <div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier F (Jiangsu)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier G (Quebec)</span><span class="val pill green">Shipping</span></div></div>
+            <div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$8.40/kg</span></div><div class="detail-row"><span class="lbl">Drug Shortages Canada status</span><span class="val pill green">No report</span></div><div class="detail-row"><span class="lbl">Tariff risk</span><span class="val pill blue">Watch</span></div></div>
+            <div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">420 kg</span></div><div class="detail-row"><span class="lbl">Sourcing</span><span class="val pill green">Normal</span></div><div class="safety-bar"><div class="safety-fill" style="width:78%;background:var(--amber)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">78% of target</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Acetylcysteine -->
+      <div class="acc-row" id="mol-nac">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-nac')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-nac')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Acetylcysteine</span>
+            <span class="acc-col sup">3</span>
+            <span class="acc-col geo"><span class="geo-bar eu" style="flex:2" title="EU 55%"></span><span class="geo-bar in" style="flex:1" title="India 30%"></span><span class="geo-bar ca" style="flex:0.5" title="Canada 15%"></span></span>
+            <span class="acc-col lt" style="color:var(--green)">-3d</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">+1%</span>
+            <span class="acc-col risk"><span class="pill green">Low</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">3 approved, spread across regions</span><span class="val pill green">All shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$14.60/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">220 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:88%;background:var(--green)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">88% of target</div></div></div></div>
+      </div>
+
+      <!-- 6. ASA -->
+      <div class="acc-row" id="mol-asa">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-asa')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-asa')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">ASA</span>
+            <span class="acc-col sup">5</span>
+            <span class="acc-col geo"><span class="geo-bar cn" style="flex:1" title="China 25%"></span><span class="geo-bar in" style="flex:1" title="India 25%"></span><span class="geo-bar eu" style="flex:1" title="EU 25%"></span><span class="geo-bar ca" style="flex:1" title="Canada 25%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price" style="color:var(--green)">-1%</span>
+            <span class="acc-col risk"><span class="pill green">Low</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">5 approved, spread widely</span><span class="val pill green">All shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$3.20/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">1,480 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:96%;background:var(--green)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">96% of target</div></div></div></div>
+      </div>
+
+      <!-- 7. Cefixime -->
+      <div class="acc-row" id="mol-cefx">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-cefx')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-cefx')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Cefixime</span>
+            <span class="acc-col sup">3</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:2" title="India 55%"></span><span class="geo-bar eu" style="flex:1" title="EU 30%"></span><span class="geo-bar cn" style="flex:0.5" title="China 15%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">0%</span>
+            <span class="acc-col risk"><span class="pill green">Low</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">3 approved suppliers</span><span class="val pill green">All shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$62.80/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">94 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:85%;background:var(--green)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">85% of target</div></div></div></div>
+      </div>
+
+      <!-- TB CLUSTER -->
+      <div class="cluster-header"><span style="font-size:12px">&#9670;</span> Tuberculosis Medicines &mdash; Watched together (they share suppliers)</div>
+
+      <!-- 8. Isoniazid -->
+      <div class="acc-row" id="mol-inh">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-inh')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-inh')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Isoniazid</span>
+            <span class="acc-col sup">2 (TB group)</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:2" title="India 70%"></span><span class="geo-bar cn" style="flex:0.8" title="China 30%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">+3%</span>
+            <span class="acc-col risk"><span class="pill amber">Med</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier H (Hyderabad)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier I (Zhejiang)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Group note</span><span class="val" style="font-family:var(--font-sans);font-size:10px">Shares raw-material suppliers with ethambutol &amp; pyrazinamide</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$22.10/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">88 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:72%;background:var(--amber)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">72% of target</div></div></div></div>
+      </div>
+
+      <!-- 9. Ethambutol -->
+      <div class="acc-row" id="mol-eth">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-eth')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-eth')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ethambutol</span>
+            <span class="acc-col sup">2 (TB group)</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:2.5" title="India 80%"></span><span class="geo-bar cn" style="flex:0.6" title="China 20%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">0%</span>
+            <span class="acc-col risk"><span class="pill amber">Med</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier J (Mumbai)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier K (Hubei)</span><span class="val pill green">Shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$19.40/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">76 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:68%;background:var(--amber)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">68% of target</div></div></div></div>
+      </div>
+
+      <!-- 10. Pyrazinamide -->
+      <div class="acc-row" id="mol-pza">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-pza')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-pza')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Pyrazinamide</span>
+            <span class="acc-col sup">2 (TB group)</span>
+            <span class="acc-col geo"><span class="geo-bar in" style="flex:2" title="India 65%"></span><span class="geo-bar cn" style="flex:1" title="China 35%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">+1%</span>
+            <span class="acc-col risk"><span class="pill amber">Med</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier L (Gujarat)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier M (Shandong)</span><span class="val pill green">Shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$16.80/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">62 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:65%;background:var(--amber)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">65% of target</div></div></div></div>
+      </div>
+
+      <!-- 11. Ivabradine -->
+      <div class="acc-row" id="mol-iva">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-iva')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-iva')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Ivabradine</span>
+            <span class="acc-col sup">2</span>
+            <span class="acc-col geo"><span class="geo-bar eu" style="flex:2" title="EU 70%"></span><span class="geo-bar in" style="flex:0.8" title="India 30%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">+4%</span>
+            <span class="acc-col risk"><span class="pill green">Low</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier N (France)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier O (Hyderabad)</span><span class="val pill green">Shipping</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price</span><span class="val">$2,840/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand</span><span class="val">12.4 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:82%;background:var(--green)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">82% of target</div></div></div></div>
+      </div>
+
+      <!-- 12. Mifepristone/Misoprostol -->
+      <div class="acc-row" id="mol-mife">
+        <div class="acc-header" role="button" tabindex="0" aria-expanded="false" onclick="tog('mol-mife')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog('mol-mife')}">
+          <span class="acc-chevron">&#9654;</span>
+          <div class="acc-cols">
+            <span class="acc-col mol">Mifepristone / Misoprostol</span>
+            <span class="acc-col sup">2</span>
+            <span class="acc-col geo"><span class="geo-bar eu" style="flex:1.5" title="EU 50%"></span><span class="geo-bar in" style="flex:1.5" title="India 50%"></span></span>
+            <span class="acc-col lt">Stable</span>
+            <span class="acc-col hc"><span class="pill green">No shortage</span></span>
+            <span class="acc-col price">0%</span>
+            <span class="acc-col risk"><span class="pill amber">Med</span></span>
+          </div>
+        </div>
+        <div class="acc-body"><div class="detail-grid"><div class="detail-section"><h5>Ingredient Suppliers</h5><div class="detail-row"><span class="lbl">Supplier P (Netherlands)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Supplier Q (Maharashtra)</span><span class="val pill green">Shipping</span></div><div class="detail-row"><span class="lbl">Note</span><span class="val" style="font-family:var(--font-sans);font-size:10px">Two approved suppliers maintained for continuity</span></div></div><div class="detail-section"><h5>Market &amp; Regulator Signals</h5><div class="detail-row"><span class="lbl">Market price (mifepristone)</span><span class="val">$1,640/kg</span></div><div class="detail-row"><span class="lbl">Market price (misoprostol)</span><span class="val">$680/kg</span></div><div class="detail-row"><span class="lbl">Canada / US public status</span><span class="val pill green">No shortage</span></div></div><div class="detail-section"><h5>Company Position</h5><div class="detail-row"><span class="lbl">Ingredient on hand (mifepristone)</span><span class="val">8.2 kg</span></div><div class="detail-row"><span class="lbl">Ingredient on hand (misoprostol)</span><span class="val">14.6 kg</span></div><div class="safety-bar"><div class="safety-fill" style="width:74%;background:var(--amber)"></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">74% of target</div></div></div></div>
+      </div>
+
+    </div><!-- /accordion -->
+  </div>
+
+  <!-- WHAT IT IS / IS NOT -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">What This Is</span><span class="section-line"></span></div>
+    <div class="two-tone">
+      <div class="bad">
+        <h4 style="color:var(--red)">What it is not</h4>
+        <ul>
+          <li>Not a live system connected to production data feeds</li>
+          <li>Not a claim to any official or regulatory status</li>
+          <li>Not a replacement for Drug Shortages Canada or any federal system</li>
+          <li>Not evidence that every feed is already operating at scale today</li>
+        </ul>
+      </div>
+      <div class="good">
+        <h4 style="color:var(--green)">What it is</h4>
+        <ul>
+          <li>A concrete example of how shortage-risk signals could be shared earlier</li>
+          <li>A model for linking public, confidential, and internal supply-chain data</li>
+          <li>A regulator-facing view of source, cadence, confidence, and response status</li>
+          <li>A practical implementation path for a secure transparency dashboard</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOVERNANCE -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Governance &amp; Confidentiality</span><span class="section-line"></span></div>
+    <div class="purpose-panel">
+      <p class="source-intro">The dashboard separates what can be shared openly from what should be shared only through a secure regulator channel. This supports Health Canada's information-sharing goals while respecting commercially sensitive supply-chain details.</p>
+      <div class="governance-grid">
+        <div class="governance-cell">
+          <h4>Shared with Health Canada</h4>
+          <p>Risk status, impacted medicines, source category, last updated date, response owner, expected mitigation timing, and summary supply position.</p>
+        </div>
+        <div class="governance-cell">
+          <h4>Aggregated or masked</h4>
+          <p>Supplier names, facility locations, market prices, customer-level distribution, and batch-level inventory can be summarized unless detail is required for mitigation.</p>
+        </div>
+        <div class="governance-cell">
+          <h4>Public communication layer</h4>
+          <p>Patient- and provider-facing updates would use approved shortage status, expected availability, alternatives, and mitigation steps without exposing sensitive commercial data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HC 2024-2028 PLAN CROSSWALK -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">How This Matches Health Canada's Plan (2024&ndash;2028)</span><span class="section-line"></span></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px;max-width:920px">Health Canada's <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Building Resilience (2024&ndash;2028)</a> plan emphasizes planning, prevention, response, enhanced reporting, wider data sources, confidential information sharing, and clear public communication. This crosswalk shows where the prototype supports those priorities.</p>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th style="min-width:220px">Health Canada Plan Theme</th>
+        <th style="min-width:220px">Prototype Evidence</th>
+        <th>What Health Canada Would See</th>
+        <th style="min-width:110px">Where</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="fw700">Planning: focus on products that carry the greatest patient and system risk</td>
+          <td><span class="mono fw700">14</span> medicines mapped to critical/vulnerable status</td>
+          <td>Priority products, risk drivers, and the supply-chain reason each product is being watched</td>
+          <td><span class="pill blue" style="font-size:9px">Snapshot</span> <span class="pill blue" style="font-size:9px">Medicines</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Prevention: detect shortage risks before patient access is affected</td>
+          <td><span class="mono fw700">23 days</span> illustrative lead time before a public shortage report</td>
+          <td>Internal supplier, stock, logistics, and market signals before a formal shortage is visible publicly</td>
+          <td><span class="pill amber" style="font-size:9px">Alerts</span> <span class="pill blue" style="font-size:9px">Medicines</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Response: minimize impact and restore access quickly</td>
+          <td><span class="mono fw700">41 days</span> to bring a backup supplier online</td>
+          <td>Current mitigation steps, backup-supplier timing, batch status, and expected reserve rebuild time</td>
+          <td><span class="pill blue" style="font-size:9px">Snapshot</span> <span class="pill blue" style="font-size:9px">Deep Dive</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Enhanced reporting: improve the information available about shortages</td>
+          <td><span class="mono fw700">32</span> fields across public, internal, and partner sources</td>
+          <td>Every field labelled by source, refresh cadence, owner, and confidentiality class</td>
+          <td><span class="pill blue" style="font-size:9px">Sources</span> <span class="pill amber" style="font-size:9px">Alerts</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Wider data sources: draw on more than shortage reports</td>
+          <td><span class="mono fw700">3</span> alert levels and <span class="mono fw700">22</span> monitored thresholds</td>
+          <td>Signals from inventory, logistics, supplier quality, market pricing, and foreign regulator sources</td>
+          <td><span class="pill amber" style="font-size:9px">Alerts</span> <span class="pill blue" style="font-size:9px">Snapshot</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Confidential information sharing: improve visibility without exposing sensitive data</td>
+          <td><span class="mono fw700">3</span> data classes: public, secure regulator, internal commercial</td>
+          <td>A Health Canada view that can show detail where needed and aggregation where appropriate</td>
+          <td><span class="pill blue" style="font-size:9px">All tabs</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Clear communication: support targeted updates for providers and patients</td>
+          <td><span class="mono fw700">5</span> active alert summaries with action status</td>
+          <td>Plain-language risk, what changed, what is being done, and what may need public communication</td>
+          <td><span class="pill blue" style="font-size:9px">Sources</span> <span class="pill blue" style="font-size:9px">Snapshot</span></td>
+        </tr>
+        <tr>
+          <td class="fw700">Modernization: adapt as federal tools and requirements evolve</td>
+          <td><span class="mono fw700">4</span> expandable tabs and a source-first data model</td>
+          <td>Room to add Tier 3 shortage status, updated reporting requirements, and additional partner feeds</td>
+          <td><span class="pill blue" style="font-size:9px">All tabs</span></td>
+        </tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px"><a href="https://www.canada.ca/content/dam/hc-sc/documents/services/drugs-health-products/drug-products/drug-shortages/plan-2024-2028/building-resilience-plan-to-address-health-product-shortages-2024-2028.pdf" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Full plan PDF &rarr;</a></p>
+  </div>
+
+</div><!-- /panel-dashboard -->
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 2: DATA SOURCES                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-sources" class="panel" role="tabpanel">
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Source Governance</span><span class="section-line"></span></div>
+    <p class="source-intro">Each feed is tagged with refresh cadence, record count, data owner, and sharing class. In a production version, these tags would support auditability, secure disclosure to Health Canada, and a clear separation between public shortage information and commercially sensitive operational data.</p>
+    <div class="grid-3">
+      <div class="detail-section">
+        <h5>Public</h5>
+        <div class="detail-row"><span class="lbl">Examples</span><span class="val">Drug Shortages Canada, CVDL, FDA</span></div>
+        <div class="detail-row"><span class="lbl">Use</span><span class="val">baseline verification</span></div>
+      </div>
+      <div class="detail-section">
+        <h5>Secure Regulator</h5>
+        <div class="detail-row"><span class="lbl">Examples</span><span class="val">mitigation timing, summary stock</span></div>
+        <div class="detail-row"><span class="lbl">Use</span><span class="val">coordination</span></div>
+      </div>
+      <div class="detail-section">
+        <h5>Internal Commercial</h5>
+        <div class="detail-row"><span class="lbl">Examples</span><span class="val">supplier names, pricing, customer orders</span></div>
+        <div class="detail-row"><span class="lbl">Use</span><span class="val">aggregated unless needed</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Government & Regulatory -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Government &amp; Regulator Sources</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-hc">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-hc')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-hc')}">
+        <div><span class="ds-title">Drug Shortages Canada Reporting Website</span></div>
+        <div class="ds-meta"><span class="pill blue">Public</span><span class="pill neutral">Daily</span><span class="data-class">Owner: Regulatory Affairs</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-04</span><span class="mono" style="font-size:10px;color:var(--muted)">1,247 records</span><span style="font-size:11px;color:var(--muted);cursor:pointer" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> drug identification, company, active ingredient, anticipated or actual shortage status, start date, expected end date, reason, and any alternative products listed.</div>
+        <p style="margin:8px 0 0;font-size:12px;color:var(--muted)"><a href="https://www.drugshortagescanada.ca/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">drugshortagescanada.ca &rarr;</a></p>
+        <div class="flow-box"><pre>Drug Shortages Canada reporting website (example)
+  &rarr; Checked every night at 2 AM
+  &rarr; Cleaned and matched to the company medicine list
+  &rarr; Any status change is flagged
+  &rarr; A public report is treated as one input, not the only shortage signal</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-fda">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-fda')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-fda')}">
+        <div><span class="ds-title">US (FDA) Shortage Database</span></div>
+        <div class="ds-meta"><span class="pill blue">Public</span><span class="pill neutral">Daily</span><span class="data-class">Owner: Regulatory Affairs</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-04</span><span class="mono" style="font-size:10px;color:var(--muted)">892 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> the drug name, its US product ID, current status, the reason, when resupply is expected, and the company involved.</div>
+        <p style="margin:8px 0 0;font-size:12px;color:var(--muted)"><a href="https://www.accessdata.fda.gov/scripts/drugshortages/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">FDA Drug Shortages &rarr;</a></p>
+        <div class="flow-box"><pre>US (FDA) shortage list (example)
+  &rarr; Pulled daily
+  &rarr; Matched to Canadian drug IDs
+  &rarr; Flagged as US-only, or both US and Canada
+  &rarr; Used as an early warning for Canada</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-fda-warn">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-fda-warn')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-fda-warn')}">
+        <div><span class="ds-title">US Warning Letters &amp; Import Alerts</span></div>
+        <div class="ds-meta"><span class="pill blue">Public</span><span class="pill neutral">Weekly</span><span class="data-class">Owner: Regulatory Affairs</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-01</span><span class="mono" style="font-size:10px;color:var(--muted)">34 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> facility name and location, warning type, subject, issue date, and affected products.</div>
+        <p style="margin:8px 0 0;font-size:12px;color:var(--muted)"><a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">FDA Warning Letters &rarr;</a> &middot; <a href="https://www.fda.gov/industry/actions-enforcement/import-alerts" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Import Alerts &rarr;</a></p>
+        <div class="flow-box"><pre>US warnings &amp; import alerts (example)
+  &rarr; Checked weekly
+  &rarr; Matched against the approved supplier list
+  &rarr; If one of the company's suppliers is named, an alert is created
+  &rarr; A new supplier being qualified raises the alert level</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-cvdl">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-cvdl')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-cvdl')}">
+        <div><span class="ds-title">Health Canada's Critical &amp; Vulnerable Drug List</span></div>
+        <div class="ds-meta"><span class="pill blue">Public</span><span class="pill neutral">Monthly</span><span class="data-class">Owner: Regulatory Affairs</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-03-15</span><span class="mono" style="font-size:10px;color:var(--muted)">86 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> the drug name, identifier, criticality/vulnerability category, therapeutic area, and any available shortage-risk rationale. This is distinct from Tier 3 shortage assignment.</div>
+        <p style="margin:8px 0 0;font-size:12px;color:var(--muted)"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages/critical-vulnerable-list.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">Open official source &rarr;</a></p>
+        <div class="flow-box"><pre>Critical &amp; Vulnerable Drug List (example)
+  &rarr; Compared monthly to the published list
+  &rarr; Company medicines are checked for inclusion
+  &rarr; Any added, removed, or re-ranked medicine is flagged</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-disc">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-disc')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-disc')}">
+        <div><span class="ds-title">Products Being Discontinued (Health Canada)</span></div>
+        <div class="ds-meta"><span class="pill blue">Public</span><span class="pill neutral">Weekly</span><span class="data-class">Owner: Regulatory Affairs</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-02</span><span class="mono" style="font-size:10px;color:var(--muted)">18 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> drug identification, brand, company, discontinuation date, reason, and any published supply information.</div>
+        <p style="margin:8px 0 0;font-size:12px;color:var(--muted)"><a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-shortages.html" target="_blank" rel="noopener noreferrer" style="color:var(--blue);text-decoration:underline">HC Drug Shortages &rarr;</a></p>
+        <div class="flow-box"><pre>Discontinuation notices (example)
+  &rarr; Checked weekly for new listings
+  &rarr; Matched to company medicines
+  &rarr; A competitor exit from a shared market creates a monitoring alert
+  &rarr; Potential demand spikes are reviewed</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market & Supply Chain -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Market &amp; Supply Sources</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-iqvia">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-iqvia')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-iqvia')}">
+        <div><span class="ds-title">Market Data (IQVIA)</span></div>
+        <div class="ds-meta"><span class="pill amber">Licensed / secure</span><span class="pill neutral">Monthly</span><span class="data-class">Owner: Market Access</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-03-28</span><span class="mono" style="font-size:10px;color:var(--muted)">4,200 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> each medicine's market share, units sold, growth rate, number of competitors, and regional demand indicators. Government-facing views would use aggregated outputs where licensing or confidentiality limits apply.</div>
+        <div class="flow-box"><pre>Market data (example)
+  &rarr; Received monthly
+  &rarr; Matched to company medicines
+  &rarr; Market-share shifts are calculated
+  &rarr; Month-to-month changes over 15% are flagged</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-api-price">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-api-price')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-api-price')}">
+        <div><span class="ds-title">Ingredient Market Prices</span></div>
+        <div class="ds-meta"><span class="pill amber">Secure regulator</span><span class="pill neutral">Weekly</span><span class="data-class">Owner: Procurement</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-03</span><span class="mono" style="font-size:10px;color:var(--muted)">340 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> each ingredient's name and ID, current market-price trend, contract-price variance, country of origin, purity grade, and 30- and 90-day movement. Exact pricing can be masked in regulator summaries.</div>
+        <div class="flow-box"><pre>Ingredient prices (example)
+  &rarr; Pulled weekly from market brokers
+  &rarr; Converted to US dollars per kilogram
+  &rarr; 30-day and 90-day trends are tracked
+  &rarr; An alert is created if the market price rises more than 20% above contract</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-logistics">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-logistics')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-logistics')}">
+        <div><span class="ds-title">Shipping &amp; Freight</span></div>
+        <div class="ds-meta"><span class="pill amber">Secure regulator</span><span class="pill neutral">Weekly</span><span class="data-class">Owner: Logistics</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-03</span><span class="mono" style="font-size:10px;color:var(--muted)">28 routes</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> shipping route, usual transit time, delay length, container prices, customs holds, and disruption flags.</div>
+        <div class="flow-box"><pre>Shipping &amp; freight (example)
+  &rarr; Pulled weekly from freight brokers
+  &rarr; Mapped to supplier transport routes
+  &rarr; Expected delivery times are updated for each supplier
+  &rarr; Arrival forecasts for ingredients are refreshed</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-pkg">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-pkg')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-pkg')}">
+        <div><span class="ds-title">Packaging &amp; Bottles</span></div>
+        <div class="ds-meta"><span class="pill amber">Secure regulator</span><span class="pill neutral">Bi-weekly</span><span class="data-class">Owner: Operations</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-03-28</span><span class="mono" style="font-size:10px;color:var(--muted)">42 items</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> the component type, supplier, delivery time, stock on hand, reorder point, unit cost, and whether the supplier is approved.</div>
+        <div class="flow-box"><pre>Packaging &amp; bottles (example)
+  &rarr; Supplier updates every two weeks
+  &rarr; Blister foil, bottles, caps, and labels are tracked
+  &rarr; A delay over 5 days is flagged
+  &rarr; Compared against the production schedule</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Internal Operations -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Company Systems</span><span class="section-line"></span></div>
+
+    <div class="ds-card" id="ds-erp">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-erp')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-erp')}">
+        <div><span class="ds-title">Stock &amp; Inventory System</span></div>
+        <div class="ds-meta"><span class="pill red">Internal commercial</span><span class="pill neutral">Continuous</span><span class="data-class">Owner: Supply Planning</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-05</span><span class="mono" style="font-size:10px;color:var(--muted)">1,842 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> product ID, lot number, quantity on hand, committed quantity, expiry date, storage location, batch status, and manufacturing date. Regulator views would normally show summary stock position unless more detail is needed for mitigation.</div>
+        <div class="flow-box"><pre>Inventory system (example)
+  &rarr; Updated live as inventory changes
+  &rarr; Days of supply are calculated for every product
+  &rarr; Anything below target is flagged
+  &rarr; Batch history is kept for full traceability</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-supplier-reg">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-supplier-reg')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-supplier-reg')}">
+        <div><span class="ds-title">Approved Supplier List</span></div>
+        <div class="ds-meta"><span class="pill red">Internal commercial</span><span class="pill neutral">On change</span><span class="data-class">Owner: Quality</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-03-20</span><span class="mono" style="font-size:10px;color:var(--muted)">38 suppliers</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> supplier ID, country and city, supplied ingredients, approval status, last audit date, quality certificate expiry, and backup contact. Supplier names can be masked in aggregated regulator views.</div>
+        <div class="flow-box"><pre>Supplier list (example)
+  &rarr; Updated whenever a supplier is approved, audited, or dropped
+  &rarr; Quality-certificate expiry dates tracked
+  &rarr; Each supplier is linked to the ingredient and country
+  &rarr; Used to measure supplier concentration by region</pre></div>
+      </div>
+    </div>
+
+    <div class="ds-card" id="ds-cso">
+      <div class="ds-header" role="button" tabindex="0" onclick="togDs('ds-cso')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togDs('ds-cso')}">
+        <div><span class="ds-title">Medicine Distribution</span></div>
+        <div class="ds-meta"><span class="pill red">Internal commercial</span><span class="pill neutral">Daily</span><span class="data-class">Owner: Distribution</span><span class="mono" style="font-size:10px;color:var(--muted)">Last: 2026-04-04</span><span class="mono" style="font-size:10px;color:var(--muted)">620 records</span><span style="font-size:11px;color:var(--muted)" class="ds-toggle">+ Details</span></div>
+      </div>
+      <div class="ds-body">
+        <div class="ds-fields"><strong>Fields included:</strong> order number, customer type, province, product, quantity, ship date, delivery status, and backorder status. Government-facing reporting would aggregate by product and province unless case-level detail is required.</div>
+        <div class="flow-box"><pre>Distribution tracking (example)
+  &rarr; Orders and shipments come in daily
+  &rarr; Order-fill performance is tracked in each province
+  &rarr; Any backorder or partial shipment is flagged
+  &rarr; Feeds the demand forecast
+  Note: This illustrates a voluntary transparency feed for
+  secure regulator coordination, not a current reporting requirement.</pre></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panel-sources -->
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 3: ALERTS & SIGNALS                   -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-alerts" class="panel" role="tabpanel">
+
+  <!-- Active Alerts -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Current Attention Items</span><span class="section-line"></span></div>
+
+    <div class="alert-card critical">
+      <div class="alert-level">Critical &mdash; active response</div>
+      <div class="alert-title">Amoxicillin: main ingredient supplier has stopped shipping</div>
+      <div class="alert-meta">
+        <span><strong>Flagged:</strong> <span class="mono">2026-03-28, 2:22 PM ET</span></span>
+        <span><strong>How it was identified:</strong> supplier records cross-checked with Drug Shortages Canada</span>
+        <span><strong>What it means:</strong> 2 of 3 suppliers are affected; one product has less than 40 days of stock left</span>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:var(--text)">
+        <strong>Current response:</strong> qualify a backup supplier, reserve safety stock for the highest-need products, and prepare regulator coordination if stock falls below the critical threshold.
+      </div>
+    </div>
+
+    <div class="alert-card warning">
+      <div class="alert-level">Warning &mdash; action required</div>
+      <div class="alert-title">Rifampin: public shortage report in Canada, supplier also on US import alert</div>
+      <div class="alert-meta">
+        <span><strong>Flagged:</strong> <span class="mono">2026-03-15, 9:10 AM ET</span></span>
+        <span><strong>How it was identified:</strong> Drug Shortages Canada and the US (FDA) import alert</span>
+        <span><strong>What it means:</strong> a public shortage has been reported; one supplier is limited, the Italy supplier is still shipping</span>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:var(--text)">
+        <strong>Current response:</strong> increase orders from the Italy supplier, accelerate production batches, and monitor the expected resolution date in the public report.
+      </div>
+    </div>
+
+    <div class="alert-card warning">
+      <div class="alert-level">Warning &mdash; action required</div>
+      <div class="alert-title">Blister packaging taking longer to arrive</div>
+      <div class="alert-meta">
+        <span><strong>Flagged:</strong> <span class="mono">2026-04-01, 11:45 AM ET</span></span>
+        <span><strong>How it was identified:</strong> packaging supplier tracker</span>
+        <span><strong>What it means:</strong> delivery time pushed out by 12 days; affects 8 products that use blister packs</span>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:var(--text)">
+        <strong>Current response:</strong> assess an alternate blister supplier and monitor whether 6 weeks of foil coverage is enough to avoid a finished-product constraint.
+      </div>
+    </div>
+
+    <div class="alert-card info">
+      <div class="alert-level">Watch &mdash; monitoring</div>
+      <div class="alert-title">Lithium: potential tariff risk on China-sourced ingredient</div>
+      <div class="alert-meta">
+        <span><strong>Flagged:</strong> <span class="mono">2026-04-02, 8:30 AM ET</span></span>
+        <span><strong>How it was identified:</strong> trade policy monitoring cross-checked with the supplier list</span>
+        <span><strong>What it means:</strong> 70% of lithium ingredient supply comes from China; a tariff could increase landed cost by 15&ndash;25%</span>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:var(--text)">
+        <strong>Current response:</strong> maintain the Quebec-based backup supplier and model the tariff scenario. There is no current supply constraint.
+      </div>
+    </div>
+
+    <div class="alert-card info">
+      <div class="alert-level">Watch &mdash; monitoring</div>
+      <div class="alert-title">Tuberculosis medicines: risk of shared-supplier impact</div>
+      <div class="alert-meta">
+        <span><strong>Flagged:</strong> <span class="mono">2026-03-22, 4:00 PM ET</span></span>
+        <span><strong>How it was identified:</strong> supplier data showed shared raw materials</span>
+        <span><strong>What it means:</strong> isoniazid, ethambutol, and pyrazinamide share upstream suppliers &mdash; a problem with one could hit all three</span>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:var(--text)">
+        <strong>Current response:</strong> review the shared-supplier risk quarterly and complete the planned supplier audit in Q3 2026. All three medicines are stable in this example.
+      </div>
+    </div>
+  </div>
+
+  <!-- Signal Timeline -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Recent Signals, Newest First</span><span class="section-line"></span></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow-soft)">
+      <ul class="timeline">
+        <li class="red"><span class="time">2026-04-04 &middot; 4:40 PM ET</span><strong>Amoxicillin liquid (children's):</strong> stock dropped under 35 days. Batch yield review opened.</li>
+        <li class="amber"><span class="time">2026-04-03 &middot; 9:15 AM ET</span><strong>Amoxicillin ingredient price jumped:</strong> market price is now 34% above contract. Three brokers confirm the premium is holding.</li>
+        <li class="amber"><span class="time">2026-04-01 &middot; 11:45 AM ET</span><strong>Blister foil delay:</strong> the Ontario packaging supplier pushed out deliveries by 12 days due to an aluminum shortage.</li>
+        <li class="blue"><span class="time">2026-03-28 &middot; 2:22 PM ET</span><strong>Amoxicillin supplier halt:</strong> the main supplier in Shandong, China stopped production. Restart date unknown.</li>
+        <li class="blue"><span class="time">2026-03-22 &middot; 4:00 PM ET</span><strong>Tuberculosis medicines:</strong> flagged because three of them share the same upstream suppliers &mdash; one disruption could hit all three.</li>
+        <li class="amber"><span class="time">2026-03-15 &middot; 9:10 AM ET</span><strong>Rifampin:</strong> an active shortage report appeared on Drug Shortages Canada. At the same time, the US flagged the India supplier in an import alert.</li>
+        <li class="green"><span class="time">2026-03-10 &middot; 10:00 AM ET</span><strong>Ivabradine backup supplier:</strong> the France-based backup passed its quality audit. Two suppliers are now approved.</li>
+        <li class="blue"><span class="time">2026-03-01 &middot; 8:00 AM ET</span><strong>Tariff watch started:</strong> flagged the risk of tariffs on China-sourced lithium ingredient for more detailed analysis.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Alert Thresholds -->
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">When Do Alerts Fire? <i class="info-tip" data-tip="Illustrative thresholds used to show how a measurement would move from monitoring to response." tabindex="0">i</i></span><span class="section-line"></span></div>
+    <div class="table-wrap">
+      <table class="thresh-table">
+        <thead><tr>
+          <th>Signal</th>
+          <th>Watch <i class="info-tip" data-tip="Monitoring signal. No immediate response required." tabindex="0">i</i></th>
+          <th>Warning <i class="info-tip" data-tip="Response planning required. Backup options and timing are reviewed." tabindex="0">i</i></th>
+          <th>Critical <i class="info-tip" data-tip="Active response required. Leadership and regulator coordination are prepared where appropriate." tabindex="0">i</i></th>
+          <th>Response</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Days of stock on hand</td><td class="mono">&lt; 60 days</td><td class="mono">&lt; 45 days</td><td class="mono">&lt; 30 days</td><td>Accelerate production, line up a backup supplier, prepare regulator coordination if needed</td></tr>
+          <tr><td>Ingredient market price vs. contract</td><td class="mono">10% over</td><td class="mono">20% over</td><td class="mono">40% over</td><td>Lock in forward contracts, consider spot buys, review margins</td></tr>
+          <tr><td>How late deliveries are running</td><td class="mono">5 days late</td><td class="mono">10 days late</td><td class="mono">20+ days late</td><td>Push the order, bring a backup online, adjust production</td></tr>
+          <tr><td>Drug Shortages Canada status</td><td>Anticipated shortage report</td><td>Actual shortage report</td><td>Actual shortage 30+ days</td><td>Prepare regulator coordination and build a fair-share allocation plan</td></tr>
+          <tr><td>Medicines with only one ingredient supplier</td><td>Keep watching</td><td>1 medicine</td><td>More than 3</td><td>Kick off the program to qualify a backup supplier</td></tr>
+          <tr><td>Share of suppliers in one country</td><td>More than 50%</td><td>More than 70%</td><td>More than 85%</td><td>Prioritize diversifying suppliers, model the tariff risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /panel-alerts -->
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 4: MOLECULE DEEP DIVE                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="panel-deepdive" class="panel" role="tabpanel">
+
+  <div class="section">
+    <div class="section-header"><span class="section-kicker">Three Examples, Traced Start to Finish</span><span class="section-line"></span></div>
+    <p class="deep-intro">Three examples, from ingredient suppliers all the way to patients: one shortage under active management (amoxicillin), one shared-supplier risk across a tuberculosis treatment group (rifampin and other TB drugs), and one future concentration risk (lithium, with most of its supply from one country). Names and numbers are illustrative.</p>
+
+    <details class="deep-sample" open>
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Amoxicillin &mdash; a common antibiotic, including the children's liquid</div>
+            <div class="deep-subtitle">Two of three ingredient suppliers are affected, the children's liquid is running low, and packaging is running late.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill red">High risk</span>
+          <span class="pill amber">Shortage anticipated</span>
+          <span class="pill neutral">3 suppliers</span>
+          <span class="pill neutral">3 products watched</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">A useful example because one dashboard has to follow several moving parts at once: where the ingredient comes from, the children's liquid demand, blister packs and bottles, and how long it takes to recover once a supplier fails.</p>
+        <div class="grid-4">
+          <div class="metric-card red">
+            <span class="metric-label">Overall Risk</span>
+            <div class="metric-value" style="font-size:22px">High</div>
+            <div class="metric-note">2 of 3 ingredient suppliers affected</div>
+            <div class="source-note"><strong>Source</strong> supplier status + stock thresholds | daily | owner: Supply Planning | secure regulator</div>
+          </div>
+          <div class="metric-card amber">
+            <span class="metric-label">Days of Ingredient on Hand</span>
+            <div class="metric-value">56<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">186 kg now vs 440 kg target</div>
+            <div class="source-note"><strong>Source</strong> inventory ledger | daily | owner: Supply Planning | confidential</div>
+          </div>
+          <div class="metric-card red">
+            <span class="metric-label">Days of Finished Product on Hand</span>
+            <div class="metric-value">36<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">Children's liquid is under the critical line</div>
+            <div class="source-note"><strong>Source</strong> product inventory + demand forecast | daily | owner: Operations | confidential</div>
+          </div>
+          <div class="metric-card blue">
+            <span class="metric-label">Time to Bring Backup Supplier Online</span>
+            <div class="metric-value">35<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">From outreach to first approved batch</div>
+            <div class="source-note"><strong>Source</strong> supplier qualification tracker | weekly | owner: Quality | secure regulator</div>
+          </div>
+        </div>
+        <div class="trace-box trace-tight" style="margin-top:10px">AMOXICILLIN — EXAMPLE TRACE FROM INGREDIENT TO PHARMACY SHELF
+INGREDIENT SUPPLIERS                 MAKING &amp; QUALITY CHECKS                DELIVERY TO PHARMACIES
+─────────────────────                ────────────────────────                ──────────────────────
+
+┌──────────────────────┐             ┌──────────────────────┐               ┌──────────────────────┐
+│ Zhejiang Pharma      │ ✓ active    │ BLEND / GRANULATE    │               │ EDMONTON DC          │
+│ Ningbo, China        │ 500 kg on   │ Amox trihydrate +    │               │ 24 active SKUs       │
+│ GMP cert: valid      │ order       │ MCC / starch / MgSt  │────┐          │ 3 amox SKUs watched  │
+│ CoA set: current     │             └──────────┬───────────┘    │          └──────────┬───────────┘
+└──────────────────────┘                        │                │                     │
+                                                ▼                │                     ▼
+┌──────────────────────┐             ┌──────────────────────┐    │          ┌──────────────────────┐
+│ Aurobindo            │ × halted    │ CAPSULE FILL         │    │          │ WHOLESALER SPLIT      │
+│ Hyderabad, India     │ contamination│ 250 mg / 500 mg     │────┼────────▶ │ AB: McKesson          │
+│ GMP: valid           │ event       │ 2 batches active     │    │          │ BC: McKesson          │
+│ FDA signal: warning  │             └──────────┬───────────┘    │          │ ON: Kohl & Frisch     │
+└──────────────────────┘                        │                │          │ QC: McKesson          │
+                                                ▼                │          └──────────┬───────────┘
+┌──────────────────────┐             ┌──────────────────────┐    │                     │
+│ United Labs          │ △ constrained│ SUSPENSION FILL      │    │                     ▼
+│ Mumbai, India        │ 60% capacity│ 125 mg / 5 mL        │────┘          ┌──────────────────────┐
+│ CoA renewal pending  │ +18 d lead  │ pediatric lane       │               │ RESPONSE LAYER        │
+│ route: Nhava Sheva   │             └──────────┬───────────┘               │ fill rate: 82%       │
+└──────────────────────┘                        │                           │ backorders: 3 open    │
+                                                ▼                           │ reporting: illustrative│
+EXCIPIENT WATCH                                  ┌──────────────────────┐    │ pathway under review  │
+────────────────                                  │ QA / RELEASE GATE    │    └──────────────────────┘
+Microcrystalline cellulose      ✓                 │ B2026-041 released   │
+Sodium starch glycolate         ✓                 │ B2026-042 released   │
+Sucrose (suspension)            ✓                 │ B2026-043 partial    │
+Cherry flavouring               ✓                 │ yield under review    │
+
+PACKAGING WATCH
+───────────────
+HDPE bottles                    ✓
+Child-resistant caps            ✓
+Printed labels                  ✓
+Carton board                    ✓
+Blister foil                    △ lead +12 d
+Measuring cups (susp.)          ✓</div>
+
+        <div class="deep-stack">
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Who Supplies the Ingredient</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Supplier</th><th>Role</th><th>Status</th><th>Delivery time</th><th>Notes</th></tr></thead>
+                  <tbody>
+                    <tr><td class="fw700">Zhejiang Pharma &mdash; Ningbo, China</td><td>Backup</td><td><span class="pill green">Shipping</span></td><td class="mono">29 days by sea</td><td>500 kg on order; quality paperwork clean</td></tr>
+                    <tr><td class="fw700">Aurobindo &mdash; Hyderabad, India</td><td>Main</td><td><span class="pill red">Halted</span></td><td class="mono">&mdash;</td><td>Production stopped after contamination</td></tr>
+                    <tr><td class="fw700">United Labs &mdash; Mumbai, India</td><td>Secondary</td><td><span class="pill amber">Limited</span></td><td class="mono">18 days late</td><td>Running at 60%; paperwork renewal pending</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Packaging &amp; Other Materials</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Item</th><th>Supplier</th><th>Days on hand</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Blister foil</td><td>Ontario packaging company</td><td class="mono">41 days</td><td><span class="pill amber">12 days late</span></td></tr>
+                    <tr><td>Plastic bottle (liquid)</td><td>Quebec plastics</td><td class="mono">63 days</td><td><span class="pill green">On time</span></td></tr>
+                    <tr><td>Cherry flavouring</td><td>US distributor</td><td class="mono">74 days</td><td><span class="pill green">On time</span></td></tr>
+                    <tr><td>Sugar base (for liquid)</td><td>Alberta food-grade supplier</td><td class="mono">58 days</td><td><span class="pill green">On time</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Batches Under Review</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Batch</th><th>Product</th><th>Where it is now</th><th>Ready by</th><th>Priority</th></tr></thead>
+                  <tbody>
+                    <tr><td class="mono">B2026-041</td><td>250 mg capsule</td><td>Released</td><td class="mono">2026-03-19</td><td><span class="pill green">OK</span></td></tr>
+                    <tr><td class="mono">B2026-042</td><td>500 mg capsule</td><td>Released</td><td class="mono">2026-03-24</td><td><span class="pill amber">Low stock</span></td></tr>
+                    <tr><td class="mono">B2026-043</td><td>Children's liquid 125 mg / 5 mL</td><td>Partially released</td><td class="mono">2026-04-07</td><td><span class="pill red">Top priority</span></td></tr>
+                    <tr><td class="mono">B2026-048</td><td>500 mg capsule</td><td>Scheduled to blend</td><td class="mono">2026-04-18</td><td><span class="pill amber">Depends on backup supplier</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Regulator &amp; Market Signals</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Signal</th><th>Status</th><th>Last seen</th><th>Why it matters</th></tr></thead>
+                  <tbody>
+                    <tr><td>Drug Shortages Canada status</td><td><span class="pill amber">Anticipated shortage report</span></td><td class="mono">2026-04-04</td><td>Shortage pressure is appearing in the public reporting channel</td></tr>
+                    <tr><td>US (FDA) shortage list</td><td><span class="pill amber">Shortage active</span></td><td class="mono">2026-04-02</td><td>Also a shortage in the US &mdash; signal is confirmed</td></tr>
+                    <tr><td>Ingredient market price</td><td><span class="pill red">34% higher</span></td><td class="mono">over 90 days</td><td>Costs are up and supply is tight</td></tr>
+                    <tr><td>On the Critical &amp; Vulnerable Drug List?</td><td><span class="pill green">Yes &mdash; Critical</span></td><td class="mono">2024-12-15</td><td>Health Canada treats this as a priority medicine</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-sample">
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Rifampin &mdash; a tuberculosis medicine</div>
+            <div class="deep-subtitle">Already a shortage in Canada. And because TB treatment uses several medicines together, a problem with one can affect the others.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill red">High risk</span>
+          <span class="pill red">Shortage active</span>
+          <span class="pill neutral">2 main suppliers</span>
+          <span class="pill neutral">TB group</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">Rifampin is a useful example because the risk is not limited to one medicine. TB patients take several drugs together, and those drugs share suppliers &mdash; so one supplier problem can spread across the whole treatment plan.</p>
+        <div class="grid-4">
+          <div class="metric-card red">
+            <span class="metric-label">Overall Risk</span>
+            <div class="metric-value" style="font-size:22px">High</div>
+            <div class="metric-note">Public shortage report and supplier flagged in the US</div>
+            <div class="source-note"><strong>Source</strong> Drug Shortages Canada + FDA import alert | daily | owner: Regulatory Affairs | public</div>
+          </div>
+          <div class="metric-card amber">
+            <span class="metric-label">Days of Ingredient on Hand</span>
+            <div class="metric-value">68<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">Italy supplier is doing the heavy lifting</div>
+            <div class="source-note"><strong>Source</strong> inventory + open purchase orders | daily | owner: Supply Planning | confidential</div>
+          </div>
+          <div class="metric-card red">
+            <span class="metric-label">Other TB Medicines at Risk</span>
+            <div class="metric-value">3<small style="font-size:14px;font-weight:600"> of 4</small></div>
+            <div class="metric-note">Share upstream suppliers &mdash; could be pulled in</div>
+            <div class="source-note"><strong>Source</strong> supplier graph | weekly | owner: Quality | secure regulator</div>
+          </div>
+          <div class="metric-card blue">
+            <span class="metric-label">Days Until Next Shipment from Italy</span>
+            <div class="metric-value">24<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">Replenishment already on the way</div>
+            <div class="source-note"><strong>Source</strong> purchase order + logistics tracker | daily | owner: Procurement | confidential</div>
+          </div>
+        </div>
+        <div class="trace-box trace-tight" style="margin-top:10px">RIFAMPIN — EXAMPLE TRACE FROM INGREDIENT TO PATIENT
+INGREDIENT SUPPLIERS                 MAKING &amp; QUALITY CHECKS                DELIVERY TO HOSPITALS
+─────────────────────                ────────────────────────                ─────────────────────
+
+┌──────────────────────┐             ┌──────────────────────┐                 ┌──────────────────────┐
+│ Lupin, Tarapur IN    │ × impaired  │ WEIGH / DISPENSE     │                 │ TB RESPONSE SHELF     │
+│ FDA import alert     │ import alert│ rifampin + capsule   │                 │ reserve inventory     │
+│ DSC report cross-ref │             │ excipients           │────┐            │ held for continuity   │
+└──────────────────────┘             └──────────┬───────────┘    │            └──────────┬───────────┘
+                                                │                │                       │
+                                                ▼                │                       ▼
+┌──────────────────────┐             ┌──────────────────────┐    │            ┌──────────────────────┐
+│ Olon / Farmabios IT  │ ✓ active    │ CAPSULE FILL         │────┼──────────▶ │ SPECIALTY WHOLESALE   │
+│ GMP package current  │ 24 d lane   │ 150 mg + 300 mg      │    │            │ ON: McKesson Spec.    │
+│ route: Milan > YYC   │             │ 2 batches running    │    │            │ QC: hospital channel  │
+└──────────────────────┘             └──────────┬───────────┘    │            │ BC: public health     │
+                                                │                │            └──────────┬───────────┘
+                                                ▼                │                       │
+┌──────────────────────┐             ┌──────────────────────┐    │                       ▼
+│ Shandong Xinqi CN    │ △ watch     │ QA / MICROBIOLOGY    │────┘            ┌──────────────────────┐
+│ shared intermediates │ TB cluster  │ dissolution + assay  │                 │ PROGRAM ALLOCATION    │
+│ supports INH / PZA   │ exposure    │ release clock 9 d    │                 │ federal / provincial  │
+└──────────────────────┘             └──────────────────────┘                 │ shortage logic only   │
+                                                                               │ illustrative here     │
+EXCIPIENTS                                                                    └──────────────────────┘
+──────────
+Gelatin shell                     ✓
+Microcrystalline cellulose        ✓
+Red iron oxide                    ✓
+Sodium lauryl sulfate             ✓
+
+PACKAGING
+─────────
+PVDC blister                      ✓
+Carton + insert                   ✓
+Desiccant sachet                  ✓
+Child-resistant bottle            △ optional secondary pack</div>
+
+        <div class="deep-stack">
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Suppliers &amp; Shared-Supplier Risk</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Supplier</th><th>Role</th><th>Status</th><th>Delivery time</th><th>Shared-supplier note</th></tr></thead>
+                  <tbody>
+                    <tr><td class="fw700">Lupin &mdash; Tarapur, India</td><td>Main rifampin ingredient</td><td><span class="pill red">US import alert</span></td><td class="mono">blocked</td><td>This is the root of the current shortage</td></tr>
+                    <tr><td class="fw700">Olon / Farmabios &mdash; Italy</td><td>Backup ingredient from Europe</td><td><span class="pill green">Shipping</span></td><td class="mono">24 days</td><td>Carrying the extra demand right now</td></tr>
+                    <tr><td class="fw700">Shandong Xinqi &mdash; China</td><td>Supplies raw material for several TB drugs</td><td><span class="pill amber">Watch</span></td><td class="mono">37 days</td><td>Would also affect isoniazid and pyrazinamide if disrupted</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Other TB Medicines Under Review</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Medicine</th><th>Days on hand</th><th>Suppliers</th><th>Current status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Isoniazid</td><td class="mono">72 days</td><td class="mono">2</td><td><span class="pill amber">Watch &mdash; shared supplier</span></td></tr>
+                    <tr><td>Ethambutol</td><td class="mono">68 days</td><td class="mono">2</td><td><span class="pill amber">Watch &mdash; shared supplier</span></td></tr>
+                    <tr><td>Pyrazinamide</td><td class="mono">65 days</td><td class="mono">2</td><td><span class="pill amber">Watch &mdash; shared supplier</span></td></tr>
+                    <tr><td>Rifampin</td><td class="mono">44 days</td><td class="mono">2</td><td><span class="pill red">Shortage active</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Batches &amp; Who Gets Them First</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Batch</th><th>Product</th><th>Where it is now</th><th>Ready by</th><th>Who gets it</th></tr></thead>
+                  <tbody>
+                    <tr><td class="mono">R2026-019</td><td>150 mg capsule</td><td>Released</td><td class="mono">2026-03-21</td><td>Hospitals and specialty wholesalers</td></tr>
+                    <tr><td class="mono">R2026-020</td><td>300 mg capsule</td><td>Quality testing</td><td class="mono">2026-04-11</td><td>TB reserve first, then wholesalers</td></tr>
+                    <tr><td class="mono">R2026-021</td><td>300 mg capsule</td><td>Being filled</td><td class="mono">2026-04-18</td><td>Depends on when Italy shipment arrives</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Regulator &amp; Shortage Signals</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Signal</th><th>Status</th><th>Last seen</th><th>Why it matters</th></tr></thead>
+                  <tbody>
+                    <tr><td>Drug Shortages Canada status</td><td><span class="pill red">Actual shortage report</span></td><td class="mono">2026-03-15</td><td>Public shortage reporting has already occurred</td></tr>
+                    <tr><td>US (FDA) import alert</td><td><span class="pill amber">Alert 99-32</span></td><td class="mono">2026-03-15</td><td>Main India supplier has been flagged</td></tr>
+                    <tr><td>Ingredient market price</td><td><span class="pill amber">21% higher</span></td><td class="mono">over 90 days</td><td>Supply is tightening but not yet extreme</td></tr>
+                    <tr><td>TB treatment risk</td><td><span class="pill red">High</span></td><td class="mono">today</td><td>TB uses several drugs together &mdash; keeping the full regimen available matters more than any single product</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-sample">
+      <summary>
+        <div class="deep-summary-left">
+          <span class="deep-chevron">&#9654;</span>
+          <div class="deep-title-wrap">
+            <div class="deep-title">Lithium carbonate &mdash; a medicine for bipolar disorder</div>
+            <div class="deep-subtitle">Plenty of stock today. But most of it comes from one country, and switching patients to another medicine is hard on them.</div>
+          </div>
+        </div>
+        <div class="deep-summary-right">
+          <span class="pill amber">Medium risk</span>
+          <span class="pill green">No shortage</span>
+          <span class="pill neutral">70% from China</span>
+          <span class="pill neutral">Hard to switch patients</span>
+        </div>
+      </summary>
+      <div class="deep-body">
+        <p class="deep-caption">Lithium is a different kind of example. There is no current shortage in this scenario. The risk is that nearly three-quarters of the ingredient comes from one country, and switching patients to another medicine carries a real clinical cost.</p>
+        <div class="grid-4">
+          <div class="metric-card amber">
+            <span class="metric-label">Overall Risk</span>
+            <div class="metric-value" style="font-size:22px">Medium</div>
+            <div class="metric-note">Plenty of stock, but supply is heavily concentrated</div>
+            <div class="source-note"><strong>Source</strong> supplier concentration + clinical substitution risk | monthly | owner: Risk Review | secure regulator</div>
+          </div>
+          <div class="metric-card blue">
+            <span class="metric-label">Share Coming from China</span>
+            <div class="metric-value">70<small style="font-size:14px;font-weight:600">%</small></div>
+            <div class="metric-note">Most ingredient supply comes from one country</div>
+            <div class="source-note"><strong>Source</strong> supplier purchase history | monthly | owner: Procurement | confidential</div>
+          </div>
+          <div class="metric-card green">
+            <span class="metric-label">Days of Finished Product on Hand</span>
+            <div class="metric-value">104<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">No immediate shortage</div>
+            <div class="source-note"><strong>Source</strong> inventory + demand forecast | daily | owner: Supply Planning | confidential</div>
+          </div>
+          <div class="metric-card blue">
+            <span class="metric-label">Time to First Shipment from a Non-China Backup</span>
+            <div class="metric-value">49<small style="font-size:14px;font-weight:600">d</small></div>
+            <div class="metric-note">If backup activation were required now</div>
+            <div class="source-note"><strong>Source</strong> supplier qualification tracker | weekly | owner: Quality | secure regulator</div>
+          </div>
+        </div>
+        <div class="trace-box trace-tight" style="margin-top:10px">LITHIUM CARBONATE — EXAMPLE TRACE FROM INGREDIENT TO PATIENT
+WHERE THE INGREDIENT COMES FROM        MAKING &amp; QUALITY CHECKS                  DELIVERY TO PATIENTS
+───────────────────────────────        ────────────────────────                  ─────────────────────
+
+┌──────────────────────┐               ┌──────────────────────┐                ┌──────────────────────┐
+│ Ganfeng, Jiangxi CN  │ ✓ active      │ ASSAY / DISPENSE      │                │ NATIONAL DC           │
+│ primary carbonate API│ 70% exposure  │ lithium carbonate     │                │ community + hospital  │
+│ ocean + rail route   │ tariff watch  │ + povidone / MCC      │────┐           │ forecast window 14 wk │
+└──────────────────────┘               └──────────┬───────────┘    │           └──────────┬───────────┘
+                                                  │                │                      │
+                                                  ▼                │                      ▼
+┌──────────────────────┐               ┌──────────────────────┐    │           ┌──────────────────────┐
+│ Nemaska-linked QC    │ △ qualifying  │ COMPRESSION / COAT    │────┼─────────▶ │ WHOLESALER CHANNELS   │
+│ domestic carbonate   │ pilot lots    │ 150 mg / 300 mg tabs  │    │           │ AB / BC / ON / QC     │
+│ short lane, high cost│ 49 d to lot   │ 2 validation lots     │    │           │ NTI continuity watch   │
+└──────────────────────┘               └──────────┬───────────┘    │           └──────────┬───────────┘
+                                                  │                │                      │
+                                                  ▼                │                      ▼
+┌──────────────────────┐               ┌──────────────────────┐    │           ┌──────────────────────┐
+│ Albemarle toll route │ △ scenario    │ QA / STABILITY        │────┘           │ RESPONSE ANALYTICS     │
+│ US / Chile sourced   │ commercial    │ assay, dissolution,   │                │ no active shortage     │
+│ hedge against tariff │ evaluation    │ content uniformity    │                │ trade + route watch    │
+└──────────────────────┘               └──────────────────────┘                │ substitution avoided   │
+                                                                               └──────────────────────┘
+EXCIPIENTS
+──────────
+Microcrystalline cellulose        ✓
+Povidone                          ✓
+Crospovidone                      ✓
+Magnesium stearate                ✓
+
+PACKAGING
+─────────
+HDPE bottle                       ✓
+CRC cap                           ✓
+Desiccant                         ✓
+Patient leaflet                   ✓
+Secondary carton                  △ optional by channel</div>
+
+        <div class="deep-stack">
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Suppliers &amp; Shipping Routes</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Supplier</th><th>Route</th><th>Status</th><th>Cost vs. today</th><th>Role</th></tr></thead>
+                  <tbody>
+                    <tr><td class="fw700">Ganfeng &mdash; Jiangxi, China</td><td>Shanghai to Vancouver, then rail</td><td><span class="pill green">Shipping</span></td><td class="mono">baseline</td><td>Main supplier today</td></tr>
+                    <tr><td class="fw700">Quebec-based backup</td><td>Truck within Canada</td><td><span class="pill amber">Being approved</span></td><td class="mono">18% more</td><td>Reduces dependence on one country</td></tr>
+                    <tr><td class="fw700">Albemarle (US / Chile)</td><td>US &amp; Chile sources</td><td><span class="pill blue">Scenario only</span></td><td class="mono">24% more</td><td>Backup option if tariffs make China supply expensive</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Trade &amp; Policy Watch</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>What is being monitored</th><th>Status</th><th>Time frame</th><th>Why it matters</th></tr></thead>
+                  <tbody>
+                    <tr><td>Possible tariffs on China ingredients</td><td><span class="pill amber">Watching</span></td><td class="mono">30&ndash;90 days</td><td>Could increase ingredient cost quickly</td></tr>
+                    <tr><td>Port congestion</td><td><span class="pill green">Normal</span></td><td class="mono">weekly check</td><td>Deliveries are arriving on time right now</td></tr>
+                    <tr><td>Risk of switching patients to another medicine</td><td><span class="pill red">High</span></td><td class="mono">always</td><td>Switching lithium patients is hard and comes with clinical risks</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="stack-col">
+            <div>
+              <div class="deep-subhead">Batches &amp; Distribution</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Batch</th><th>Product</th><th>Where it is now</th><th>Ready by</th><th>Who gets it</th></tr></thead>
+                  <tbody>
+                    <tr><td class="mono">L2026-014</td><td>150 mg tablet</td><td>Released</td><td class="mono">2026-03-27</td><td>Community pharmacies</td></tr>
+                    <tr><td class="mono">L2026-015</td><td>300 mg tablet</td><td>Quality testing</td><td class="mono">2026-04-09</td><td>Hospitals and pharmacies</td></tr>
+                    <tr><td class="mono">L2026-016</td><td>300 mg tablet</td><td>Being pressed into tablets</td><td class="mono">2026-04-16</td><td>Replenishing safety stock</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="deep-subhead">Regulator &amp; Market Signals</div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Signal</th><th>Status</th><th>Last seen</th><th>Why it matters</th></tr></thead>
+                  <tbody>
+                    <tr><td>Drug Shortages Canada status</td><td><span class="pill green">No report</span></td><td class="mono">2026-04-05</td><td>No public shortage report; the dashboard is monitoring concentration risk in advance</td></tr>
+                    <tr><td>Ingredient market price</td><td><span class="pill green">5% lower</span></td><td class="mono">over 90 days</td><td>No immediate cost pressure</td></tr>
+                    <tr><td>Share coming from one country</td><td><span class="pill amber">70% China</span></td><td class="mono">current</td><td>This concentration is the primary risk being monitored</td></tr>
+                    <tr><td>Impact on patients</td><td><span class="pill red">Clinically significant</span></td><td class="mono">always</td><td>If there were a shortage, patient impact would matter more than company cost</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</div><!-- /panel-deepdive -->
+
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer-panel">
+  <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">About This Prototype</div>
+  <p style="font-weight:600;color:var(--ink)">Prototype with example data &mdash; not a live system.</p>
+  <p>This is a preview of how a shortage early-warning dashboard could work. Every number here is illustrative. No live data feeds are connected.</p>
+  <div class="footer-links">
+    <a href="mailto:farooq@medicineplace.ca">farooq@medicineplace.ca</a>
+    <span class="subtle">|</span>
+    <a href="mailto:alfred@medicineplace.ca">alfred@medicineplace.ca</a>
+    <span class="subtle">|</span>
+    <span class="subtle">Medicine Place Inc. &middot; April 2026</span>
+  </div>
+</footer>
+
+</main>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* Tab switching */
+var allTabs = Array.from(document.querySelectorAll('.tab'));
+var panelMap = {
+  dashboard: document.getElementById('panel-dashboard'),
+  sources: document.getElementById('panel-sources'),
+  alerts: document.getElementById('panel-alerts'),
+  deepdive: document.getElementById('panel-deepdive')
+};
+
+function showTab(name, tabEl) {
+  allTabs.forEach(function(t) {
+    var isActive = t.dataset.panel === name;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    t.setAttribute('tabindex', isActive ? '0' : '-1');
+  });
+  Object.keys(panelMap).forEach(function(key) {
+    panelMap[key].classList.toggle('active', key === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Keyboard nav for tabs */
+document.querySelector('.tabbar').addEventListener('keydown', function(e) {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  e.preventDefault();
+  var current = allTabs.findIndex(function(t) { return t.classList.contains('active'); });
+  var next = e.key === 'ArrowRight' ? (current + 1) % allTabs.length : (current - 1 + allTabs.length) % allTabs.length;
+  allTabs[next].focus();
+  showTab(allTabs[next].dataset.panel, allTabs[next]);
+});
+
+/* Accordion toggle */
+function tog(id) {
+  var row = document.getElementById(id);
+  if (!row) return;
+  var isOpen = row.classList.toggle('open');
+  var header = row.querySelector('.acc-header');
+  if (header) header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+/* Data source card toggle */
+function togDs(id) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  var isOpen = card.classList.toggle('open');
+  var toggle = card.querySelector('.ds-toggle');
+  if (toggle) toggle.textContent = isOpen ? '- Hide' : '+ Details';
+}
+
+/* Mobile scroll hints */
+(function() {
+  if (window.innerWidth > 720) return;
+  var wraps = document.querySelectorAll('.table-wrap');
+  wraps.forEach(function(w) {
+    if (w.scrollWidth > w.clientWidth) {
+      var hint = document.createElement('div');
+      hint.style.cssText = 'font-size:10px;color:var(--muted);text-align:center;padding:4px;';
+      hint.textContent = '\u2190 scroll \u2192';
+      w.parentNode.insertBefore(hint, w.nextSibling);
+    }
+  });
+})();
+</script>
+</body>
+</html>
